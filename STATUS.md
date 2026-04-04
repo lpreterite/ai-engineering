@@ -25,6 +25,8 @@
 | 阶段门控清单 | ✅ 完成 | [guide/04-checklists.md](./guide/04-checklists.md) |
 | 关键文档说明 | ✅ 完成 | [guide/05-deliverables.md](./guide/05-deliverables.md) |
 | 文档管理规范 | ✅ 完成 | [guide/06-document-management.md](./guide/06-document-management.md) |
+| Repo 目录初始化指南 | ✅ 完成 | [guide/07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) |
+| Agent 工具集成指南 | ✅ 完成 | [guide/08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) |
 
 ### Agent 角色定义（agents/）
 
@@ -54,6 +56,8 @@
 - [x] 创建各文档内容（06-08）
 - [x] 目录结构重构（guide/agents/reference）
 - [x] Agent 角色拆分为独立文件
+- [x] 新增 07 Repo 目录初始化指南
+- [x] 新增 08 Agent 工具集成指南
 - [ ] 人工评审
 
 ---
@@ -70,4 +74,5 @@
 2026-04-04 目录结构重构：拆分为 guide/agents/reference 三级目录
 2026-04-04 Agent 角色从单文件拆分为 5 个独立角色文件
 2026-04-04 更新所有交叉引用路径
+2026-04-04 新增 07 Repo 目录初始化指南、08 Agent 工具集成指南
 ```

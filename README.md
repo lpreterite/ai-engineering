@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/`
 **文档状态**：设计中
-**当前版本**：v0.3
+**当前版本**：v0.4
 **最后更新**：2026-04-04
 
 ---
@@ -32,7 +32,9 @@ ai-engineering/
 │   ├── 03-collaboration.md       # 人机协作协议、逐步审查核对、升级机制
 │   ├── 04-checklists.md          # 各 Gate 检查清单、周检查清单
 │   ├── 05-deliverables.md        # 关键文档/产出物要求、模板、验收标准
-│   └── 06-document-management.md # 文档生命周期、命名规范、同步规则
+│   ├── 06-document-management.md # 文档生命周期、命名规范、同步规则
+│   ├── 07-repo-directory-guide.md # Repo 目录初始化指南（Agent 执行用）
+│   └── 08-tool-integration-guide.md # Agent 工具集成指南（Claude Code/OpenCode/Codex）
 │
 ├── agents/                       # Agent 角色定义（每个角色独立文件）
 │   ├── README.md                 # 角色总览、协作矩阵、协作协议
@@ -60,6 +62,8 @@ ai-engineering/
 | [04-checklists.md](./guide/04-checklists.md) | 阶段门控清单：每个 Gate 的检查清单、验收要点 | ✅ 完成 |
 | [05-deliverables.md](./guide/05-deliverables.md) | 关键文档说明：产出物清单、模板、验收标准 | ✅ 完成 |
 | [06-document-management.md](./guide/06-document-management.md) | 文档管理规范：更新时机、频率、负责人 | ✅ 完成 |
+| [07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) | Repo 目录初始化指南：Agent 执行用的目录结构规范 | ✅ 完成 |
+| [08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) | Agent 工具集成指南：导入 Claude Code/OpenCode/Codex | ✅ 完成 |
 
 ### Agent 角色定义（agents/）
 
@@ -110,5 +114,6 @@ ai-engineering/
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
 | v0.3 | 2026-04-04 | 目录结构重构：拆分为 guide/agents/reference 三级目录，Agent 拆分为独立文件 |
+| v0.4 | 2026-04-04 | 新增 07 Repo 目录初始化指南、08 Agent 工具集成指南 |
 | v0.2 | 2026-04-04 | 统一 Gate 编号为 1→2→3→4 |
 | v0.1 | 2026-04-04 | 初始版本，规划文档结构 |
