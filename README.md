@@ -48,15 +48,9 @@ ai-engineering/
 │   ├── developer-agent.md        # Developer Agent — 技术实施
 │   └── tester-agent.md           # Tester Agent — 测试执行
 │
-└── reference/                    # 可部署的规则文件（完整内容，直接复制到目标项目 docs/）
+└── reference/                    # 参考资料
     ├── setup.md                  # ★ Agent 执行入口（部署规范+安装角色+工具配置）
-    ├── directory.md              # 项目文档目录结构规范
-    ├── principles.md             # AI 研发核心原则
-    ├── process.md                # AI 研发流程规范
-    ├── collaboration.md          # 人机协作协议
-    ├── checklists.md             # 阶段门控检查清单
-    ├── deliverables.md           # 关键文档/产出物要求
-    └── document-management.md    # 文档管理规范
+    └── directory.md              # 项目文档目录结构规范
 ```
 
 ---
@@ -101,12 +95,6 @@ ai-engineering/
 |------|------|------|
 | [setup.md](./reference/setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
 | [directory.md](./reference/directory.md) | 项目文档目录结构规范 | ✅ 完成 |
-| [principles.md](./reference/principles.md) | AI 研发核心原则（可部署） | ✅ 完成 |
-| [process.md](./reference/process.md) | AI 研发流程规范（可部署） | ✅ 完成 |
-| [collaboration.md](./reference/collaboration.md) | 人机协作协议（可部署） | ✅ 完成 |
-| [checklists.md](./reference/checklists.md) | 阶段门控检查清单（可部署） | ✅ 完成 |
-| [deliverables.md](./reference/deliverables.md) | 产出物要求（可部署） | ✅ 完成 |
-| [document-management.md](./reference/document-management.md) | 文档管理规范（可部署） | ✅ 完成 |
 
 ---
 

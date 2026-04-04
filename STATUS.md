@@ -45,12 +45,6 @@
 |------|------|------|
 | **Agent 执行入口** | ✅ 完成 | [reference/setup.md](./reference/setup.md) |
 | 文档目录结构 | ✅ 完成 | [reference/directory.md](./reference/directory.md) |
-| AI 研发核心原则 | ✅ 完成 | [reference/principles.md](./reference/principles.md) |
-| AI 研发流程规范 | ✅ 完成 | [reference/process.md](./reference/process.md) |
-| 人机协作协议 | ✅ 完成 | [reference/collaboration.md](./reference/collaboration.md) |
-| 阶段门控检查清单 | ✅ 完成 | [reference/checklists.md](./reference/checklists.md) |
-| 产出物要求 | ✅ 完成 | [reference/deliverables.md](./reference/deliverables.md) |
-| 文档管理规范 | ✅ 完成 | [reference/document-management.md](./reference/document-management.md) |
 
 ### 工具安装指南（guide/setup/）
 

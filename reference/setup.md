@@ -18,24 +18,24 @@
 
 ### 步骤 1：部署研发规范文件
 
-将以下 6 个规则文件从 `reference/` 复制到目标项目的 `docs/` 根目录：
+将 `guide/` 目录中的 6 个规范文件复制到目标项目的 `docs/` 根目录：
 
-| 源文件（ai-engineering/reference/） | 目标位置（target-project/docs/） | 必选 |
-|--------------------------------------|-----------------------------------|------|
-| `principles.md` | `docs/principles.md` | 是 |
-| `process.md` | `docs/process.md` | 是 |
-| `collaboration.md` | `docs/collaboration.md` | 是 |
-| `checklists.md` | `docs/checklists.md` | 否 |
-| `deliverables.md` | `docs/deliverables.md` | 否 |
-| `document-management.md` | `docs/document-management.md` | 否 |
+| 源文件（ai-engineering/guide/） | 目标位置（target-project/docs/） | 必选 |
+|----------------------------------|-----------------------------------|------|
+| `01-principles.md` | `docs/principles.md` | 是 |
+| `02-process.md` | `docs/process.md` | 是 |
+| `03-collaboration.md` | `docs/collaboration.md` | 是 |
+| `04-checklists.md` | `docs/checklists.md` | 否 |
+| `05-deliverables.md` | `docs/deliverables.md` | 否 |
+| `06-document-management.md` | `docs/document-management.md` | 否 |
 
 ```bash
-cp reference/principles.md          {target}/docs/principles.md
-cp reference/process.md             {target}/docs/process.md
-cp reference/collaboration.md       {target}/docs/collaboration.md
-cp reference/checklists.md          {target}/docs/checklists.md
-cp reference/deliverables.md        {target}/docs/deliverables.md
-cp reference/document-management.md {target}/docs/document-management.md
+cp guide/01-principles.md          {target}/docs/principles.md
+cp guide/02-process.md             {target}/docs/process.md
+cp guide/03-collaboration.md       {target}/docs/collaboration.md
+cp guide/04-checklists.md          {target}/docs/checklists.md
+cp guide/05-deliverables.md        {target}/docs/deliverables.md
+cp guide/06-document-management.md {target}/docs/document-management.md
 ```
 
 > 最小部署：至少复制前 3 个文件即可启用基本协作规范。
@@ -190,7 +190,7 @@ developer_instructions = """
 
 | 方式 | 操作 | 适用场景 |
 |------|------|----------|
-| **手动复制** | 从 reference/ 和 agents/ 复制文件 | 简单项目、一次性部署 |
+| **手动复制** | 从 guide/ 和 agents/ 复制文件 | 简单项目、一次性部署 |
 | **Git Submodule** | `git submodule add https://github.com/lpreterite/ai-engineering.git` | 团队协作、版本锁定 |
 | **本地路径** | 使用相对路径指向本规范库目录 | 个人开发、快速集成 |
 
