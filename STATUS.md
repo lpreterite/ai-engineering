@@ -44,6 +44,20 @@
 | 文档 | 状态 | 路径 |
 |------|------|------|
 | 文档目录结构 | ✅ 完成 | [reference/directory.md](./reference/directory.md) |
+| AI 研发核心原则 | ✅ 完成 | [reference/principles.md](./reference/principles.md) |
+| AI 研发流程规范 | ✅ 完成 | [reference/process.md](./reference/process.md) |
+| 人机协作协议 | ✅ 完成 | [reference/collaboration.md](./reference/collaboration.md) |
+| 阶段门控检查清单 | ✅ 完成 | [reference/checklists.md](./reference/checklists.md) |
+| 产出物要求 | ✅ 完成 | [reference/deliverables.md](./reference/deliverables.md) |
+| 文档管理规范 | ✅ 完成 | [reference/document-management.md](./reference/document-management.md) |
+
+### 工具安装指南（guide/setup/）
+
+| 文档 | 状态 | 路径 |
+|------|------|------|
+| Claude Code 安装指南 | ✅ 完成 | [guide/setup/claude-code.md](./guide/setup/claude-code.md) |
+| OpenCode 安装指南 | ✅ 完成 | [guide/setup/opencode.md](./guide/setup/opencode.md) |
+| Codex CLI 安装指南 | ✅ 完成 | [guide/setup/codex.md](./guide/setup/codex.md) |
 
 ---
 
@@ -58,6 +72,10 @@
 - [x] Agent 角色拆分为独立文件
 - [x] 新增 07 Repo 目录初始化指南
 - [x] 新增 08 Agent 工具集成指南
+- [x] 新增 reference/ 可部署规则文件（6篇）
+- [x] 新增 setup/ 工具安装指南（3篇）
+- [x] 重写 08 为 Agent 使用指南
+- [x] 重写 reference/directory.md 更新目录结构
 - [ ] 人工评审
 
 ---
@@ -71,6 +89,8 @@
 ## 最近更新
 
 ```
+2026-04-04 新增 reference/ 可部署规则文件（6篇）、setup/ 工具安装指南（3篇）
+2026-04-04 重写 08 为 Agent 使用指南，重写 reference/directory.md
 2026-04-04 目录结构重构：拆分为 guide/agents/reference 三级目录
 2026-04-04 Agent 角色从单文件拆分为 5 个独立角色文件
 2026-04-04 更新所有交叉引用路径

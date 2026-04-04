@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/`
 **文档状态**：设计中
-**当前版本**：v0.4
+**当前版本**：v0.5
 **最后更新**：2026-04-04
 
 ---
@@ -34,7 +34,11 @@ ai-engineering/
 │   ├── 05-deliverables.md        # 关键文档/产出物要求、模板、验收标准
 │   ├── 06-document-management.md # 文档生命周期、命名规范、同步规则
 │   ├── 07-repo-directory-guide.md # Repo 目录初始化指南（Agent 执行用）
-│   └── 08-tool-integration-guide.md # Agent 工具集成指南（Claude Code/OpenCode/Codex）
+│   ├── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色）
+│   └── setup/                    # 工具安装指南
+│       ├── claude-code.md        # Claude Code 安装配置
+│       ├── opencode.md           # OpenCode 安装配置
+│       └── codex.md              # Codex CLI 安装配置
 │
 ├── agents/                       # Agent 角色定义（每个角色独立文件）
 │   ├── README.md                 # 角色总览、协作矩阵、协作协议
@@ -44,8 +48,14 @@ ai-engineering/
 │   ├── developer-agent.md        # Developer Agent — 技术实施
 │   └── tester-agent.md           # Tester Agent — 测试执行
 │
-└── reference/                    # 参考资料
-    └── directory.md              # 项目文档目录结构规范
+└── reference/                    # 可部署的规则文件（完整内容，直接复制到目标项目 docs/）
+    ├── directory.md              # 项目文档目录结构规范
+    ├── principles.md             # AI 研发核心原则
+    ├── process.md                # AI 研发流程规范
+    ├── collaboration.md          # 人机协作协议
+    ├── checklists.md             # 阶段门控检查清单
+    ├── deliverables.md           # 关键文档/产出物要求
+    └── document-management.md    # 文档管理规范
 ```
 
 ---
@@ -63,7 +73,15 @@ ai-engineering/
 | [05-deliverables.md](./guide/05-deliverables.md) | 关键文档说明：产出物清单、模板、验收标准 | ✅ 完成 |
 | [06-document-management.md](./guide/06-document-management.md) | 文档管理规范：更新时机、频率、负责人 | ✅ 完成 |
 | [07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) | Repo 目录初始化指南：Agent 执行用的目录结构规范 | ✅ 完成 |
-| [08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) | Agent 工具集成指南：导入 Claude Code/OpenCode/Codex | ✅ 完成 |
+| [08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) | Agent 使用指南：部署规范、安装角色、工具配置 | ✅ 完成 |
+
+### 工具安装指南（guide/setup/）
+
+| 文档 | 说明 | 状态 |
+|------|------|------|
+| [claude-code.md](./guide/setup/claude-code.md) | Claude Code 安装配置指南 | ✅ 完成 |
+| [opencode.md](./guide/setup/opencode.md) | OpenCode 安装配置指南 | ✅ 完成 |
+| [codex.md](./guide/setup/codex.md) | Codex CLI 安装配置指南 | ✅ 完成 |
 
 ### Agent 角色定义（agents/）
 
@@ -81,6 +99,12 @@ ai-engineering/
 | 文档 | 说明 | 状态 |
 |------|------|------|
 | [directory.md](./reference/directory.md) | 项目文档目录结构规范 | ✅ 完成 |
+| [principles.md](./reference/principles.md) | AI 研发核心原则（可部署） | ✅ 完成 |
+| [process.md](./reference/process.md) | AI 研发流程规范（可部署） | ✅ 完成 |
+| [collaboration.md](./reference/collaboration.md) | 人机协作协议（可部署） | ✅ 完成 |
+| [checklists.md](./reference/checklists.md) | 阶段门控检查清单（可部署） | ✅ 完成 |
+| [deliverables.md](./reference/deliverables.md) | 产出物要求（可部署） | ✅ 完成 |
+| [document-management.md](./reference/document-management.md) | 文档管理规范（可部署） | ✅ 完成 |
 
 ---
 
@@ -114,6 +138,7 @@ ai-engineering/
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
 | v0.3 | 2026-04-04 | 目录结构重构：拆分为 guide/agents/reference 三级目录，Agent 拆分为独立文件 |
+| v0.5 | 2026-04-04 | 新增 reference/ 可部署规则文件（6篇）、setup/ 工具安装指南（3篇），重写 08 为 Agent 使用指南 |
 | v0.4 | 2026-04-04 | 新增 07 Repo 目录初始化指南、08 Agent 工具集成指南 |
 | v0.2 | 2026-04-04 | 统一 Gate 编号为 1→2→3→4 |
 | v0.1 | 2026-04-04 | 初始版本，规划文档结构 |
