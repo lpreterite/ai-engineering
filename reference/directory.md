@@ -3,7 +3,7 @@
 > Document Directory Structure
 
 **文档状态**：已发布
-**当前版本**：v0.2
+**当前版本**：v0.3
 **发布日期**：2026-04-04
 
 ---
@@ -30,13 +30,7 @@ target-project/
 │   │   ├── collaboration.md           # 人机协作协议
 │   │   ├── checklists.md              # 阶段门控检查清单
 │   │   ├── deliverables.md            # 关键文档/产出物要求
-│   │   ├── document-management.md     # 文档管理规范
-│   │   └── agents/                    # Agent 角色定义
-│   │       ├── pm-agent.md
-│   │       ├── po-agent.md
-│   │       ├── uiux-agent.md
-│   │       ├── developer-agent.md
-│   │       └── tester-agent.md
+│   │   └── document-management.md     # 文档管理规范
 │   │
 │   ├── product/                       # 产品相关文档
 │   │   ├── PRD.md                     # 产品需求文档
@@ -91,7 +85,7 @@ target-project/
 | `deliverables.md` | 产出物清单、模板、验收标准 | 否 |
 | `document-management.md` | 文档生命周期、命名规范、同步规则 | 否 |
 
-> 部署时，将 `reference/` 目录中对应的 6 个 `.md` 文件直接复制到目标项目的 `docs/ai-engineering/` 目录。
+> 部署时，将 `guide/` 目录中对应的 6 个 `.md` 文件直接复制到目标项目的 `docs/ai-engineering/` 目录。
 
 ### 3.2 产品文档（docs/product/）
 
@@ -194,5 +188,6 @@ const PRD_PATH = `${DOCS_PATH}/product/PRD.md`;
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.3 | 2026-04-04 | 修正规范来源目录为 guide/，移除 agents/ 子目录（角色不再复制到目标项目） |
 | v0.2 | 2026-04-04 | 重写：移除旧 ai-engineering/ 子目录结构，更新为直接部署模式 |
 | v0.1 | 2026-04-04 | 初始版本 |

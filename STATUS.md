@@ -43,7 +43,7 @@
 
 | 文档 | 状态 | 路径 |
 |------|------|------|
-| **Agent 执行入口** | ✅ 完成 | [reference/setup.md](./reference/setup.md) |
+| **Agent 执行入口** | ✅ 完成 | [setup.md](./setup.md) |
 | 文档目录结构 | ✅ 完成 | [reference/directory.md](./reference/directory.md) |
 
 ### 工具安装指南（setup/）
@@ -71,7 +71,7 @@
 - [x] 新增 setup/ 工具安装指南（3篇）
 - [x] 重写 08 为 Agent 使用指南
 - [x] 重写 reference/directory.md 更新目录结构
-- [x] 新增 reference/setup.md 作为 Agent 执行入口
+- [x] 新增 setup.md 作为 Agent 执行入口
 - [ ] 人工评审
 
 ---
