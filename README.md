@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/`
 **文档状态**：设计中
-**当前版本**：v0.5
+**当前版本**：v0.6
 **最后更新**：2026-04-04
 
 ---
@@ -49,6 +49,7 @@ ai-engineering/
 │   └── tester-agent.md           # Tester Agent — 测试执行
 │
 └── reference/                    # 可部署的规则文件（完整内容，直接复制到目标项目 docs/）
+    ├── setup.md                  # ★ Agent 执行入口（部署规范+安装角色+工具配置）
     ├── directory.md              # 项目文档目录结构规范
     ├── principles.md             # AI 研发核心原则
     ├── process.md                # AI 研发流程规范
@@ -98,6 +99,7 @@ ai-engineering/
 
 | 文档 | 说明 | 状态 |
 |------|------|------|
+| [setup.md](./reference/setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
 | [directory.md](./reference/directory.md) | 项目文档目录结构规范 | ✅ 完成 |
 | [principles.md](./reference/principles.md) | AI 研发核心原则（可部署） | ✅ 完成 |
 | [process.md](./reference/process.md) | AI 研发流程规范（可部署） | ✅ 完成 |
@@ -138,6 +140,7 @@ ai-engineering/
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
 | v0.3 | 2026-04-04 | 目录结构重构：拆分为 guide/agents/reference 三级目录，Agent 拆分为独立文件 |
+| v0.6 | 2026-04-04 | 新增 reference/setup.md 作为 Agent 执行入口 |
 | v0.5 | 2026-04-04 | 新增 reference/ 可部署规则文件（6篇）、setup/ 工具安装指南（3篇），重写 08 为 Agent 使用指南 |
 | v0.4 | 2026-04-04 | 新增 07 Repo 目录初始化指南、08 Agent 工具集成指南 |
 | v0.2 | 2026-04-04 | 统一 Gate 编号为 1→2→3→4 |
