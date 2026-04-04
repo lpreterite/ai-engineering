@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/setup/`
 **文档状态**：草稿
-**当前版本**：v0.1
+**当前版本**：v0.2
 **发布日期**：2026-04-04
 
 ---
@@ -42,34 +42,29 @@
 遵循 AI 软件研发工程体系。
 
 当需要时，读取以下规范文件作为强制指令：
-- docs/principles.md — 核心原则
-- docs/process.md — 研发流程
-- docs/collaboration.md — 协作协议
-- docs/checklists.md — 检查清单
-- docs/deliverables.md — 产出物要求
-- docs/document-management.md — 文档管理
+- docs/ai-engineering/principles.md — 核心原则
+- docs/ai-engineering/process.md — 研发流程
+- docs/ai-engineering/collaboration.md — 协作协议
+- docs/ai-engineering/checklists.md — 检查清单
+- docs/ai-engineering/deliverables.md — 产出物要求
+- docs/ai-engineering/document-management.md — 文档管理
 ```
 
 ---
 
 ## 4. 配置多 Agent（推荐）
 
-OpenCode 原生支持多 Agent 配置。将本体系的 5 个角色定义为独立 Agent。
+OpenCode 原生支持多 Agent 配置。Agent 角色定义保留在 `ai-engineering/agents/` 目录中，不复制到目标项目，通过路径引用直接读取。
 
 ### 方式一：Markdown Agent 文件
 
-将 `agents/` 目录中的角色文件复制到项目的 `.opencode/agents/` 目录：
+在项目的 `.opencode/agents/` 目录创建角色文件，通过 `{file:...}` 引用 `agents/` 中的角色定义：
 
 ```bash
-# 复制角色文件
-cp agents/pm-agent.md       .opencode/agents/pm.md
-cp agents/po-agent.md       .opencode/agents/po.md
-cp agents/uiux-agent.md     .opencode/agents/uiux.md
-cp agents/developer-agent.md .opencode/agents/developer.md
-cp agents/tester-agent.md   .opencode/agents/tester.md
+mkdir -p .opencode/agents
 ```
 
-每个文件顶部添加 YAML frontmatter：
+每个文件内容（以 PM Agent 为例）：
 
 ```markdown
 ---
@@ -84,14 +79,16 @@ permission:
     "*": ask
 ---
 
-{pm-agent.md 的完整内容}
+{file:../vendor/ai-engineering/agents/pm-agent.md}
 
 ## 补充规范
 
 遵循以下研发规范：
-- docs/principles.md
-- docs/process.md
+- docs/ai-engineering/principles.md
+- docs/ai-engineering/process.md
 ```
+
+> `{file:...}` 路径取决于 ai-engineering 的部署位置。如用 Git Submodule 引入到 `vendor/ai-engineering/`，则写 `{file:../vendor/ai-engineering/agents/pm-agent.md}`。
 
 目录结构：
 
@@ -107,48 +104,48 @@ permission:
 
 ### 方式二：opencode.json 配置
 
-在项目根目录创建 `opencode.json`：
+在项目根目录创建 `opencode.json`，直接引用 `agents/` 目录：
 
 ```json
 {
   "$schema": "https://opencode.ai/config.json",
   "instructions": [
     "AGENTS.md",
-    "docs/principles.md",
-    "docs/process.md",
-    "docs/collaboration.md"
+    "docs/ai-engineering/principles.md",
+    "docs/ai-engineering/process.md",
+    "docs/ai-engineering/collaboration.md"
   ],
   "agent": {
     "pm": {
       "description": "PM Agent — 项目协调中枢",
       "mode": "subagent",
-      "prompt": "{file:docs/agents/pm-agent.md}"
+      "prompt": "{file:vendor/ai-engineering/agents/pm-agent.md}"
     },
     "po": {
       "description": "PO Agent — 需求分析与 PRD 起草",
       "mode": "subagent",
-      "prompt": "{file:docs/agents/po-agent.md}"
+      "prompt": "{file:vendor/ai-engineering/agents/po-agent.md}"
     },
     "uiux": {
       "description": "UI/UX Agent — 用户方案设计",
       "mode": "subagent",
-      "prompt": "{file:docs/agents/uiux-agent.md}"
+      "prompt": "{file:vendor/ai-engineering/agents/uiux-agent.md}"
     },
     "developer": {
       "description": "Developer Agent — 技术实施",
       "mode": "subagent",
-      "prompt": "{file:docs/agents/developer-agent.md}"
+      "prompt": "{file:vendor/ai-engineering/agents/developer-agent.md}"
     },
     "tester": {
       "description": "Tester Agent — 测试执行",
       "mode": "subagent",
-      "prompt": "{file:docs/agents/tester-agent.md}"
+      "prompt": "{file:vendor/ai-engineering/agents/tester-agent.md}"
     }
   }
 }
 ```
 
-> 注意：`prompt` 字段中的 `{file:...}` 路径需要指向实际部署的角色文件位置。可以将角色文件复制到 `docs/agents/` 子目录中。
+> `{file:...}` 路径取决于 ai-engineering 的部署位置。示例中为 Git Submodule 方式。
 
 ---
 
@@ -167,10 +164,10 @@ permission:
 ## 6. 完整部署流程
 
 ```
-步骤 1：复制 reference/ 规则文件到 docs/        ← 见 08 使用指南
-步骤 2：复制 agents/ 角色文件到 docs/agents/ 或 .opencode/agents/
+步骤 1：复制 guide/ 规则文件到 docs/ai-engineering/
+步骤 2：将 ai-engineering 引入项目（Git Submodule / 本地路径）
 步骤 3：创建 AGENTS.md 主指令文件
-步骤 4：创建 opencode.json 配置文件（如用方式二）
+步骤 4：创建 opencode.json 或 .opencode/agents/ 配置文件，引用 agents/ 角色
 步骤 5：验证 Agent 加载
 ```
 
@@ -193,8 +190,8 @@ permission:
 
 | 文档 | 路径 |
 |------|------|
-| Agent 使用指南 | [../08-tool-integration-guide.md](../08-tool-integration-guide.md) |
-| Agent 角色总览 | [../../agents/README.md](../../agents/README.md) |
+| Agent 使用指南 | [../guide/08-tool-integration-guide.md](../guide/08-tool-integration-guide.md) |
+| Agent 角色总览 | [../agents/README.md](../agents/README.md) |
 
 ---
 
@@ -202,4 +199,5 @@ permission:
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.2 | 2026-04-04 | 修正 AGENTS.md 规范文件路径为 docs/ai-engineering/，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |
