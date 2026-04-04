@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/agents/`
 **文档状态**：草稿
-**当前版本**：v0.2
+**当前版本**：v0.3
 **发布日期**：2026-04-04
 
 ---
@@ -57,13 +57,13 @@
 
 ## 3. 各角色详细说明
 
-| 角色 | 文档 | 核心职责 |
-|------|------|----------|
-| **PM Agent** | [pm-agent.md](./pm-agent.md) | 协调中枢：项目监控、流程引擎、决策引擎、协作中心 |
-| **PO Agent** | [po-agent.md](./po-agent.md) | 需求分析、动机提取、PRD 起草 |
-| **UI/UX Agent** | [uiux-agent.md](./uiux-agent.md) | 设计规范、设计稿、交互说明 |
-| **Developer Agent** | [developer-agent.md](./developer-agent.md) | 技术方案实施、代码编写、单元测试 |
-| **Tester Agent** | [tester-agent.md](./tester-agent.md) | 功能测试、回归测试、验收测试 |
+| 角色 | 文档 | 核心职责 | 版本 |
+|------|------|----------|------|
+| **PM Agent** | [pm-agent.md](./pm-agent.md) | 协调中枢：项目监控、流程引擎、决策引擎、协作中心 | v0.3 |
+| **PO Agent** | [po-agent.md](./po-agent.md) | 需求分析、动机提取、PRD 起草、机会评估 | v0.3 |
+| **UI/UX Agent** | [uiux-agent.md](./uiux-agent.md) | 设计规范、设计稿、交互说明、设计交接 | v0.3 |
+| **Developer Agent** | [developer-agent.md](./developer-agent.md) | 技术实施、代码编写、单元测试、技术方案 | v0.3 |
+| **Tester Agent** | [tester-agent.md](./tester-agent.md) | 功能测试、回归测试、验收测试、Bug 报告 | v0.3 |
 
 ---
 
@@ -92,5 +92,6 @@
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.3 | 2026-04-04 | 所有 Agent 角色文件升级 v0.3：添加身份记忆、工作流阶段、交付模板、沟通风格、成功指标 |
 | v0.2 | 2026-04-04 | 从 03-agents.md 拆分为 README + 5 个独立角色文件 |
 | v0.1 | 2026-04-04 | 初始版本 |
