@@ -46,13 +46,13 @@
 | **Agent 执行入口** | ✅ 完成 | [reference/setup.md](./reference/setup.md) |
 | 文档目录结构 | ✅ 完成 | [reference/directory.md](./reference/directory.md) |
 
-### 工具安装指南（guide/setup/）
+### 工具安装指南（setup/）
 
 | 文档 | 状态 | 路径 |
 |------|------|------|
-| Claude Code 安装指南 | ✅ 完成 | [guide/setup/claude-code.md](./guide/setup/claude-code.md) |
-| OpenCode 安装指南 | ✅ 完成 | [guide/setup/opencode.md](./guide/setup/opencode.md) |
-| Codex CLI 安装指南 | ✅ 完成 | [guide/setup/codex.md](./guide/setup/codex.md) |
+| Claude Code 安装指南 | ✅ 完成 | [setup/claude-code.md](./setup/claude-code.md) |
+| OpenCode 安装指南 | ✅ 完成 | [setup/opencode.md](./setup/opencode.md) |
+| Codex CLI 安装指南 | ✅ 完成 | [setup/codex.md](./setup/codex.md) |
 
 ---
 

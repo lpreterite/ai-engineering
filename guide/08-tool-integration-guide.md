@@ -76,9 +76,9 @@ target-project/
 
 | 工具 | 安装指南 |
 |------|----------|
-| Claude Code | [guide/setup/claude-code.md](./setup/claude-code.md) |
-| OpenCode | [guide/setup/opencode.md](./setup/opencode.md) |
-| Codex CLI | [guide/setup/codex.md](./setup/codex.md) |
+| Claude Code | [setup/claude-code.md](../setup/claude-code.md) |
+| OpenCode | [setup/opencode.md](../setup/opencode.md) |
+| Codex CLI | [setup/codex.md](../setup/codex.md) |
 
 ---
 
@@ -130,9 +130,9 @@ target-project/
 |------|------|
 | Repo 目录初始化指南 | [./07-repo-directory-guide.md](./07-repo-directory-guide.md) |
 | Agent 角色总览 | [../agents/README.md](../agents/README.md) |
-| Claude Code 安装指南 | [./setup/claude-code.md](./setup/claude-code.md) |
-| OpenCode 安装指南 | [./setup/opencode.md](./setup/opencode.md) |
-| Codex CLI 安装指南 | [./setup/codex.md](./setup/codex.md) |
+| Claude Code 安装指南 | [../setup/claude-code.md](../setup/claude-code.md) |
+| OpenCode 安装指南 | [../setup/opencode.md](../setup/opencode.md) |
+| Codex CLI 安装指南 | [../setup/codex.md](../setup/codex.md) |
 
 ---
 

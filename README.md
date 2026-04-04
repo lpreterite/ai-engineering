@@ -35,11 +35,12 @@ ai-engineering/
 │   ├── 05-deliverables.md        # 关键文档/产出物要求、模板、验收标准
 │   ├── 06-document-management.md # 文档生命周期、命名规范、同步规则
 │   ├── 07-repo-directory-guide.md # Repo 目录初始化指南（Agent 执行用）
-│   ├── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色）
-│   └── setup/                    # 工具安装指南
-│       ├── claude-code.md        # Claude Code 安装配置
-│       ├── opencode.md           # OpenCode 安装配置
-│       └── codex.md              # Codex CLI 安装配置
+│   └── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色）
+│
+├── setup/                        # 工具安装指南
+│   ├── claude-code.md            # Claude Code 安装配置
+│   ├── opencode.md               # OpenCode 安装配置
+│   └── codex.md                  # Codex CLI 安装配置
 │
 ├── agents/                       # Agent 角色定义（每个角色独立文件）
 │   ├── README.md                 # 角色总览、协作矩阵、协作协议
@@ -59,7 +60,7 @@ ai-engineering/
 
 | [setup.md](./setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
 
-### 工具安装指南（guide/setup/）
+### 工具安装指南（setup/）
 
 ### 研发规范（guide/）
 
@@ -74,13 +75,13 @@ ai-engineering/
 | [07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) | Repo 目录初始化指南：Agent 执行用的目录结构规范 | ✅ 完成 |
 | [08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) | Agent 使用指南：部署规范、安装角色、工具配置 | ✅ 完成 |
 
-### 工具安装指南（guide/setup/）
+### 工具安装指南（setup/）
 
 | 文档 | 说明 | 状态 |
 |------|------|------|
-| [claude-code.md](./guide/setup/claude-code.md) | Claude Code 安装配置指南 | ✅ 完成 |
-| [opencode.md](./guide/setup/opencode.md) | OpenCode 安装配置指南 | ✅ 完成 |
-| [codex.md](./guide/setup/codex.md) | Codex CLI 安装配置指南 | ✅ 完成 |
+| [claude-code.md](./setup/claude-code.md) | Claude Code 安装配置指南 | ✅ 完成 |
+| [opencode.md](./setup/opencode.md) | OpenCode 安装配置指南 | ✅ 完成 |
+| [codex.md](./setup/codex.md) | Codex CLI 安装配置指南 | ✅ 完成 |
 
 ### Agent 角色定义（agents/）
 

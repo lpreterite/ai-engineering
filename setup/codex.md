@@ -2,7 +2,7 @@
 
 > Setup Guide for Codex CLI
 
-**所属目录**：`ai-engineering/guide/setup/`
+**所属目录**：`ai-engineering/setup/`
 **文档状态**：草稿
 **当前版本**：v0.1
 **发布日期**：2026-04-04
