@@ -24,12 +24,19 @@ target-project/
 │   ├── README.md                      # 项目文档索引
 │   ├── STATUS.md                      # 项目状态卡（PM Agent 核心输入/输出）
 │   │
-│   ├── principles.md                  # AI 研发核心原则
-│   ├── process.md                     # AI 研发流程规范
-│   ├── collaboration.md               # 人机协作协议
-│   ├── checklists.md                  # 阶段门控检查清单
-│   ├── deliverables.md                # 关键文档/产出物要求
-│   ├── document-management.md         # 文档管理规范
+│   ├── ai-engineering/                # AI 研发规范
+│   │   ├── principles.md              # AI 研发核心原则
+│   │   ├── process.md                 # AI 研发流程规范
+│   │   ├── collaboration.md           # 人机协作协议
+│   │   ├── checklists.md              # 阶段门控检查清单
+│   │   ├── deliverables.md            # 关键文档/产出物要求
+│   │   ├── document-management.md     # 文档管理规范
+│   │   └── agents/                    # Agent 角色定义
+│   │       ├── pm-agent.md
+│   │       ├── po-agent.md
+│   │       ├── uiux-agent.md
+│   │       ├── developer-agent.md
+│   │       └── tester-agent.md
 │   │
 │   ├── product/                       # 产品相关文档
 │   │   ├── PRD.md                     # 产品需求文档
@@ -71,7 +78,7 @@ target-project/
 
 ## 3. 文档分类
 
-### 3.1 研发规范文件（docs/ 根目录）
+### 3.1 研发规范文件（docs/ai-engineering/）
 
 从 AI 软件研发工程体系部署到目标项目的核心规则文件：
 
@@ -84,7 +91,7 @@ target-project/
 | `deliverables.md` | 产出物清单、模板、验收标准 | 否 |
 | `document-management.md` | 文档生命周期、命名规范、同步规则 | 否 |
 
-> 部署时，将 `reference/` 目录中对应的 6 个 `.md` 文件直接复制到目标项目的 `docs/` 根目录。
+> 部署时，将 `reference/` 目录中对应的 6 个 `.md` 文件直接复制到目标项目的 `docs/ai-engineering/` 目录。
 
 ### 3.2 产品文档（docs/product/）
 

@@ -25,6 +25,7 @@
 ai-engineering/
 ├── README.md
 ├── STATUS.md
+├── setup.md                      # ★ Agent 执行入口
 │
 ├── guide/                        # 研发规范（面向所有 AI，理解整体流程）
 │   ├── 01-principles.md          # 核心原则、人机分工、能力边界
@@ -49,13 +50,14 @@ ai-engineering/
 │   └── tester-agent.md           # Tester Agent — 测试执行
 │
 └── reference/                    # 参考资料
-    ├── setup.md                  # ★ Agent 执行入口（部署规范+安装角色+工具配置）
     └── directory.md              # 项目文档目录结构规范
 ```
 
 ---
 
 ## 文档索引
+
+| [setup.md](./setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
 
 ### 研发规范（guide/）
 
@@ -93,7 +95,7 @@ ai-engineering/
 
 | 文档 | 说明 | 状态 |
 |------|------|------|
-| [setup.md](./reference/setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
+| [setup.md](./setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
 | [directory.md](./reference/directory.md) | 项目文档目录结构规范 | ✅ 完成 |
 
 ---
