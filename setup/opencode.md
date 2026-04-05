@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/setup/`
 **文档状态**：草稿
-**当前版本**：v0.3
+**当前版本**：v0.4
 **发布日期**：2026-04-05
 
 ---
@@ -99,7 +99,7 @@ mkdir -p .opencode/agents
 
 ```markdown
 ---
-description: PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
+description: PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.3
@@ -130,11 +130,11 @@ color: "#4A90D9"
 
 #### 五个角色的完整配置
 
-**`.opencode/agents/pm.md`** — PM Agent
+**`.opencode/agents/pm.md`** — PM 项目管理
 
 ```markdown
 ---
-description: PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
+description: PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.3
@@ -153,11 +153,11 @@ color: "#4A90D9"
 {file:vendor/ai-engineering/agents/pm-agent.md}
 ```
 
-**`.opencode/agents/po.md`** — PO Agent
+**`.opencode/agents/po.md`** — PO 产品负责人
 
 ```markdown
 ---
-description: PO Agent — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求
+description: PO 产品负责人 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.4
@@ -174,11 +174,11 @@ color: "#7B68EE"
 {file:vendor/ai-engineering/agents/po-agent.md}
 ```
 
-**`.opencode/agents/uiux.md`** — UI/UX Agent
+**`.opencode/agents/uiux.md`** — UI/UX 用户体验设计
 
 ```markdown
 ---
-description: UI/UX Agent — 用户方案设计，设计规范制定、设计稿和交互说明
+description: UI/UX 用户体验设计 — 用户方案设计，设计规范制定、设计稿和交互说明
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.5
@@ -194,11 +194,11 @@ color: "#E67E22"
 {file:vendor/ai-engineering/agents/uiux-agent.md}
 ```
 
-**`.opencode/agents/developer.md`** — Developer Agent
+**`.opencode/agents/developer.md`** — Developer 开发工程师
 
 ```markdown
 ---
-description: Developer Agent — 技术实施，将设计稿和需求转化为高质量代码
+description: Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.2
@@ -220,11 +220,11 @@ color: "#2ECC71"
 {file:vendor/ai-engineering/agents/developer-agent.md}
 ```
 
-**`.opencode/agents/tester.md`** — Tester Agent
+**`.opencode/agents/tester.md`** — Tester 测试工程师
 
 ```markdown
 ---
-description: Tester Agent — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证
+description: Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
 temperature: 0.1
@@ -249,14 +249,55 @@ color: "#E74C3C"
 ```
 .opencode/
 └── agents/
-    ├── pm.md              # PM Agent
-    ├── po.md              # PO Agent
-    ├── uiux.md            # UI/UX Agent
-    ├── developer.md       # Developer Agent
-    └── tester.md          # Tester Agent
+    ├── pm.md              # PM 项目管理
+    ├── po.md              # PO 产品负责人
+    ├── uiux.md            # UI/UX 用户体验设计
+    ├── developer.md       # Developer 开发工程师
+    └── tester.md          # Tester 测试工程师
 ```
 
-### 4.3 配置方式二：opencode.json
+### 4.3 配置方式二：直接复制嵌入（无 Git Submodule）
+
+如果目标项目**不使用 Git Submodule** 引入 `ai-engineering`，则需要将角色定义内容直接嵌入 agent 文件中。这种方式将完整角色定义写入 Markdown 正文，不使用 `{file:...}` 引用。
+
+#### 文件格式
+
+```markdown
+---
+description: <角色描述>
+mode: subagent
+temperature: <值>
+permission:
+  edit: <值>
+  bash:
+    "<命令通配符>": allow
+    "*": ask
+  webfetch: <值>
+steps: <值>
+color: "<#hex>"
+---
+
+<完整角色定义内容，从 agents/ 源文件复制>
+```
+
+#### 五个角色的 Frontmatter 配置摘要
+
+| 角色 | 文件名 | temperature | edit | webfetch | steps | color |
+|------|--------|-------------|------|----------|-------|-------|
+| PM 项目管理 | `pm.md` | 0.3 | ask | deny | 20 | `#4A90D9` |
+| PO 产品负责人 | `po.md` | 0.4 | ask | allow | 15 | `#7B68EE` |
+| UI/UX 用户体验设计 | `uiux.md` | 0.5 | ask | allow | 15 | `#E67E22` |
+| Developer 开发工程师 | `developer.md` | 0.2 | allow | allow | 30 | `#2ECC71` |
+| Tester 测试工程师 | `tester.md` | 0.1 | ask | deny | 20 | `#E74C3C` |
+
+#### 注意事项
+
+- **必须包含 frontmatter**：OpenCode 通过 `---` 分隔的 YAML 块识别 agent 配置。没有 frontmatter 的 Markdown 文件不会被识别为 agent。
+- **description 为必填**：这是 OpenCode 唯一要求必须填写的字段，决定了 agent 何时被调用。
+- **不要使用 `{file:...}` 引用**：直接复制模式下，完整角色定义内容写在 frontmatter 下方的正文中。
+- **Agent 名称取自文件名**：如 `pm.md` → agent 名称为 `pm`，通过 `@pm` 调用。
+
+### 4.4 配置方式三：opencode.json
 
 在项目根目录创建 `opencode.json`：
 
@@ -271,7 +312,7 @@ color: "#E74C3C"
   ],
   "agent": {
     "pm": {
-      "description": "PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付",
+      "description": "PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
       "temperature": 0.3,
@@ -288,7 +329,7 @@ color: "#E74C3C"
       "color": "#4A90D9"
     },
     "po": {
-      "description": "PO Agent — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求",
+      "description": "PO 产品负责人 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
       "temperature": 0.4,
@@ -301,7 +342,7 @@ color: "#E74C3C"
       "color": "#7B68EE"
     },
     "uiux": {
-      "description": "UI/UX Agent — 用户方案设计，设计规范制定、设计稿和交互说明",
+      "description": "UI/UX 用户体验设计 — 用户方案设计，设计规范制定、设计稿和交互说明",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
       "temperature": 0.5,
@@ -314,7 +355,7 @@ color: "#E74C3C"
       "color": "#E67E22"
     },
     "developer": {
-      "description": "Developer Agent — 技术实施，将设计稿和需求转化为高质量代码",
+      "description": "Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
       "temperature": 0.2,
@@ -333,7 +374,7 @@ color: "#E74C3C"
       "color": "#2ECC71"
     },
     "tester": {
-      "description": "Tester Agent — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证",
+      "description": "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
       "temperature": 0.1,
@@ -354,6 +395,94 @@ color: "#E74C3C"
 ```
 
 > `{file:...}` 路径相对于 `opencode.json` 所在位置。示例中为 Git Submodule 方式。
+
+### 4.5 一键搬运脚本
+
+以下脚本将 `ai-engineering/agents/` 中的角色定义文件搬运到目标项目的 `.opencode/agents/` 目录，自动添加符合 OpenCode 官方规范的 YAML frontmatter：
+
+```bash
+#!/bin/bash
+# deploy-agents.sh — 将 AI 研发体系 Agent 角色部署到目标项目
+# 用法: ./deploy-agents.sh <目标项目路径> [ai-engineering路径]
+#
+# 示例:
+#   ./deploy-agents.sh /path/to/my-project
+#   ./deploy-agents.sh /path/to/my-project /path/to/ai-engineering
+
+set -euo pipefail
+
+TARGET="${1:?用法: $0 <目标项目路径> [ai-engineering路径]}"
+AI_ENG="${2:-$(cd "$(dirname "$0")/.." && pwd)}"
+AGENTS_SRC="$AI_ENG/agents"
+AGENTS_DST="$TARGET/.opencode/agents"
+
+# 检查源目录
+if [ ! -d "$AGENTS_SRC" ]; then
+  echo "❌ 错误: agents 目录不存在: $AGENTS_SRC"
+  exit 1
+fi
+
+# 创建目标目录
+mkdir -p "$AGENTS_DST"
+
+# 角色 → (源文件, 目标文件, description, temperature, edit, webfetch, steps, color)
+# bash 权限统一为: "*": ask（可按需修改）
+
+deploy_agent() {
+  local src="$1" dst="$2" desc="$3" temp="$4" perm_edit="$5" perm_webfetch="$6" steps="$7" color="$8"
+
+  if [ ! -f "$src" ]; then
+    echo "⚠️  跳过: $src (文件不存在)"
+    return
+  fi
+
+  cat > "$dst" << FRONTMATTER
+---
+description: $desc
+mode: subagent
+temperature: $temp
+permission:
+  edit: $perm_edit
+  bash:
+    "*": ask
+  webfetch: $perm_webfetch
+steps: $steps
+color: "$color"
+---
+
+FRONTMATTER
+
+  # 追加角色定义正文
+  cat "$src" >> "$dst"
+  echo "✅ 已生成: $dst"
+}
+
+deploy_agent "$AGENTS_SRC/pm-agent.md"       "$AGENTS_DST/pm.md"       \
+  "PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付" \
+  "0.3" "ask" "deny" "20" "#4A90D9"
+
+deploy_agent "$AGENTS_SRC/po-agent.md"       "$AGENTS_DST/po.md"       \
+  "PO 产品负责人 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求" \
+  "0.4" "ask" "allow" "15" "#7B68EE"
+
+deploy_agent "$AGENTS_SRC/uiux-agent.md"     "$AGENTS_DST/uiux.md"     \
+  "UI/UX 用户体验设计 — 用户方案设计，设计规范制定、设计稿和交互说明" \
+  "0.5" "ask" "allow" "15" "#E67E22"
+
+deploy_agent "$AGENTS_SRC/developer-agent.md" "$AGENTS_DST/developer.md" \
+  "Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码" \
+  "0.2" "allow" "allow" "30" "#2ECC71"
+
+deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
+  "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证" \
+  "0.1" "ask" "deny" "20" "#E74C3C"
+
+echo ""
+echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
+echo "   在 OpenCode 中通过 @pm @po @uiux @developer @tester 调用"
+```
+
+> **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
 
 ---
 
@@ -407,6 +536,7 @@ color: "#E74C3C"
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.4 | 2026-04-05 | 新增 4.3 直接复制嵌入方式、4.5 一键搬运脚本；补充 frontmatter 注意事项和角色配置摘要表 |
 | v0.3 | 2026-04-05 | 新增 Agent 文件生成指南，基于官方规范补充完整字段说明、权限配置和五个角色完整示例 |
 | v0.2 | 2026-04-04 | 修正 AGENTS.md 规范文件路径为 docs/ai-engineering/，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |
