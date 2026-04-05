@@ -93,12 +93,13 @@ OpenCode 原生支持多 Agent。Agent 角色定义保留在 `ai-engineering/age
 mkdir -p .opencode/agents
 ```
 
-每个文件使用 YAML frontmatter + 正文格式。Agent 名称取自文件名（如 `pm.md` → `pm`）。
+每个文件使用 YAML frontmatter + 正文格式。通过 `name` 字段定义 Agent 显示名称，通过 `@名称` 调用。
 
-以 PM Agent 为例（`.opencode/agents/pm.md`）：
+以 PM 为例（`.opencode/agents/pm.md`）：
 
 ```markdown
 ---
+name: PM 项目管理
 description: PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
@@ -134,6 +135,7 @@ color: "#4A90D9"
 
 ```markdown
 ---
+name: PM 项目管理
 description: PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
@@ -157,6 +159,7 @@ color: "#4A90D9"
 
 ```markdown
 ---
+name: PO 产品负责人
 description: PO 产品负责人 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
@@ -178,6 +181,7 @@ color: "#7B68EE"
 
 ```markdown
 ---
+name: UI/UX 用户体验设计
 description: UI/UX 用户体验设计 — 用户方案设计，设计规范制定、设计稿和交互说明
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
@@ -198,6 +202,7 @@ color: "#E67E22"
 
 ```markdown
 ---
+name: Developer 开发工程师
 description: Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
@@ -224,6 +229,7 @@ color: "#2ECC71"
 
 ```markdown
 ---
+name: Tester 测试工程师
 description: Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证
 mode: subagent
 model: anthropic/claude-sonnet-4-20250514
@@ -264,6 +270,7 @@ color: "#E74C3C"
 
 ```markdown
 ---
+name: <角色名称，如 PM 项目管理>
 description: <角色描述>
 mode: subagent
 temperature: <值>
@@ -293,9 +300,9 @@ color: "<#hex>"
 #### 注意事项
 
 - **必须包含 frontmatter**：OpenCode 通过 `---` 分隔的 YAML 块识别 agent 配置。没有 frontmatter 的 Markdown 文件不会被识别为 agent。
-- **description 为必填**：这是 OpenCode 唯一要求必须填写的字段，决定了 agent 何时被调用。
+- **name 为必填**：通过 `name` 字段定义 Agent 显示名称（如 `PM 项目管理`），用于 `@PM 项目管理` 调用。
+- **description 为必填**：这是决定 agent 何时被自动委派的关键字段。
 - **不要使用 `{file:...}` 引用**：直接复制模式下，完整角色定义内容写在 frontmatter 下方的正文中。
-- **Agent 名称取自文件名**：如 `pm.md` → agent 名称为 `pm`，通过 `@pm` 调用。
 
 ### 4.4 配置方式三：opencode.json
 
@@ -312,6 +319,7 @@ color: "<#hex>"
   ],
   "agent": {
     "pm": {
+      "name": "PM 项目管理",
       "description": "PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
@@ -329,6 +337,7 @@ color: "<#hex>"
       "color": "#4A90D9"
     },
     "po": {
+      "name": "PO 产品负责人",
       "description": "PO 产品负责人 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
@@ -342,6 +351,7 @@ color: "<#hex>"
       "color": "#7B68EE"
     },
     "uiux": {
+      "name": "UI/UX 用户体验设计",
       "description": "UI/UX 用户体验设计 — 用户方案设计，设计规范制定、设计稿和交互说明",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
@@ -355,6 +365,7 @@ color: "<#hex>"
       "color": "#E67E22"
     },
     "developer": {
+      "name": "Developer 开发工程师",
       "description": "Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
@@ -374,6 +385,7 @@ color: "<#hex>"
       "color": "#2ECC71"
     },
     "tester": {
+      "name": "Tester 测试工程师",
       "description": "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证",
       "mode": "subagent",
       "model": "anthropic/claude-sonnet-4-20250514",
@@ -429,7 +441,7 @@ mkdir -p "$AGENTS_DST"
 # bash 权限统一为: "*": ask（可按需修改）
 
 deploy_agent() {
-  local src="$1" dst="$2" desc="$3" temp="$4" perm_edit="$5" perm_webfetch="$6" steps="$7" color="$8"
+  local src="$1" dst="$2" agent_name="$3" desc="$4" temp="$5" perm_edit="$6" perm_webfetch="$7" steps="$8" color="$9"
 
   if [ ! -f "$src" ]; then
     echo "⚠️  跳过: $src (文件不存在)"
@@ -438,6 +450,7 @@ deploy_agent() {
 
   cat > "$dst" << FRONTMATTER
 ---
+name: $agent_name
 description: $desc
 mode: subagent
 temperature: $temp
@@ -458,28 +471,33 @@ FRONTMATTER
 }
 
 deploy_agent "$AGENTS_SRC/pm-agent.md"       "$AGENTS_DST/pm.md"       \
+  "PM 项目管理" \
   "PM 项目管理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付" \
   "0.3" "ask" "deny" "20" "#4A90D9"
 
 deploy_agent "$AGENTS_SRC/po-agent.md"       "$AGENTS_DST/po.md"       \
+  "PO 产品负责人" \
   "PO 产品负责人 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求" \
   "0.4" "ask" "allow" "15" "#7B68EE"
 
 deploy_agent "$AGENTS_SRC/uiux-agent.md"     "$AGENTS_DST/uiux.md"     \
+  "UI/UX 用户体验设计" \
   "UI/UX 用户体验设计 — 用户方案设计，设计规范制定、设计稿和交互说明" \
   "0.5" "ask" "allow" "15" "#E67E22"
 
 deploy_agent "$AGENTS_SRC/developer-agent.md" "$AGENTS_DST/developer.md" \
+  "Developer 开发工程师" \
   "Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码" \
   "0.2" "allow" "allow" "30" "#2ECC71"
 
 deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
+  "Tester 测试工程师" \
   "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证" \
   "0.1" "ask" "deny" "20" "#E74C3C"
 
 echo ""
 echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
-echo "   在 OpenCode 中通过 @pm @po @uiux @developer @tester 调用"
+echo "   在 OpenCode 中通过 @PM\\ 项目管理 @PO\\ 产品负责人 @UI/UX\\ 用户体验设计 @Developer\\ 开发工程师 @Tester\\ 测试工程师 调用"
 ```
 
 > **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
@@ -491,9 +509,9 @@ echo "   在 OpenCode 中通过 @pm @po @uiux @developer @tester 调用"
 ```bash
 # 通过 Tab 键切换到指定 Agent
 # 或通过 @ 提及调用 subagent
-@developer 实现用户登录功能
-@po 起草 PRD 文档
-@pm 检查项目状态
+@Developer 开发工程师 实现用户登录功能
+@PO 产品负责人 起草 PRD 文档
+@PM 项目管理 检查项目状态
 ```
 
 ---
