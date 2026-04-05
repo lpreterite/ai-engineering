@@ -4,8 +4,8 @@
 
 **所属目录**：`ai-engineering/setup/`
 **文档状态**：草稿
-**当前版本**：v0.2
-**发布日期**：2026-04-04
+**当前版本**：v0.3
+**发布日期**：2026-04-05
 
 ---
 
@@ -25,7 +25,7 @@
 | 子目录指令 | 支持（子目录 `CLAUDE.md`） |
 | 外部文件引用 | `@path/to/file` 语法 |
 | 规则目录 | `.claude/rules/*.md` |
-| 多 Agent | 不支持内建多 Agent，需通过规则文件模拟 |
+| Subagent 文件 | `.claude/agents/*.md` |
 
 ---
 
@@ -77,88 +77,189 @@ git submodule add https://github.com/lpreterite/ai-engineering.git vendor/ai-eng
 
 ---
 
-## 4. 按角色加载
+## 4. Subagent 文件生成指南
 
-Claude Code 不支持内建多 Agent 切换，Agent 角色定义保留在 `ai-engineering/agents/` 目录中，不复制到目标项目。
+Claude Code 原生支持自定义 subagent。Agent 角色定义保留在 `ai-engineering/agents/` 目录中，不复制到目标项目。
 
-当用户指定角色时，Claude Code 通过 `@path` 引用直接读取角色文件：
+### 4.1 官方规范字段
 
-```markdown
-## 角色定义
+基于 [Claude Code Subagents 官方文档](https://docs.anthropic.com/en/docs/claude-code/sub-agents)，subagent 文件使用 YAML frontmatter + Markdown 正文格式。
 
-当用户指定角色时，以此身份工作：
+**文件存放位置（优先级从高到低）**：
 
-- "作为 PM Agent" → 加载 @{ai-engineering 路径}/agents/pm-agent.md
-- "作为 PO Agent" → 加载 @{ai-engineering 路径}/agents/po-agent.md
-- "作为 UI/UX Agent" → 加载 @{ai-engineering 路径}/agents/uiux-agent.md
-- "作为 Developer Agent" → 加载 @{ai-engineering 路径}/agents/developer-agent.md
-- "作为 Tester Agent" → 加载 @{ai-engineering 路径}/agents/tester-agent.md
+| 位置 | 范围 | 优先级 |
+|------|------|--------|
+| Managed settings | 组织级 | 1（最高） |
+| `--agents` CLI 参数 | 当前会话 | 2 |
+| `.claude/agents/*.md` | 当前项目 | 3 |
+| `~/.claude/agents/*.md` | 所有项目 | 4 |
+| 插件 `agents/` | 插件启用时 | 5（最低） |
+
+**Frontmatter 字段**：
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `name` | **是** | 唯一标识符，小写字母 + 连字符 |
+| `description` | **是** | 描述何时应委派给此 subagent |
+| `tools` | 否 | 工具白名单：Read, Write, Edit, Bash, Grep, Glob, Agent(类型) |
+| `disallowedTools` | 否 | 工具黑名单 |
+| `model` | 否 | `sonnet`, `opus`, `haiku`, 完整模型 ID, 或 `inherit` |
+| `permissionMode` | 否 | `default`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`, `plan` |
+| `maxTurns` | 否 | 最大 agentic 轮次 |
+| `skills` | 否 | 预加载到上下文的 skills |
+| `mcpServers` | 否 | 作用于此 subagent 的 MCP 服务器 |
+| `hooks` | 否 | 生命周期钩子（PreToolUse, PostToolUse, Stop） |
+| `memory` | 否 | 持久化记忆：`user`, `project`, `local` |
+| `background` | 否 | 后台运行 |
+| `effort` | 否 | `low`, `medium`, `high`, `max` |
+| `isolation` | 否 | `worktree` 独立仓库副本 |
+| `color` | 否 | 显示颜色 |
+| `initialPrompt` | 否 | 自动提交的首条 prompt |
+
+> **重要限制**：subagent 不能嵌套调用其他 subagent。
+
+### 4.2 创建 Subagent 文件
+
+在项目的 `.claude/agents/` 目录创建角色文件：
+
+```bash
+mkdir -p .claude/agents
 ```
 
-> `{ai-engineering 路径}` 取决于部署方式。如用 Git Submodule 引入到 `vendor/ai-engineering/`，则写 `@vendor/ai-engineering/agents/pm-agent.md`。
+文件名即 agent 名称（如 `pm.md` → `pm`）。frontmatter 定义配置，正文为系统提示词。
 
-### 方案 A：使用 `.claude/rules/` 按文件类型触发
+#### 五个角色的完整配置
+
+**`.claude/agents/pm.md`** — PM Agent
+
+```markdown
+---
+name: pm
+description: PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付。当需要项目协调、进度跟踪、风险管控或流程引导时使用
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: inherit
+maxTurns: 30
+color: blue
+permissionMode: default
+---
+
+@vendor/ai-engineering/agents/pm-agent.md
+
+## 补充规范
+
+遵循以下研发规范（按需引用）：
+- @docs/ai-engineering/principles.md
+- @docs/ai-engineering/process.md
+- @docs/ai-engineering/collaboration.md
+```
+
+**`.claude/agents/po.md`** — PO Agent
+
+```markdown
+---
+name: po
+description: PO Agent — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求。当需要分析需求、起草 PRD、用户调研时使用
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: inherit
+maxTurns: 25
+color: purple
+---
+
+@vendor/ai-engineering/agents/po-agent.md
+```
+
+**`.claude/agents/uiux.md`** — UI/UX Agent
+
+```markdown
+---
+name: uiux
+description: UI/UX Agent — 用户方案设计，设计规范制定、设计稿和交互说明。当需要设计界面、制定设计规范或交互说明时使用
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: inherit
+maxTurns: 25
+color: orange
+---
+
+@vendor/ai-engineering/agents/uiux-agent.md
+```
+
+**`.claude/agents/developer.md`** — Developer Agent
+
+```markdown
+---
+name: developer
+description: Developer Agent — 技术实施，将设计稿和需求转化为高质量代码。当需要编写代码、修复 Bug、技术重构时使用
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: inherit
+maxTurns: 40
+color: green
+permissionMode: acceptEdits
+---
+
+@vendor/ai-engineering/agents/developer-agent.md
+```
+
+**`.claude/agents/tester.md`** — Tester Agent
+
+```markdown
+---
+name: tester
+description: Tester Agent — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证。当需要编写测试、执行测试、验证质量时使用
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: inherit
+maxTurns: 30
+color: red
+---
+
+@vendor/ai-engineering/agents/tester-agent.md
+```
+
+> `@path` 引用路径取决于 ai-engineering 的部署位置。示例中为 Git Submodule 方式。
+
+目录结构：
 
 ```
 .claude/
-├── CLAUDE.md              # 主指令（包含通用规范）
-└── rules/
-    ├── pm-rules.md        # PM Agent 相关规则
-    ├── po-rules.md        # PO Agent 相关规则
-    └── dev-rules.md       # Developer Agent 相关规则
+├── CLAUDE.md              # 主指令
+├── agents/
+│   ├── pm.md              # PM Agent
+│   ├── po.md              # PO Agent
+│   ├── uiux.md            # UI/UX Agent
+│   ├── developer.md       # Developer Agent
+│   └── tester.md          # Tester Agent
+└── rules/                 # 规则文件（可选）
 ```
 
-每个规则文件引用角色定义：
+### 4.3 使用方式
 
-```markdown
----
-paths: ["docs/product/**", "docs/project-management/**"]
----
+```bash
+# @ 提及调用 subagent
+@"pm (agent)" 检查项目状态
+@"developer (agent)" 实现用户登录功能
+@"po (agent)" 起草 PRD 文档
 
-@{ai-engineering 路径}/agents/pm-agent.md
+# 或用自然语言
+Use the developer agent to implement user login
+Have the tester agent run the test suite
 ```
 
-### 方案 B：手动切换角色提示
+也可以通过 CLI 启动指定 agent 作为主会话：
 
-在 `CLAUDE.md` 中定义角色切换指令（如上文示例），用户通过自然语言指定角色。
+```bash
+claude --agent developer
+```
 
 ---
 
-## 5. 完整示例
+## 5. 完整部署流程
 
-以下示例采用 **方式 A（规范文件已复制到 `docs/ai-engineering/`）+ Git Submodule 引入 ai-engineering 仓库**的混合部署方式：研发规范从本地 `docs/` 读取，Agent 角色从 submodule 路径加载。
-
-```markdown
-# 项目：MyApp
-
-## 研发规范
-
-遵循 AI 软件研发工程体系。
-
-@docs/ai-engineering/principles.md
-@docs/ai-engineering/process.md
-@docs/ai-engineering/collaboration.md
-@docs/ai-engineering/checklists.md
-
-## 角色定义
-
-当用户指定角色时，以此身份工作：
-
-- "作为 PM Agent" → 加载 @vendor/ai-engineering/agents/pm-agent.md
-- "作为 PO Agent" → 加载 @vendor/ai-engineering/agents/po-agent.md
-- "作为 UI/UX Agent" → 加载 @vendor/ai-engineering/agents/uiux-agent.md
-- "作为 Developer Agent" → 加载 @vendor/ai-engineering/agents/developer-agent.md
-- "作为 Tester Agent" → 加载 @vendor/ai-engineering/agents/tester-agent.md
-
-## 项目特定规则
-
-- 技术栈：React + TypeScript + Node.js
-- 测试命令：npm test
-- 构建命令：npm run build
-- 包管理器：pnpm
 ```
-
-> 如果未使用 Git Submodule，将角色路径替换为实际的 ai-engineering 目录相对路径。
+步骤 1：复制 guide/ 规则文件到 docs/ai-engineering/
+步骤 2：将 ai-engineering 引入项目（Git Submodule / 本地路径）
+步骤 3：创建 CLAUDE.md 主指令文件
+步骤 4：创建 .claude/agents/ subagent 文件，通过 @path 引用 agents/ 角色
+步骤 5：验证 Agent 加载
+```
 
 ---
 
@@ -167,9 +268,10 @@ paths: ["docs/product/**", "docs/project-management/**"]
 安装完成后，在 Claude Code 中执行以下检查：
 
 ```
+□ 运行 /agents 确认 subagent 列表显示 5 个角色
 □ 运行 /init 确认 CLAUDE.md 被正确加载
 □ 提问 "当前项目的研发规范是什么？" 验证规范已生效
-□ 指定角色 "作为 PM Agent 检查项目状态" 验证角色加载
+□ @提及 @"pm (agent)" 检查项目状态，验证角色加载
 ```
 
 ---
@@ -187,5 +289,6 @@ paths: ["docs/product/**", "docs/project-management/**"]
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.3 | 2026-04-05 | 新增 Subagent 文件生成指南，基于官方规范补充完整字段说明和五个角色配置示例；更新为原生 subagent 支持 |
 | v0.2 | 2026-04-04 | 修正规则 frontmatter 字段名，补充完整示例部署方式说明，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |
