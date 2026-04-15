@@ -99,8 +99,8 @@ mkdir -p .opencode/agents
 
 ```markdown
 ---
-name: 项目经理
-description: 项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
+name: PM 项目经理
+description: PM 项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
 mode: subagent
 temperature: 0.3
 permission:
@@ -134,8 +134,8 @@ color: "#4A90D9"
 
 ```markdown
 ---
-name: 项目经理
-description: 项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
+name: PM 项目经理
+description: PM 项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付
 mode: subagent
 temperature: 0.3
 permission:
@@ -157,8 +157,8 @@ color: "#4A90D9"
 
 ```markdown
 ---
-name: 产品经理
-description: 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求
+name: PO 产品经理
+description: PO 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求
 mode: subagent
 temperature: 0.4
 permission:
@@ -198,8 +198,8 @@ color: "#E67E22"
 
 ```markdown
 ---
-name: 开发工程师
-description: 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码
+name: Developer 开发工程师
+description: Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码
 mode: subagent
 temperature: 0.2
 permission:
@@ -224,8 +224,8 @@ color: "#2ECC71"
 
 ```markdown
 ---
-name: 测试工程师
-description: 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证
+name: Tester 测试工程师
+description: Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证
 mode: subagent
 temperature: 0.1
 permission:
@@ -313,8 +313,8 @@ color: "<#hex>"
   ],
   "agent": {
     "pm": {
-      "name": "项目经理",
-      "description": "项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付",
+      "name": "PM 项目经理",
+      "description": "PM 项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付",
       "mode": "subagent",
       "temperature": 0.3,
       "prompt": "{file:vendor/ai-engineering/agents/pm-agent.md}",
@@ -330,8 +330,8 @@ color: "<#hex>"
       "color": "#4A90D9"
     },
     "po": {
-      "name": "产品经理",
-      "description": "产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求",
+      "name": "PO 产品经理",
+      "description": "PO 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求",
       "mode": "subagent",
       "temperature": 0.4,
       "prompt": "{file:vendor/ai-engineering/agents/po-agent.md}",
@@ -356,8 +356,8 @@ color: "<#hex>"
       "color": "#E67E22"
     },
     "developer": {
-      "name": "开发工程师",
-      "description": "开发工程师 — 技术实施，将设计稿和需求转化为高质量代码",
+      "name": "Developer 开发工程师",
+      "description": "Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码",
       "mode": "subagent",
       "temperature": 0.2,
       "prompt": "{file:vendor/ai-engineering/agents/developer-agent.md}",
@@ -375,8 +375,8 @@ color: "<#hex>"
       "color": "#2ECC71"
     },
     "tester": {
-      "name": "测试工程师",
-      "description": "测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证",
+      "name": "Tester 测试工程师",
+      "description": "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证",
       "mode": "subagent",
       "temperature": 0.1,
       "prompt": "{file:vendor/ai-engineering/agents/tester-agent.md}",
@@ -460,13 +460,13 @@ FRONTMATTER
 }
 
 deploy_agent "$AGENTS_SRC/pm-agent.md"       "$AGENTS_DST/pm.md"       \
-  "项目经理" \
-  "项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付" \
+  "PM 项目经理" \
+  "PM 项目经理 — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付" \
   "0.3" "ask" "deny" "20" "#4A90D9"
 
 deploy_agent "$AGENTS_SRC/po-agent.md"       "$AGENTS_DST/po.md"       \
-  "产品经理" \
-  "产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求" \
+  "PO 产品经理" \
+  "PO 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求" \
   "0.4" "ask" "allow" "15" "#7B68EE"
 
 deploy_agent "$AGENTS_SRC/uiux-agent.md"     "$AGENTS_DST/uiux.md"     \
@@ -475,18 +475,18 @@ deploy_agent "$AGENTS_SRC/uiux-agent.md"     "$AGENTS_DST/uiux.md"     \
   "0.5" "ask" "allow" "15" "#E67E22"
 
 deploy_agent "$AGENTS_SRC/developer-agent.md" "$AGENTS_DST/developer.md" \
-  "开发工程师" \
-  "开发工程师 — 技术实施，将设计稿和需求转化为高质量代码" \
+  "Developer 开发工程师" \
+  "Developer 开发工程师 — 技术实施，将设计稿和需求转化为高质量代码" \
   "0.2" "allow" "allow" "30" "#2ECC71"
 
 deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
-  "测试工程师" \
-  "测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证" \
+  "Tester 测试工程师" \
+  "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证" \
   "0.1" "ask" "deny" "20" "#E74C3C"
 
 echo ""
 echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
-echo "   在 OpenCode 中通过 @项目经理 @产品经理 @UI/UX\\ 设计师 @开发工程师 @测试工程师 调用"
+echo "   在 OpenCode 中通过 @PM\\ 项目经理 @PO\\ 产品经理 @UI/UX\\ 设计师 @Developer\\ 开发工程师 @Tester\\ 测试工程师 调用"
 ```
 
 > **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
@@ -498,9 +498,9 @@ echo "   在 OpenCode 中通过 @项目经理 @产品经理 @UI/UX\\ 设计师 @
 ```bash
 # 通过 Tab 键切换到指定 Agent
 # 或通过 @ 提及调用 subagent
-@开发工程师 实现用户登录功能
-@产品经理 起草 PRD 文档
-@项目经理 检查项目状态
+@Developer 开发工程师 实现用户登录功能
+@PO 产品经理 起草 PRD 文档
+@PM 项目经理 检查项目状态
 ```
 
 ---
