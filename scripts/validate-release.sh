@@ -42,8 +42,8 @@ else
       continue
     fi
 
-    # 提取 HEADER 版本号
-    header_version=$(grep -oP '(?<=\*\*当前版本\*\*：)v[\d.]+' "$md_file" || true)
+    # 提取 HEADER 版本号（只取第一个匹配，排除正文模板示例）
+    header_version=$(grep -o '\*\*当前版本\*\*：v[0-9.]*' "$md_file" | head -1 | sed 's/\*\*当前版本\*\*：//' || true)
     if [ -z "$header_version" ]; then
       echo "❌ 未找到版本号: $file_path"
       errors=$((errors + 1))

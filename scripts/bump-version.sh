@@ -27,8 +27,8 @@ while [ $# -ge 2 ]; do
     exit 1
   fi
 
-  # 提取当前版本号
-  current=$(grep -oP '(?<=\*\*当前版本\*\*：)v[\d.]+' "$file" || true)
+  # 提取当前版本号（只取第一个匹配，排除正文模板示例）
+  current=$(grep -o '\*\*当前版本\*\*：v[0-9.]*' "$file" | head -1 | sed 's/\*\*当前版本\*\*：//' || true)
   if [ -z "$current" ]; then
     echo "❌ 未找到版本号字段: $file"
     exit 1
