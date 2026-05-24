@@ -27,6 +27,7 @@
 | 文档管理规范 | ✅ 完成 | [guide/06-document-management.md](./guide/06-document-management.md) |
 | Repo 目录初始化指南 | ✅ 完成 | [guide/07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) |
 | Agent 工具集成指南 | ✅ 完成 | [guide/08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) |
+| Issue 工作流规范 | ✅ 完成 | [guide/issue-workflow.md](./guide/issue-workflow.md) |
 
 ### Agent 角色定义（agents/）
 

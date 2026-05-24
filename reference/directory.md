@@ -84,8 +84,9 @@ target-project/
 | `checklists.md` | 各 Gate 检查清单、周检查清单 | 否 |
 | `deliverables.md` | 产出物清单、模板、验收标准 | 否 |
 | `document-management.md` | 文档生命周期、命名规范、同步规则 | 否 |
+| `issue-workflow.md` | Issue 全生命周期管理规范 | 否 |
 
-> 部署时，将 `guide/` 目录中对应的 6 个 `.md` 文件直接复制到目标项目的 `docs/ai-engineering/` 目录。
+> 部署时，将 `guide/` 目录中对应的 7 个 `.md` 文件直接复制到目标项目的 `docs/ai-engineering/` 目录。
 
 ### 3.2 产品文档（docs/product/）
 
