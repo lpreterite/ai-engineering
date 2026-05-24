@@ -3,8 +3,8 @@
 > Document Directory Structure
 
 **文档状态**：已发布
-**当前版本**：v0.3
-**发布日期**：2026-04-04
+**当前版本**：v0.4
+**发布日期**：2026-05-24
 
 ---
 
@@ -25,12 +25,14 @@ target-project/
 │   ├── STATUS.md                      # 项目状态卡（PM Agent 核心输入/输出）
 │   │
 │   ├── ai-engineering/                # AI 研发规范
+│   │   ├── MANIFEST.json              # 版本注册表（必选）
 │   │   ├── principles.md              # AI 研发核心原则
 │   │   ├── process.md                 # AI 研发流程规范
 │   │   ├── collaboration.md           # 人机协作协议
 │   │   ├── checklists.md              # 阶段门控检查清单
 │   │   ├── deliverables.md            # 关键文档/产出物要求
-│   │   └── document-management.md     # 文档管理规范
+│   │   ├── document-management.md     # 文档管理规范
+│   │   └── issue-workflow.md          # Issue 工作流规范
 │   │
 │   ├── product/                       # 产品相关文档
 │   │   ├── PRD.md                     # 产品需求文档
@@ -78,6 +80,7 @@ target-project/
 
 | 文件 | 说明 | 必选 |
 |------|------|------|
+| `MANIFEST.json` | 版本注册表，记录所有文件版本和定制状态 | 是 |
 | `principles.md` | AI 研发核心原则、人机分工原则、能力边界 | 是 |
 | `process.md` | 研发流程、阶段门控、阈值、人类介入点 | 是 |
 | `collaboration.md` | 人机协作协议、逐步审查核对细则、升级机制 | 是 |
@@ -86,7 +89,7 @@ target-project/
 | `document-management.md` | 文档生命周期、命名规范、同步规则 | 否 |
 | `issue-workflow.md` | Issue 全生命周期管理规范 | 否 |
 
-> 部署时，将 `guide/` 目录中对应的 7 个 `.md` 文件直接复制到目标项目的 `docs/ai-engineering/` 目录。
+> 首次部署时，将 `guide/` 目录中对应的 `.md` 文件复制到目标项目的 `docs/ai-engineering/` 目录，并初始化 `MANIFEST.json`。后续升级通过[非破坏性更新协议](./08-tool-integration-guide.md#6-非破坏性更新机制)执行。
 
 ### 3.2 产品文档（docs/product/）
 
@@ -189,6 +192,7 @@ const PRD_PATH = `${DOCS_PATH}/product/PRD.md`;
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.4 | 2026-05-24 | 3.1 节新增 MANIFEST.json 为必选，issue-workflow.md 补充到文件清单 |
 | v0.3 | 2026-04-04 | 修正规范来源目录为 guide/，移除 agents/ 子目录（角色不再复制到目标项目） |
 | v0.2 | 2026-04-04 | 重写：移除旧 ai-engineering/ 子目录结构，更新为直接部署模式 |
 | v0.1 | 2026-04-04 | 初始版本 |

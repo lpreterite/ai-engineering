@@ -3,8 +3,8 @@
 > Agent Setup Guide (Executable)
 
 **文档状态**：已发布
-**当前版本**：v0.2
-**发布日期**：2026-04-04
+**当前版本**：v0.3
+**发布日期**：2026-05-24
 
 ---
 
@@ -28,6 +28,7 @@
 | `04-checklists.md` | `docs/ai-engineering/checklists.md` | 否 |
 | `05-deliverables.md` | `docs/ai-engineering/deliverables.md` | 否 |
 | `06-document-management.md` | `docs/ai-engineering/document-management.md` | 否 |
+| `issue-workflow.md` | `docs/ai-engineering/issue-workflow.md` | 否 |
 
 ```bash
 mkdir -p docs/ai-engineering
@@ -37,6 +38,30 @@ cp guide/03-collaboration.md       docs/ai-engineering/collaboration.md
 cp guide/04-checklists.md          docs/ai-engineering/checklists.md
 cp guide/05-deliverables.md        docs/ai-engineering/deliverables.md
 cp guide/06-document-management.md docs/ai-engineering/document-management.md
+cp guide/issue-workflow.md         docs/ai-engineering/issue-workflow.md
+```
+
+部署后初始化 MANIFEST 注册表：
+
+```bash
+cat > docs/ai-engineering/MANIFEST.json << 'MANIFEST'
+{
+  "manifest_version": "1.0",
+  "source": {
+    "repository": "lpreterite/ai-engineering",
+    "deployed_at": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'"
+  },
+  "files": {
+    "principles.md": { "source": "guide/01-principles.md", "version": "v0.7", "customized": false, "previous_version": null },
+    "process.md": { "source": "guide/02-process.md", "version": "v0.7", "customized": false, "previous_version": null },
+    "collaboration.md": { "source": "guide/03-collaboration.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "checklists.md": { "source": "guide/04-checklists.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "deliverables.md": { "source": "guide/05-deliverables.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "document-management.md": { "source": "guide/06-document-management.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "issue-workflow.md": { "source": "guide/issue-workflow.md", "version": "v0.2", "customized": false, "previous_version": null }
+  }
+}
+MANIFEST
 ```
 
 > 最小部署：至少复制前 3 个文件即可启用基本协作规范。
@@ -63,12 +88,14 @@ docs/
 ├── STATUS.md                      # 项目状态卡
 │
 ├── ai-engineering/                # ← 已部署（AI 研发规范）
+│   ├── MANIFEST.json              # 版本注册表（必选）
 │   ├── principles.md
 │   ├── process.md
 │   ├── collaboration.md
 │   ├── checklists.md
 │   ├── deliverables.md
-│   └── document-management.md
+│   ├── document-management.md
+│   └── issue-workflow.md
 │
 ├── product/                       # 需求文档（按需创建）
 ├── engineering/                   # 工程文档（按需创建）
@@ -80,6 +107,7 @@ docs/
 ### 步骤 4：验证部署
 
 ```
+□ docs/ai-engineering/MANIFEST.json 已初始化并记录所有文件
 □ docs/ai-engineering/ 目录包含至少 3 个规则文件（principles、process、collaboration）
 □ docs/STATUS.md 已写入初始内容
 □ docs/README.md 已写入文档索引
@@ -105,6 +133,7 @@ docs/
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.4 | 2026-05-24 | 新增 MANIFEST.json 初始化步骤，部署目录增加版本注册表 |
 | v0.3 | 2026-04-04 | Agent 角色不再复制到目标项目，改为通过 setup/ 指南由 AI 工具按需引用 |
 | v0.2 | 2026-04-04 | 部署目标改为 docs/ai-engineering/ 子目录 |
 | v0.1 | 2026-04-04 | 初始版本，Agent 可执行入口文件 |
