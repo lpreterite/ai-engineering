@@ -34,7 +34,7 @@
 | 文档 | 状态 | 路径 |
 |------|------|------|
 | 角色总览 | ✅ 完成 | [agents/README.md](./agents/README.md) |
-| PM Agent | ✅ 完成 | [agents/pm-agent.md](./agents/pm-agent.md) |
+| Orchestrator Agent | ✅ 完成 | [agents/orchestrator-agent.md](./agents/orchestrator-agent.md) |
 | PO Agent | ✅ 完成 | [agents/po-agent.md](./agents/po-agent.md) |
 | UI/UX Agent | ✅ 完成 | [agents/uiux-agent.md](./agents/uiux-agent.md) |
 | Developer Agent | ✅ 完成 | [agents/developer-agent.md](./agents/developer-agent.md) |

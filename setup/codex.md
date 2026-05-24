@@ -87,7 +87,7 @@ Codex CLI 支持在 `.codex/` 中配置 subagent。Agent 角色定义保留在 `
 | 模式 | 说明 | 适用角色 |
 |------|------|----------|
 | `read-only` | 只读文件系统，不可写入 | PO Agent, UI/UX Agent, Tester Agent |
-| `workspace-write` | 可写入工作区 | PM Agent, Developer Agent |
+| `workspace-write` | 可写入工作区 | Orchestrator Agent, Developer Agent |
 
 > **内置 Agent**：Codex CLI 提供 `default`, `worker`, `explorer` 三个内置 Agent，自定义 Agent 与之共存。
 
@@ -101,17 +101,17 @@ mkdir -p .codex/agents
 
 #### 五个角色的完整配置
 
-**`.codex/agents/pm.toml`** — PM Agent
+**`.codex/agents/orchestrator.toml`** — Orchestrator Agent
 
 ```toml
-name = "pm"
-description = "PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付。当需要项目协调、进度跟踪、风险管控或流程引导时使用"
+name = "orchestrator"
+description = "Orchestrator Agent — 编排中枢，驱动多智能体编排流程、路由任务、门控质量、引导用户。当需要项目编排、任务路由、进度跟踪或流程引导时使用"
 model = "o4-mini"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
-nickname_candidates = ["pm", "project-manager", "项目经理"]
+nickname_candidates = ["orchestrator", "orch", "编排"]
 developer_instructions = """
-{将 ai-engineering/agents/pm-agent.md 的完整内容粘贴到此处}
+{将 ai-engineering/agents/orchestrator-agent.md 的完整内容粘贴到此处}
 
 ## 补充规范
 
@@ -211,7 +211,7 @@ developer_instructions = """
 .codex/
 ├── config.toml              # 全局配置（可选）
 └── agents/
-    ├── pm.toml              # PM Agent
+    ├── orchestrator.toml    # Orchestrator Agent
     ├── po.toml              # PO Agent
     ├── uiux.toml            # UI/UX Agent
     ├── developer.toml       # Developer Agent
@@ -227,15 +227,15 @@ developer_instructions = """
 max_threads = 5
 max_depth = 1
 
-[agents.pm]
-name = "pm"
-description = "PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付"
+[agents.orchestrator]
+name = "orchestrator"
+description = "Orchestrator Agent — 编排中枢，驱动多智能体编排流程、路由任务、门控质量、引导用户"
 model = "o4-mini"
 model_reasoning_effort = "medium"
 sandbox_mode = "workspace-write"
-nickname_candidates = ["pm", "project-manager", "项目经理"]
+nickname_candidates = ["orchestrator", "orch", "编排"]
 developer_instructions = """
-{将 ai-engineering/agents/pm-agent.md 的完整内容粘贴到此处}
+{将 ai-engineering/agents/orchestrator-agent.md 的完整内容粘贴到此处}
 
 ## 补充规范
 

@@ -64,7 +64,7 @@
 
 ### 第二阶段：功能测试
 
-- 按 PM Agent 分配的测试任务执行
+- 按 Orchestrator Agent 分配的测试任务执行
 - 逐条验证验收标准
 - 覆盖正常流程、边界情况和错误路径
 - 记录每个测试用例的执行结果
@@ -81,7 +81,7 @@
 - 所有任务通过单独测试后执行集成测试
 - 按验收清单逐项核对
 - 生成测试完成报告
-- 协助 PM Agent 完成软件验收
+- 协助 Orchestrator Agent 完成软件验收
 
 ---
 
@@ -176,7 +176,7 @@
 
 ## 7. 协作接口
 
-### Tester Agent → PM Agent
+### Tester Agent → Orchestrator Agent
 
 ```json
 {"type": "test_completed", "task_id": "...", "result": "pass|fail", "bugs": [...], "report_link": "..."}
@@ -184,7 +184,7 @@
 {"type": "acceptance_request", "feature": "...", "criteria_checklist": [...], "result": "pass|fail"}
 ```
 
-### PM Agent → Tester Agent
+### Orchestrator Agent → Tester Agent
 
 ```json
 {"type": "test_task", "task_id": "...", "feature": "...", "scope": [...], "acceptance_criteria": [...], "priority": "..."}

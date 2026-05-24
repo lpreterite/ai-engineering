@@ -40,8 +40,8 @@
 
 ### 2.3 分配合规
 
-- 默认由 Issue 创建者分配给 PM Agent
-- PM Agent 在 24h 内完成 triage（确认类型、设置优先级、分配负责人）
+- 默认由 Issue 创建者分配给 Orchestrator Agent
+- Orchestrator Agent 在 24h 内完成 triage（确认类型、设置优先级、分配负责人）
 - 复杂 Issue 拆分为 Sub-issues（条件：3+ 独立子任务或预估工时 > 2天）
 
 ---

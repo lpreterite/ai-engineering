@@ -44,7 +44,7 @@ ai-engineering/
 │
 ├── agents/                       # Agent 角色定义（每个角色独立文件）
 │   ├── README.md                 # 角色总览、协作矩阵、协作协议
-│   ├── pm-agent.md               # PM Agent — 协调中枢
+│   ├── orchestrator-agent.md     # Orchestrator Agent — 编排中枢
 │   ├── po-agent.md               # PO Agent — 需求分析、PRD 起草
 │   ├── uiux-agent.md             # UI/UX Agent — 用户方案设计
 │   ├── developer-agent.md        # Developer Agent — 技术实施
@@ -86,7 +86,7 @@ ai-engineering/
 | 文档 | 说明 | 状态 |
 |------|------|------|
 | [README.md](./agents/README.md) | 角色总览、协作矩阵、协作协议 | ✅ 完成 |
-| [pm-agent.md](./agents/pm-agent.md) | PM Agent — 协调中枢 | ✅ 完成 |
+| [orchestrator-agent.md](./agents/orchestrator-agent.md) | Orchestrator Agent — 编排中枢 | ✅ 完成 |
 | [po-agent.md](./agents/po-agent.md) | PO Agent — 需求分析、PRD 起草 | ✅ 完成 |
 | [uiux-agent.md](./agents/uiux-agent.md) | UI/UX Agent — 用户方案设计 | ✅ 完成 |
 | [developer-agent.md](./agents/developer-agent.md) | Developer Agent — 技术实施 | ✅ 完成 |
@@ -117,7 +117,7 @@ ai-engineering/
 |------|------|----------|
 | Product Owner (PO) | 人类，需求负责、验收把关 | - |
 | Product Manager (PM) | 人类，流程协调、进度管控 | - |
-| PM Agent | 协调中枢 | [pm-agent.md](./agents/pm-agent.md) |
+| Orchestrator Agent | 编排中枢 | [orchestrator-agent.md](./agents/orchestrator-agent.md) |
 | PO Agent | 需求分析、PRD 起草 | [po-agent.md](./agents/po-agent.md) |
 | UI/UX Agent | 用户方案设计 | [uiux-agent.md](./agents/uiux-agent.md) |
 | Developer Agent | 技术实施 | [developer-agent.md](./agents/developer-agent.md) |

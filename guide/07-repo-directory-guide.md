@@ -40,7 +40,7 @@
 步骤 6：验证目录结构完整性
 ```
 
-> **注意**：STATUS.md 必须在项目初始化时即创建（步骤 3），不可推迟。它是 PM Agent 的核心输入/输出，缺失将导致进度不可追踪。
+> **注意**：STATUS.md 必须在项目初始化时即创建（步骤 3），不可推迟。它是 Orchestrator Agent 的核心输入/输出，缺失将导致进度不可追踪。
 
 ---
 
@@ -50,7 +50,7 @@
 
 ```
 docs/
-├── STATUS.md                      # 项目状态卡（PM Agent 核心输入/输出）
+├── STATUS.md                      # 项目状态卡（Orchestrator Agent 核心输入/输出）
 ├── README.md                      # 项目文档索引
 │
 ├── product/                       # 产品相关文档
@@ -79,12 +79,12 @@ docs/
 
 | 目录 | 用途 | 维护者 | 创建时机 |
 |------|------|--------|----------|
-| `docs/` | 所有文档的根目录 | PM Agent | 项目初始化时 |
+| `docs/` | 所有文档的根目录 | Orchestrator Agent | 项目初始化时 |
 | `docs/product/` | PRD、用户故事等需求文档 | PO Agent | 打磨阶段开始时 |
 | `docs/engineering/` | 技术规格、架构设计 | Developer Agent | Gate 1 通过后 |
 | `docs/design/` | 设计系统、页面设计、资源文件 | UI/UX Agent | Gate 1 通过后 |
-| `docs/project-management/` | 项目计划、里程碑、风险管理 | PM Agent | 项目初始化时 |
-| `docs/project-tasks/` | 按周组织的任务和问题跟踪 | PM Agent | 执行阶段开始时 |
+| `docs/project-management/` | 项目计划、里程碑、风险管理 | Orchestrator Agent | 项目初始化时 |
+| `docs/project-tasks/` | 按周组织的任务和问题跟踪 | Orchestrator Agent | 执行阶段开始时 |
 
 ---
 
@@ -201,12 +201,12 @@ W{nn}/
 
 | 事件 | 操作 | 执行者 |
 |------|------|--------|
-| 项目初始化 | 创建完整 `docs/` 目录结构 | PM Agent |
+| 项目初始化 | 创建完整 `docs/` 目录结构 | Orchestrator Agent |
 | 进入打磨阶段 | 创建 `product/PRD.md` | PO Agent |
 | Gate 1 通过 | 创建 `engineering/` 和 `design/` 目录内容 | Developer Agent / UI/UX Agent |
-| 进入执行阶段 | 创建 `project-tasks/W{nn}/` | PM Agent |
-| 每周开始 | 创建新的 `W{nn}/` 目录 | PM Agent |
-| 里程碑完成 | 更新 `STATUS.md` | PM Agent |
+| 进入执行阶段 | 创建 `project-tasks/W{nn}/` | Orchestrator Agent |
+| 每周开始 | 创建新的 `W{nn}/` 目录 | Orchestrator Agent |
+| 里程碑完成 | 更新 `STATUS.md` | Orchestrator Agent |
 
 ### 6.2 重命名操作规范
 

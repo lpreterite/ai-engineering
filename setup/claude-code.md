@@ -126,16 +126,16 @@ Claude Code 原生支持自定义 subagent。Agent 角色定义保留在 `ai-eng
 mkdir -p .claude/agents
 ```
 
-文件名即 agent 名称（如 `pm.md` → `pm`）。frontmatter 定义配置，正文为系统提示词。
+文件名即 agent 名称（如 `orchestrator.md` → `orchestrator`）。frontmatter 定义配置，正文为系统提示词。
 
 #### 五个角色的完整配置
 
-**`.claude/agents/pm.md`** — PM Agent
+**`.claude/agents/orchestrator.md`** — Orchestrator Agent
 
 ```markdown
 ---
 name: pm
-description: PM Agent — 项目协调中枢，统筹进度、风险和团队协作，驱动质量循环和交付。当需要项目协调、进度跟踪、风险管控或流程引导时使用
+description: Orchestrator Agent — 编排中枢，驱动多智能体编排流程、路由任务、门控质量、引导用户。当需要项目编排、任务路由、进度跟踪或流程引导时使用
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 maxTurns: 30
@@ -143,7 +143,7 @@ color: blue
 permissionMode: default
 ---
 
-@vendor/ai-engineering/agents/pm-agent.md
+@vendor/ai-engineering/agents/orchestrator-agent.md
 
 ## 补充规范
 
@@ -222,7 +222,7 @@ color: red
 .claude/
 ├── CLAUDE.md              # 主指令
 ├── agents/
-│   ├── pm.md              # PM Agent
+│       ├── orchestrator.md    # Orchestrator Agent
 │   ├── po.md              # PO Agent
 │   ├── uiux.md            # UI/UX Agent
 │   ├── developer.md       # Developer Agent

@@ -70,7 +70,7 @@ AI 软件研发流程分为两大阶段：
 │   │  技术方案起草   │              │  用户方案起草   │          │
 │   │  · 系统设计     │              │  · 设计规范     │          │
 │   │  · 技术选型     │              │  · 设计稿       │          │
-│   │  (PM Agent +   │              │  (UI/UX Agent)  │          │
+│   │  (Orch. Agent +   │              │  (UI/UX Agent)  │          │
 │   │   Developer)   │              │                 │          │
 │   └────────┬────────┘              └────────┬────────┘          │
 │            │                                │                    │
@@ -88,7 +88,7 @@ AI 软件研发流程分为两大阶段：
 │   人类：关键节点介入，Agent 自主协作执行                          │
 │                                                                 │
 │   ┌─────────────────┐                                           │
-│   │  任务分配       │  ← PM Agent 协调                          │
+│   │  任务分配       │  ← Orchestrator Agent 编排                          │
 │   └────────┬────────┘                                           │
 │            ▼                                                    │
 │   ┌─────────────────┐                                           │
@@ -116,7 +116,7 @@ AI 软件研发流程分为两大阶段：
 │   人类：最终确认                                                 │
 │                                                                 │
 │   ┌─────────────────┐                                           │
-│   │  上线发布       │  ← PM Agent 协调                          │
+│   │  上线发布       │  ← Orchestrator Agent 编排                          │
 │   └────────┬────────┘                                           │
 │            ▼                                                    │
 │   ╔═══════════════════════════════════════════════════════════╗ │
@@ -139,10 +139,10 @@ AI 软件研发流程分为两大阶段：
 | 需求收集 | ✅ 用户诉求原始语料收集 | - |
 | 需求分析 | - | PO Agent：动机提取、线路图设计 |
 | PRD 起草 | - | PO Agent：用户故事、验收标准、原型图 |
-| Roadmap | 验收 | PO Agent + PM Agent：产品路线图 |
-| 技术方案 | 验收 | PM Agent + Developer Agent：起草 |
+| Roadmap | 验收 | PO Agent + Orchestrator Agent：产品路线图 |
+| 技术方案 | 验收 | Orchestrator Agent + Developer Agent：起草 |
 | 用户方案 | 验收 | UI/UX Agent：设计规范+设计稿 |
-| 里程碑规划 | 验收 | PO Agent + PM Agent：Milestone 划分 |
+| 里程碑规划 | 验收 | PO Agent + Orchestrator Agent：Milestone 划分 |
 
 ### 2.2 打磨阶段 Gate
 
@@ -219,9 +219,9 @@ AI 软件研发流程分为两大阶段：
 
 ### 3.1 执行阶段特点
 
-- **Agent 自主协作**：Developer Agent 与 Tester Agent 在 PM Agent 协调下自主执行
+- **Agent 自主协作**：Developer Agent 与 Tester Agent 在 Orchestrator Agent 编排下自主执行
 - **人类关键介入**：在 Gate 3（可使用软件验收）和 Gate 4（可维护软件验收）进行确认
-- **PM Agent 协调**：处理分歧、监控进度、触发升级
+- **Orchestrator Agent 编排**：处理分歧、监控进度、触发升级
 
 ### 3.2 执行阶段流程
 
@@ -229,7 +229,7 @@ AI 软件研发流程分为两大阶段：
 需求就绪
     │
     ▼
-PM Agent 分配任务
+Orchestrator Agent 分配任务
     │
     ▼
 ┌─────────────────┐     ┌─────────────────┐
@@ -237,7 +237,7 @@ PM Agent 分配任务
 │   执行开发       │     │   执行测试       │
 └────────┬────────┘     └────────┬────────┘
          │                      │
-         │    PM Agent 协调     │
+         │    Orchestrator Agent 编排     │
          │    （基于风险优先级） │
          │                      │
          └──────────┬───────────┘
@@ -267,9 +267,9 @@ PM Agent 分配任务
 ### 3.3 分歧处理机制
 
 当 Developer Agent 与 Tester Agent 出现分歧时：
-- 由 PM Agent 根据风险优先级处理
+- 由 Orchestrator Agent 根据风险优先级处理
 - 低风险：Agent 自行协调
-- 中风险：PM Agent 介入协调
+- 中风险：Orchestrator Agent 介入编排
 - 高风险：升级人类 PM 决策
 
 ### 3.4 交付阶段 Gate 4：可维护软件验收

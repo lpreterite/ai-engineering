@@ -64,7 +64,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | PM Agent + Developer Agent（起草）、Product Manager（验收） |
+| **责任人** | Orchestrator Agent + Developer Agent（起草）、Product Manager（验收） |
 | **参与 Gate** | Gate 2 |
 | **存放位置** | `docs/engineering/` |
 
@@ -107,7 +107,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | PO Agent + PM Agent（起草）、Product Owner（验收） |
+| **责任人** | PO Agent + Orchestrator Agent（起草）、Product Owner（验收） |
 | **参与 Gate** | Gate 2 |
 | **存放位置** | `docs/project-management/milestones.md` |
 
@@ -127,7 +127,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | PM Agent（维护） |
+| **责任人** | Orchestrator Agent（维护） |
 | **存放位置** | `docs/project-tasks/W{nn}/tasklist.md` |
 
 #### 内容要求
@@ -143,7 +143,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | PM Agent（维护） |
+| **责任人** | Orchestrator Agent（维护） |
 | **存放位置** | `docs/project-tasks/W{nn}/problems/` |
 
 #### 内容要求
@@ -184,7 +184,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | PM Agent（自动更新）、人工 PM（审批重大变更） |
+| **责任人** | Orchestrator Agent（自动更新）、人工 PM（审批重大变更） |
 | **存放位置** | `docs/STATUS.md` |
 
 #### 内容要求
@@ -200,7 +200,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | PM Agent（起草） |
+| **责任人** | Orchestrator Agent（起草） |
 | **存放位置** | `docs/project-tasks/W{nn}/STATUS.md` |
 
 #### 内容要求

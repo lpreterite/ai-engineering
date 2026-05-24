@@ -60,7 +60,7 @@
 - 阅读 PRD，理解用户画像、核心场景和验收标准
 - 与 PO Agent 确认关键交互流程和用户使用线路图
 - 制定设计策略：确定设计语言、风格方向
-- 输出设计方向概要，与 PM Agent 对齐
+- 输出设计方向概要，与 Orchestrator Agent 对齐
 
 ### 第二阶段：设计规范制定
 
@@ -179,7 +179,7 @@
 
 ## 7. 协作接口
 
-### UI/UX Agent → PM Agent
+### UI/UX Agent → Orchestrator Agent
 
 ```json
 {"type": "design_completed", "feature": "...", "deliverables": ["design_spec", "interaction_doc", "assets"]}
@@ -187,7 +187,7 @@
 {"type": "design_change_proposal", "feature": "...", "reason": "...", "impact": "...", "alternatives": [...]}
 ```
 
-### PM Agent → UI/UX Agent
+### Orchestrator Agent → UI/UX Agent
 
 ```json
 {"type": "design_task", "feature": "...", "requirements": "...", "priority": "...", "deadline": "..."}

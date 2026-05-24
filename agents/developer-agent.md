@@ -65,8 +65,8 @@
 
 ### 第一阶段：任务分析与规划
 
-- 读取 PM Agent 分配的任务清单和验收标准
-- 确认 `docs/STATUS.md` 已存在且状态最新（如缺失则提示 PM Agent 初始化）
+- 读取 Orchestrator Agent 分配的任务清单和验收标准
+- 确认 `docs/STATUS.md` 已存在且状态最新（如缺失则提示 Orchestrator Agent 初始化）
 - 理解 PRD 需求和 UI/UX 设计规范
 - 确认技术栈、项目约定和依赖环境
 - 识别技术风险和不确定点，提前验证
@@ -83,7 +83,7 @@
 - 提交实现后等待 Tester Agent 验证
 - 测试通过 → 标记任务完成
 - 测试失败 → 分析反馈，修复后重新提交（最多 3 次重试）
-- 重试 3 次仍未通过 → 标记阻塞，等待 PM Agent 协调
+- 重试 3 次仍未通过 → 标记阻塞，等待 Orchestrator Agent 协调
 
 ### 第四阶段：集成与交付
 
@@ -157,7 +157,7 @@
 
 ## 6. 协作接口
 
-### Developer Agent → PM Agent
+### Developer Agent → Orchestrator Agent
 
 ```json
 {"type": "task_completed", "task_id": "...", "evidence": "...", "test_results": "..."}
@@ -166,7 +166,7 @@
 {"type": "tech_proposal", "for": "...", "approach": "...", "alternatives": [...]}
 ```
 
-### PM Agent → Developer Agent
+### Orchestrator Agent → Developer Agent
 
 ```json
 {"type": "task_assigned", "task_id": "...", "priority": "...", "deadline": "..."}

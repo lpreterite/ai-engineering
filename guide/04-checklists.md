@@ -145,7 +145,7 @@
 | 标注已导出 | Zeplin/Figma 标注已同步 | UI/UX Agent |
 | 特殊说明 | 动画、过渡等特殊效果已说明 | UI/UX Agent |
 | 资源齐全 | 图标、字体等资源已提供 | UI/UX Agent |
-| 设计已定稿 | 无待解决的疑问或争议 | PM Agent |
+| 设计已定稿 | 无待解决的疑问或争议 | Orchestrator Agent |
 
 ---
 

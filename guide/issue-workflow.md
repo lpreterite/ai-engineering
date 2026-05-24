@@ -63,11 +63,11 @@ open → triaged → in_progress → resolved → verified → closed
 | 阶段 | 操作者 | 说明 |
 |------|--------|------|
 | **open** | 创建者 | 提交 Issue，自动设置 Issue Type |
-| **triaged** | PM Agent | 确认问题有效，设置优先级和负责人。复杂 Issue 在此阶段拆分为 Sub-issues |
+| **triaged** | Orchestrator Agent | 确认问题有效，设置优先级和负责人。复杂 Issue 在此阶段拆分为 Sub-issues |
 | **in_progress** | Developer | 开始处理，关联分支或 commit |
 | **resolved** | Developer | 提交修复，PR 关联 Issue，等待验证 |
 | **verified** | Tester Agent | 验证修复有效，回归无新问题 |
-| **closed** | PM Agent | 验证通过后关闭，在 STATUS.md 中同步 |
+| **closed** | Orchestrator Agent | 验证通过后关闭，在 STATUS.md 中同步 |
 
 ---
 
@@ -77,7 +77,7 @@ open → triaged → in_progress → resolved → verified → closed
 
 ### 4.1 拆解触发条件
 
-满足以下任一条件时，PM Agent 应在 triage 阶段拆解：
+满足以下任一条件时，Orchestrator Agent 应在 triage 阶段拆解：
 
 | 条件 | 说明 |
 |------|------|
@@ -88,7 +88,7 @@ open → triaged → in_progress → resolved → verified → closed
 
 ### 4.2 创建方式
 
-PM Agent 在 triage 阶段操作：
+Orchestrator Agent 在 triage 阶段操作：
 
 ```
 1. 父 Issue 类型设为 Epic（如果涉及多处改动）或 Feature
@@ -101,7 +101,7 @@ PM Agent 在 triage 阶段操作：
 
 GitHub 自动在父 Issue 中显示完成进度：`□ 3/5 completed`。
 
-PM Agent 通过聚合进度判断整体是否就绪：
+Orchestrator Agent 通过聚合进度判断整体是否就绪：
 - 所有 Sub-issues 的 `verified` → 父 Issue 自动设为 `resolved`
 - 部分 Sub-issues 阻塞 → 明确阻塞点，决定是否拆分延期
 
@@ -112,7 +112,7 @@ PM Agent 通过聚合进度判断整体是否就绪：
 | **定位** | 父 Issue 的子任务 | 周任务拆分 |
 | **粒度** | 一个独立可完成的工作 | 一个原子操作步骤 |
 | **生命周期** | 与父 Issue 同步 | 按周独立管理 |
-| **更新方式** | GitHub Issues UI | PM Agent 手动 |
+| **更新方式** | GitHub Issues UI | Orchestrator Agent 手动 |
 
 原则上一个大粒度 Sub-issue 可能对应多个 tasklist 条目，不做严格一对一映射。
 
@@ -133,14 +133,14 @@ Issue 之间存在依赖关系时，应使用 GitHub 原生依赖管理（`block
 
 | 规则 | 说明 |
 |------|------|
-| 标记时机 | PM Agent 在 triage 时识别并标记依赖 |
+| 标记时机 | Orchestrator Agent 在 triage 时识别并标记依赖 |
 | P0 阻塞 | P0 Issue 必须无 blocked by 依赖才能进入 in_progress |
-| 阻塞链 | PM Agent 每日检查 blocked issues，超 24h 升级 |
-| 循环依赖 | 禁止 Issue 间形成循环依赖，发现立即上报 PM Agent 仲裁 |
+| 阻塞链 | Orchestrator Agent 每日检查 blocked issues，超 24h 升级 |
+| 循环依赖 | 禁止 Issue 间形成循环依赖，发现立即上报 Orchestrator Agent 仲裁 |
 
-### 5.3 PM Agent 监控
+### 5.3 Orchestrator Agent 监控
 
-PM Agent 在「发布前检查」中执行：
+Orchestrator Agent 在「发布前检查」中执行：
 
 ```
 □ 列出所有 open 的 blocked by 关系
@@ -155,7 +155,7 @@ PM Agent 在「发布前检查」中执行：
 | 角色 | 时机 | 创建类型 |
 |------|------|----------|
 | **Tester Agent** | 测试发现缺陷，在 `bug_reported` 消息中上报给 PM | 由 PM 代为创建 Bug Issue |
-| **PM Agent** | 收到 Tester 上报、验收发现问题、用户反馈 | Bug / Feature |
+| **Orchestrator Agent** | 收到 Tester 上报、验收发现问题、用户反馈 | Bug / Feature |
 | **PO Agent** | 需求分析中识别出新功能或改进点 | Feature / Epic |
 | **Developer** | 开发过程中发现预想不到的问题或改进机会 | Bug / Feature / Task |
 | **用户** | 通过 GitHub Issues 提交 | Bug / Feature |
@@ -163,7 +163,7 @@ PM Agent 在「发布前检查」中执行：
 
 ### 6.1 验收发现→Issue 映射规则
 
-Tester 完成验收发现问题后，PM Agent 执行以下操作：
+Tester 完成验收发现问题后，Orchestrator Agent 执行以下操作：
 
 1. 每个独立问题创建一个 Issue
 2. Issue 标题使用 `BUG-NNN: 简短描述` 格式（BUG-001, BUG-002...）
@@ -290,11 +290,11 @@ Issue 应与 GitHub Projects 关联，实现可视化管理和自动化流转。
 |------|------|------|
 | **看板** | Board（按状态分组） | 日常跟踪 Issue 流转 |
 | **时间线** | Roadmap（按里程碑） | 交付节奏可视化 |
-| **表格** | Table（全部字段） | PM Agent 批量操作与筛选 |
+| **表格** | Table（全部字段） | Orchestrator Agent 批量操作与筛选 |
 
 ### 8.3 内置自动化
 
-PM Agent 在 Project 中配置以下自动化规则：
+Orchestrator Agent 在 Project 中配置以下自动化规则：
 
 ```
 □ Issue 类型设为 Bug → 自动加入「Bug 跟踪」视图
@@ -333,9 +333,9 @@ commit 推送后 GitHub 自动关闭关联 Issue，无需手动执行 `gh issue 
 
 ---
 
-## 10. PM Agent 操作清单
+## 10. Orchestrator Agent 操作清单
 
-在项目执行过程中，PM Agent 按以下清单管理 Issue：
+在项目执行过程中，Orchestrator Agent 按以下清单管理 Issue：
 
 ### 10.1 日常管理
 
@@ -383,7 +383,7 @@ commit 推送后 GitHub 自动关闭关联 Issue，无需手动执行 `gh issue 
 |------|---------------|-----------|
 | **定位** | 外部问题跟踪 | 内部项目总览 |
 | **粒度** | 单个问题级别 | 里程碑/任务级别 |
-| **受众** | 项目贡献者、用户 | PM Agent、开发者 |
+| **受众** | 项目贡献者、用户 | Orchestrator Agent、开发者 |
 | **生命周期** | open → closed | 更新最新快照 |
 | **更新方式** | 手动 + gh CLI | 自动 + 手动 |
 

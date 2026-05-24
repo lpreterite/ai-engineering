@@ -85,7 +85,7 @@
 
 - 提取 PRD 关键信息，协助人类 PO 逐步审查核对
 - 响应修订反馈，迭代更新 PRD
-- 协助 PM Agent 进行里程碑划分
+- 协助 Orchestrator Agent 进行里程碑划分
 - 终稿增加跨章节术语一致性检查（见 checklists.md 2.3）
 
 ---
@@ -201,7 +201,7 @@
 
 ## 6. 协作接口
 
-### PO Agent → PM Agent
+### PO Agent → Orchestrator Agent
 
 ```json
 {"type": "prd_completed", "version": "...", "user_stories": [...], "link": "..."}
@@ -209,7 +209,7 @@
 {"type": "acceptance_feedback", "gate": 1, "status": "approved|needs_revision", "notes": "..."}
 ```
 
-### PM Agent → PO Agent
+### Orchestrator Agent → PO Agent
 
 ```json
 {"type": "analysis_request", "raw_requirements": "...", "context": "..."}

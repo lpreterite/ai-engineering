@@ -45,9 +45,9 @@
 | 需求收集 | ✅ 用户诉求原始语料收集 | - |
 | 需求分析 | - | PO Agent：动机提取、线路图设计 |
 | PRD 起草 | - | PO Agent：用户故事、验收标准 |
-| 技术方案 | 验收 | PM Agent + Developer Agent：起草 |
+| 技术方案 | 验收 | Orchestrator Agent + Developer Agent：起草 |
 | 用户方案 | 验收 | UI/UX Agent：起草 |
-| 里程碑规划 | 验收 | PO Agent + PM Agent：起草 |
+| 里程碑规划 | 验收 | PO Agent + Orchestrator Agent：起草 |
 
 ### 2.2 打磨阶段流程
 
@@ -138,9 +138,9 @@ Agent 提取关键信息
 
 | 特点 | 说明 |
 |------|------|
-| **Agent 自主协作** | Developer Agent 与 Tester Agent 在 PM Agent 协调下自主执行 |
+| **Agent 自主协作** | Developer Agent 与 Tester Agent 在 Orchestrator Agent 编排下自主执行 |
 | **人类关键介入** | Gate 3（可使用软件验收）和 Gate 4（可维护软件验收）进行最终确认 |
-| **PM Agent 协调** | 处理分歧、监控进度、触发升级 |
+| **Orchestrator Agent 编排** | 处理分歧、监控进度、触发升级 |
 
 ### 4.2 执行阶段流程
 
@@ -148,7 +148,7 @@ Agent 提取关键信息
 需求就绪
      │
      ▼
-PM Agent 分配任务
+Orchestrator Agent 分配任务
      │
      ▼
 ┌─────────────────┐     ┌─────────────────┐
@@ -156,7 +156,7 @@ PM Agent 分配任务
 │   执行开发       │     │   执行测试       │
 └────────┬────────┘     └────────┬────────┘
          │                      │
-         │    PM Agent 协调     │
+          │    Orchestrator Agent 编排     │
          │    （基于风险优先级） │
          │                      │
          └──────────┬───────────┘
@@ -203,7 +203,7 @@ PM Agent 分配任务
 | 风险等级 | 处理方式 | 决策方 |
 |----------|----------|--------|
 | **低风险** | Agent 自行协调 | Agent |
-| **中风险** | PM Agent 介入协调 | PM Agent |
+| **中风险** | Orchestrator Agent 介入编排 | Orchestrator Agent |
 | **高风险** | 升级人类 PM 决策 | 人工 PM |
 
 ### 5.3 分歧处理流程
@@ -219,7 +219,7 @@ PM Agent 分配任务
     │              ▼
     │         更新状态
     │
-    ├── 中风险 → PM Agent 介入协调
+    ├── 中风险 → Orchestrator Agent 介入编排
     │              │
     │              ▼
     │         提出解决方案
@@ -239,7 +239,7 @@ PM Agent 分配任务
 ### 5.4 Developer-Tester 特定处理
 
 当 Developer Agent 与 Tester Agent 出现分歧时：
-- 由 PM Agent 根据风险优先级处理
+- 由 Orchestrator Agent 根据风险优先级处理
 - 优先基于已批准的文档
 - 其次基于最后更新
 - 争议升级人工 PM
@@ -263,7 +263,7 @@ PM Agent 分配任务
 检测到升级条件
     │
     ▼
-PM Agent 记录并通知
+Orchestrator Agent 记录并通知
     │
     ▼
 评估是否可自行解决

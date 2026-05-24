@@ -22,7 +22,7 @@ Agent 应按照本规范在目标项目中创建和维护 `docs/` 目录。
 target-project/
 ├── docs/                              # 项目文档根目录
 │   ├── README.md                      # 项目文档索引
-│   ├── STATUS.md                      # 项目状态卡（PM Agent 核心输入/输出）
+│   ├── STATUS.md                      # 项目状态卡（Orchestrator Agent 核心输入/输出）
 │   │
 │   ├── ai-engineering/                # AI 研发规范
 │   │   ├── MANIFEST.json              # 版本注册表（必选）
@@ -125,9 +125,9 @@ target-project/
 
 | 文件 | 维护者 | 创建时机 |
 |------|--------|----------|
-| `project-plan.md` | PM Agent | 项目初始化时 |
-| `milestones.md` | PM Agent | 项目初始化时 |
-| `risk-management.md` | PM Agent | 识别到风险时 |
+| `project-plan.md` | Orchestrator Agent | 项目初始化时 |
+| `milestones.md` | Orchestrator Agent | 项目初始化时 |
+| `risk-management.md` | Orchestrator Agent | 识别到风险时 |
 
 ### 3.6 任务跟踪文档（docs/project-tasks/）
 
@@ -137,13 +137,13 @@ target-project/
 
 ## 4. AI Agent 与文档的关系
 
-### 4.1 PM Agent
+### 4.1 Orchestrator Agent
 
-PM Agent 基于现有文档体系运作，无需创建新的存储结构。
+Orchestrator Agent 基于现有文档体系运作，无需创建新的存储结构。
 
 ```
-PM Agent 通过读写这些文档与其他 Agent 和人工团队协作：
-├── docs/STATUS.md               ← PM Agent 核心输入/输出
+Orchestrator Agent 通过读写这些文档与其他 Agent 和人工团队协作：
+├── docs/STATUS.md               ← Orchestrator Agent 核心输入/输出
 ├── docs/project-management/
 │   ├── project-plan.md          ← 项目元数据
 │   ├── milestones.md            ← 阶段详细规划

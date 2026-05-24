@@ -23,8 +23,8 @@
 
 | 文件 | 功能 | 维护者 | 查阅场景 |
 |------|------|--------|----------|
-| [repo-governance.md](./repo-governance.md) | Issue/PR 管理、分支策略、CI 标准 | PM Agent | 日常仓库维护 |
-| [release-workflow.md](./release-workflow.md) | 版本发布操作手册 | PM Agent | 每次发版前 |
+| [repo-governance.md](./repo-governance.md) | Issue/PR 管理、分支策略、CI 标准 | Orchestrator Agent | 日常仓库维护 |
+| [release-workflow.md](./release-workflow.md) | 版本发布操作手册 | Orchestrator Agent | 每次发版前 |
 | [development-guide.md](./development-guide.md) | 修改 guide/、agents/ 的约束和流程 | 贡献者 | 修改规范文件前 |
 
 ---
@@ -33,7 +33,7 @@
 
 | 角色 | 应阅读的文档 |
 |------|-------------|
-| **PM Agent** | `repo-governance.md`（治理规则）、`release-workflow.md`（发版） |
+| **Orchestrator Agent** | `repo-governance.md`（治理规则）、`release-workflow.md`（发版） |
 | **贡献者** | `development-guide.md`（修改约束） |
 | **Tester Agent** | `repo-governance.md` 中的 PR 审查 checklist |
 
