@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/guide/`
 **文档状态**：草稿
-**当前版本**：v0.5
+**当前版本**：v0.6
 **发布日期**：2026-05-24
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/08-tool-integration-guide.md`
@@ -283,6 +283,126 @@ AI 自动合并
 □ .gitignore 已添加 docs/ai-engineering/.backups/
 ```
 
+### 6.7 实战操作手册 — 下游仓库更新规范
+
+以下步骤供下游项目 PM Agent 或维护者执行规范文件升级。
+
+#### 前置条件
+
+- 下游项目已部署 `docs/ai-engineering/MANIFEST.json`（初始部署见 [setup.md](../setup.md)）
+- 能访问源仓库（直接 clone、submodule 或本地路径）
+
+#### 更新步骤
+
+```
+Step 0：确认当前状态
+  ├─ 检查 docs/ai-engineering/MANIFEST.json 是否存在且格式正确
+  └─ 确认源仓库代码最新：git pull 或 git submodule update --remote
+
+Step 1：获取源端版本快照
+  ├─ 读取源仓库 RELEASE.json（一次获取所有文件最新版本）
+  └─ 与下游 MANIFEST.json 逐文件比对，生成过期清单
+
+Step 2：备份
+  ├─ mkdir -p docs/ai-engineering/.backups/$(date +%Y%m%d%H%M%S)
+  └─ 将 docs/ai-engineering/ 中所有 .md 文件备份到该目录
+
+Step 3：按策略更新（逐文件）
+  ├─ 未在 MANIFEST 中的文件 → cp 源新版文件到 docs/ai-engineering/
+  ├─ customized=false → cp 源新版文件直接覆盖
+  ├─ customized=true  → 三路合并（见下文合并操作）
+  └─ MANIFEST 有记录但本地已删除 → 跳过，标记异常
+
+Step 4：三路合并操作（仅 customized=true 的文件）
+  ├─ Base = MANIFEST 中 previous_version 对应的源旧版
+  │   （需从 git history 或备份中获取旧版）
+  ├─ Theirs = 源新版文件（当前 guide/ 中的版本）
+  ├─ Ours = 下游当前文件（docs/ai-engineering/ 中的版本）
+  └─ AI 执行合并：
+       ├─ Base=Theirs=Ours → 不变
+       ├─ Base≠Theirs, Base=Ours → 取 Theirs（源升级）
+       ├─ Base=Theirs, Base≠Ours → 取 Ours（保留定制）
+       ├─ Base≠Theirs≠Ours 且不同行 → 智能合并
+       └─ Base≠Theirs≠Ours 且同行 → 标记 >>>CONFLICT<<< 挂起人工
+
+Step 5：验证
+  ├─ 检查文件结构完整（标题层级、列表闭合）
+  ├─ 检查交叉引用有效（相对路径不断裂）
+  ├─ 更新 MANIFEST.json：version→新版号，previous_version→旧版号
+  └─ 通知 PM Agent 确认无异常
+
+Step 6：提交
+  └─ git add docs/ai-engineering/ && git commit -m "chore: 更新 AI 研发规范至 v<版本号>"
+```
+
+#### 冲突处理流程
+
+当 `>>>CONFLICT<<<` 标记出现时：
+
+```
+1. AI 在 MANIFEST 中记录冲突文件清单
+2. AI 在验收报告或 Issue 中通知人工 PM
+3. 人工 PM 处理冲突：
+   ├─ 打开冲突文件，搜索 >>>CONFLICT
+   ├─ 审阅 Base / Theirs / Ours 三方差异
+   ├─ 手动编辑保留正确内容，移除冲突标记
+   └─ 提交修复
+4. 人工处理后，AI 更新 MANIFEST 中 conflicted 标记为 false
+```
+
+#### 完整命令速查
+
+```bash
+# 1. 更新源仓库代码（submodule 方式）
+git submodule update --remote vendor/ai-engineering
+
+# 2. 备份当前规范文件
+BACKUP_DIR="docs/ai-engineering/.backups/$(date +%Y%m%d%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+cp docs/ai-engineering/*.md "$BACKUP_DIR/"
+
+# 3. 查看过期清单
+python3 -c "
+import json
+with open('vendor/ai-engineering/RELEASE.json') as s, \\
+     open('docs/ai-engineering/MANIFEST.json') as d:
+    src = json.load(s)
+    dst = json.load(d)
+for fname, sver in src['files'].items():
+    lname = fname.replace('guide/', '')
+    dver = dst['files'].get(lname, {}).get('version', 'N/A')
+    if sver != dver:
+        print(f'📦 {lname}: {dver} → {sver}')
+"
+
+# 4. 覆盖未定制文件
+python3 -c "
+import json
+with open('docs/ai-engineering/MANIFEST.json') as f:
+    m = json.load(f)
+for name, info in m['files'].items():
+    if not info['customized']:
+        print(f'cp vendor/ai-engineering/{info[\"source\"]} docs/ai-engineering/{name}')
+"
+
+# 5. 更新 MANIFEST 版本号
+python3 -c "
+import json
+with open('vendor/ai-engineering/RELEASE.json') as s, \\
+     open('docs/ai-engineering/MANIFEST.json') as f:
+    src = json.load(s)
+    dst = json.load(f)
+for fname, sver in src['files'].items():
+    lname = fname.replace('guide/', '')
+    if lname in dst['files'] and not dst['files'][lname].get('conflict'):
+        dst['files'][lname]['previous_version'] = dst['files'][lname]['version']
+        dst['files'][lname]['version'] = sver
+with open('docs/ai-engineering/MANIFEST.json', 'w') as f:
+    json.dump(dst, f, indent=2)
+    f.write('\n')
+"
+```
+
 ---
 
 ## 附录：相关文档
@@ -301,6 +421,7 @@ AI 自动合并
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.6 | 2026-05-24 | §6.7 新增实战操作手册，含步骤详解、冲突处理流程和命令速查 |
 | v0.5 | 2026-05-24 | §6.3 协议步骤 1 改为 RELEASE.json 优先比对 |
 | v0.4 | 2026-05-24 | 新增第 6 章「非破坏性更新机制」：MANIFEST 注册表、AI 四步更新协议、三路合并细则、回滚机制 |
 | v0.3 | 2026-04-04 | 修正规范来源目录为 guide/，FAQ 同步说明区分部署方式 |
