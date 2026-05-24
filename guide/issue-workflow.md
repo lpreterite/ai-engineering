@@ -315,7 +315,19 @@ PM Agent 在 Project 中配置以下自动化规则：
 | 文档 | `docs: 描述 (#N)` | `docs: 更新安装说明 (#3)` |
 | 重构 | `refactor: 描述 (#N)` | `refactor: 提取通用错误码 (#4)` |
 
-关闭 Issue 使用 `close #N` 或 `fix #N` 关键词。
+### 关闭关键词
+
+commit 推送后 GitHub 自动关闭关联 Issue，无需手动执行 `gh issue close`：
+
+| 关键词 | 使用场景 | 示例 |
+|--------|----------|------|
+| `Close #N` | 通用关闭 | `Close #4` |
+| `Fixes #N` | Bug 修复 | `Fixes #4` |
+| `Resolves #N` | 功能/任务完成 | `Resolves #5` |
+
+多条同时关闭：`Close #1, Close #4, Resolves #5`
+
+> 注意：仅当 commit 合并到默认分支（`main`）时自动生效。
 
 ---
 
