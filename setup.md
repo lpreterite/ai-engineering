@@ -106,10 +106,12 @@ docs/
 
 ### 步骤 4：验证部署
 
+**必选检查**（全部通过才算部署完成）：
+
 ```
 □ docs/ai-engineering/MANIFEST.json 已初始化并记录所有文件
 □ docs/ai-engineering/ 目录包含至少 3 个规则文件（principles、process、collaboration）
-□ docs/STATUS.md 已写入初始内容
+□ ★ docs/STATUS.md 已写入初始内容（含项目名称、当前阶段、里程碑列表）
 □ docs/README.md 已写入文档索引
 □ AI 工具的指令文件（CLAUDE.md / AGENTS.md / config.toml）已创建
 □ AI 工具能正确引用 agents/ 目录中的角色文件
@@ -133,7 +135,7 @@ docs/
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
-| v0.4 | 2026-05-24 | 新增 MANIFEST.json 初始化步骤，部署目录增加版本注册表 |
+| v0.5 | 2026-05-24 | 验证清单中将 STATUS.md 标记为必选，增加初始内容要求 |
 | v0.3 | 2026-04-04 | Agent 角色不再复制到目标项目，改为通过 setup/ 指南由 AI 工具按需引用 |
 | v0.2 | 2026-04-04 | 部署目标改为 docs/ai-engineering/ 子目录 |
 | v0.1 | 2026-04-04 | 初始版本，Agent 可执行入口文件 |
