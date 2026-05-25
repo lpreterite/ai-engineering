@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/guide/`
 **文档状态**：草稿
-**当前版本**：v0.2
+**当前版本**：v0.3
 **发布日期**：2026-05-24
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/issue-workflow.md`
@@ -306,7 +306,18 @@ Orchestrator Agent 在 Project 中配置以下自动化规则：
 
 ---
 
-## 9. Commit 引用规范
+## 9. Commit 规范
+
+### 9.1 提交前验收核验
+
+在提交并推送变更之前，执行以下核验流程：
+
+1. **读取验收标准**：通过 `gh issue view <N> --json body` 获取 Issue 的验收标准，确认所有验收项已列出
+2. **逐一核验**：对照验收标准的每一项，确认代码或文档改动已覆盖；未满足的项不得关闭 Issue
+3. **勾选验收标准**：通过 `gh issue edit <N> --body-file <(echo "updated body")` 将 Issue 正文中的 `- [ ]` 更新为 `- [x]`，或使用 API 直接更新 Issue body
+4. **确认闭环**：所有验收标准已勾选后，提交并推送（commit message 需包含关闭关键词，见 §9.3）
+
+### 9.2 引用格式
 
 所有代码变更必须在 commit message 中引用关联的 Issue 编号：
 
@@ -317,7 +328,7 @@ Orchestrator Agent 在 Project 中配置以下自动化规则：
 | 文档 | `docs: 描述 (#N)` | `docs: 更新安装说明 (#3)` |
 | 重构 | `refactor: 描述 (#N)` | `refactor: 提取通用错误码 (#4)` |
 
-### 关闭关键词
+### 9.3 关闭关键词
 
 commit 推送后 GitHub 自动关闭关联 Issue，无需手动执行 `gh issue close`：
 
@@ -409,5 +420,6 @@ commit 推送后 GitHub 自动关闭关联 Issue，无需手动执行 `gh issue 
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.3 | 2026-05-25 | §9 重构为 Commit 规范，新增 §9.1 提交前验收核验（读取→核验→勾选→闭环四步），原内容分拆为 §9.2 引用格式和 §9.3 关闭关键词 |
 | v0.2 | 2026-05-24 | 升级 Issue 类型为原生 Bug/Feature/Task/Epic；新增 Sub-issues、Dependencies、Projects 集成章节；模板升级为 YAML Forms 规范；补充发布前检查 |
 | v0.1 | 2026-05-24 | 初始版本：定义 Issue 类型、生命周期、创建规则、commit 规范、PM 操作清单 |
