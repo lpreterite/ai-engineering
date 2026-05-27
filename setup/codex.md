@@ -87,7 +87,7 @@ Codex CLI 支持在 `.codex/` 中配置 subagent。Agent 角色定义保留在 `
 | 模式 | 说明 | 适用角色 |
 |------|------|----------|
 | `read-only` | 只读文件系统，不可写入 | PO Agent, UI/UX Agent, Tester Agent |
-| `workspace-write` | 可写入工作区 | Orchestrator Agent, Developer Agent |
+| `workspace-write` | 可写入工作区 | Orchestrator Agent, 全栈开发工程师 |
 
 > **内置 Agent**：Codex CLI 提供 `default`, `worker`, `explorer` 三个内置 Agent，自定义 Agent 与之共存。
 
@@ -163,17 +163,17 @@ developer_instructions = """
 """
 ```
 
-**`.codex/agents/developer.toml`** — Developer Agent
+**`.codex/agents/developer.toml`** — 全栈开发工程师
 
 ```toml
 name = "developer"
-description = "Developer Agent — 技术实施，将设计稿和需求转化为高质量代码。当需要编写代码、修复 Bug 或技术重构时使用"
+description = "全栈开发工程师 — 全栈技术实施，覆盖前端、后端、数据库与 DevOps。当需要编写代码、修复 Bug 或技术重构时使用"
 model = "o3"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 nickname_candidates = ["developer", "dev", "开发者"]
 developer_instructions = """
-{将 ai-engineering/agents/developer-agent.md 的完整内容粘贴到此处}
+{将 ai-engineering/agents/fullstack-developer.md 的完整内容粘贴到此处}
 
 ## 补充规范
 
@@ -214,7 +214,7 @@ developer_instructions = """
     ├── orchestrator.toml    # Orchestrator Agent
     ├── po.toml              # PO Agent
     ├── uiux.toml            # UI/UX Agent
-    ├── developer.toml       # Developer Agent
+    ├── developer.toml       # 全栈开发工程师
     └── tester.toml          # Tester Agent
 ```
 
@@ -282,36 +282,19 @@ developer_instructions = """
 
 [agents.developer]
 name = "developer"
-description = "Developer Agent — 技术实施，将设计稿和需求转化为高质量代码"
+description = "全栈开发工程师 — 全栈技术实施，覆盖前端、后端、数据库与 DevOps"
 model = "o3"
 model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 nickname_candidates = ["developer", "dev", "开发者"]
 developer_instructions = """
-{将 ai-engineering/agents/developer-agent.md 的完整内容粘贴到此处}
+{将 ai-engineering/agents/fullstack-developer.md 的完整内容粘贴到此处}
 
 ## 补充规范
 
 遵循以下研发规范（按需引用）：
 - docs/ai-engineering/principles.md
 - docs/ai-engineering/process.md
-- docs/ai-engineering/checklists.md
-"""
-
-[agents.tester]
-name = "tester"
-description = "Tester Agent — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证"
-model = "o4-mini"
-model_reasoning_effort = "high"
-sandbox_mode = "read-only"
-nickname_candidates = ["tester", "qa", "测试"]
-developer_instructions = """
-{将 ai-engineering/agents/tester-agent.md 的完整内容粘贴到此处}
-
-## 补充规范
-
-遵循以下研发规范（按需引用）：
-- docs/ai-engineering/principles.md
 - docs/ai-engineering/checklists.md
 - docs/ai-engineering/deliverables.md
 """

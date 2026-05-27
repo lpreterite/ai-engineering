@@ -18,7 +18,7 @@
 | **PO Agent** | Agent | 需求分析、PRD 起草 | 打磨阶段 |
 | **Orchestrator Agent** | Agent | 多智能体编排、任务路由、门控管理 | 全流程 |
 | **UI/UX Agent** | Agent | 用户方案设计 | 打磨阶段 |
-| **Developer Agent** | Agent | 技术实施 | 执行阶段 |
+| **全栈开发工程师** | Agent | 全栈技术实施（前端/后端/数据库/DevOps） | 执行阶段 |
 | **Tester Agent** | Agent | 测试执行 | 执行阶段 |
 
 ---
@@ -42,8 +42,8 @@
           │                        ▲               │               │
           ▼                        │ 状态订阅       │ 协作协调       │ 设计交付
    ┌─────────────┐   ┌─────────────┴───────────────┴───────────────┐
-   │  Developer   │◄──┤                                               │
-   │  Agent       │   │  状态订阅              协作协调              设计交付
+    │  全栈开发    │◄──┤                                               │
+    │  工程师      │   │  状态订阅              协作协调              设计交付
    └──────┬──────┘   └───────────────────────────────────────────────┘
           │
           ▼
@@ -62,7 +62,7 @@
 | **Orchestrator Agent** | [orchestrator-agent.md](./orchestrator-agent.md) | 编排中枢：状态监控、流程引擎、路由裁决、调度分发 | v0.5 |
 | **PO Agent** | [po-agent.md](./po-agent.md) | 需求分析、动机提取、PRD 起草、机会评估 | v0.3 |
 | **UI/UX Agent** | [uiux-agent.md](./uiux-agent.md) | 设计规范、设计稿、交互说明、设计交接 | v0.3 |
-| **Developer Agent** | [developer-agent.md](./developer-agent.md) | 技术实施、代码编写、单元测试、技术方案 | v0.3 |
+| **全栈开发工程师** | [fullstack-developer.md](./fullstack-developer.md) | 全栈技术实施（前端/后端/数据库/DevOps）、代码编写、单元测试、技术方案 | v0.4 |
 | **Tester Agent** | [tester-agent.md](./tester-agent.md) | 功能测试、回归测试、验收测试、Bug 报告 | v0.3 |
 
 ---
