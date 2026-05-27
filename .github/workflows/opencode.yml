@@ -85,7 +85,7 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
           prompt: |
-            Review this issue. If it is a bug report with a clear reproduction:
+            请用简体中文回复。Review this issue. If it is a bug report with a clear reproduction:
             - Attempt to diagnose the root cause
             - Provide a fix or workaround if feasible
             Otherwise, ensure the issue has enough context and add labels if appropriate.
@@ -109,3 +109,4 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         with:
           model: deepseek/deepseek-v4-flash
+          prompt: 请用简体中文进行代码审查。
