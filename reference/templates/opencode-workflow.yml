@@ -113,7 +113,7 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
           token: ${{ secrets.GITHUB_TOKEN }}
-           prompt: |
+          prompt: |
              请用简体中文回复。对新创建的 Issue 执行以下操作：
              1. 分析 Issue 内容，回复分析结果并添加合适标签（bug/enhancement/question）
              2. 如果信息不足，追问更多上下文
