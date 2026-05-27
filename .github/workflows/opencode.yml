@@ -15,8 +15,6 @@ jobs:
   comment:
     if: |
       github.event_name == 'issue_comment' &&
-      (github.event.comment.author_association == 'OWNER' ||
-       github.event.comment.author_association == 'COLLABORATOR') &&
       (contains(github.event.comment.body, '/oc') ||
        contains(github.event.comment.body, '/opencode')) &&
       (github.event.comment.author_association == 'OWNER' ||
@@ -37,6 +35,8 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         with:
           model: deepseek/deepseek-v4-flash
+          prompt: |
+            默认行为：先分析 Issue 内容，回复解释说明。除非用户明确要求"实施""实现""修改""提PR"等实施性指令，否则不要创建分支或提交 PR。
 
   # PR review 评论触发（代码行级，仅 OWNER / COLLABORATOR）
   review_comment:
