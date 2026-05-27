@@ -62,8 +62,8 @@ jobs:
         with:
           # 【必需】替换为你的模型，格式：provider/model
           model: deepseek/deepseek-v4-flash
-          token: ${{ secrets.GITHUB_TOKEN }}
-           prompt: |
+          use_github_token: true
+          prompt: |
              默认行为：先分析 Issue 内容并回复说明。如果用户明确要求修复、修改或变更，则执行以下流程：
              1. 使用 `gh pr list --search "<issue_number>" --json headRefName,number` 检查该 Issue 是否已有分支/PR
              2. 如果已有关联分支，checkout 到该分支完成修改，已有的 PR 会自动更新
@@ -94,7 +94,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
         with:
           model: deepseek/deepseek-v4-flash
-          token: ${{ secrets.GITHUB_TOKEN }}
+          use_github_token: true
 
   # ── Issue 创建时自动 triage ──
   triage:
@@ -115,7 +115,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
         with:
           model: deepseek/deepseek-v4-flash
-          token: ${{ secrets.GITHUB_TOKEN }}
+          use_github_token: true
           prompt: |
              请用简体中文回复。对新创建的 Issue 执行以下操作：
              1. 分析 Issue 内容，回复分析结果并添加合适标签（bug/enhancement/question）
@@ -143,5 +143,5 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
         with:
           model: deepseek/deepseek-v4-flash
-          token: ${{ secrets.GITHUB_TOKEN }}
+          use_github_token: true
           prompt: 请用简体中文进行代码审查。
