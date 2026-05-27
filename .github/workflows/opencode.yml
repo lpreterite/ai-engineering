@@ -11,10 +11,12 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  # 通过 Issue/PR 评论触发
+  # 通过 Issue/PR 评论触发（仅 OWNER / COLLABORATOR）
   comment:
     if: |
       github.event_name == 'issue_comment' &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'COLLABORATOR') &&
       (contains(github.event.comment.body, '/oc') ||
        contains(github.event.comment.body, '/opencode'))
     runs-on: ubuntu-latest
@@ -34,10 +36,12 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
 
-  # PR review 评论触发（代码行级）
+  # PR review 评论触发（代码行级，仅 OWNER / COLLABORATOR）
   review_comment:
     if: |
       github.event_name == 'pull_request_review_comment' &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'COLLABORATOR') &&
       (contains(github.event.comment.body, '/oc') ||
        contains(github.event.comment.body, '/opencode'))
     runs-on: ubuntu-latest
