@@ -48,7 +48,9 @@
 |------|------|
 | `status/triaged` | 已确认，待分配 |
 | `status/in-progress` | 正在处理 |
-| `status/resolved` | 已修复待验证 |
+| `status/resolved` | 已修复，Developer 自测通过 |
+| `status/ready-for-test` | 已移交待测试，Developer 不可再修改 |
+| `status/testing` | Tester Agent 正在执行测试 |
 | `status/verified` | 已验证通过 |
 | `status/closed` | 已关闭（不修复或已下线） |
 
@@ -57,7 +59,7 @@
 ## 3. Issue 生命周期
 
 ```
-open → triaged → in_progress → resolved → verified → closed
+open → triaged → in_progress → resolved → ready-for-test → testing → verified → closed
 ```
 
 | 阶段 | 操作者 | 说明 |
@@ -65,8 +67,10 @@ open → triaged → in_progress → resolved → verified → closed
 | **open** | 创建者 | 提交 Issue，自动设置 Issue Type |
 | **triaged** | Orchestrator Agent | 确认问题有效，设置优先级和负责人。复杂 Issue 在此阶段拆分为 Sub-issues |
 | **in_progress** | Developer | 开始处理，关联分支或 commit |
-| **resolved** | Developer | 提交修复，PR 关联 Issue，等待验证 |
-| **verified** | Tester Agent | 验证修复有效，回归无新问题 |
+| **resolved** | Developer | 提交修复，PR 关联 Issue，Developer 自测通过 |
+| **ready-for-test** | Developer | 移交 Tester，Developer 不可再修改代码 |
+| **testing** | Tester Agent | 在隔离上下文中独立执行集成/E2E/回归测试 |
+| **verified** | Tester Agent | 测试通过，回归无新问题 |
 | **closed** | Orchestrator Agent | 验证通过后关闭，在 STATUS.md 中同步 |
 
 ---

@@ -186,7 +186,7 @@
 | 测试类型 | 归属 | 责任人 |
 |----------|------|--------|
 | **单元测试** | 功能 Issue 内 | Developer |
-| **集成测试** | 独立 Issue（`{Phase}-T`） | Developer / Tester |
+| **集成测试** | 独立 Issue（`{Phase}-T`） | Tester（隔离上下文执行） |
 | **E2E 测试** | 独立 Issue（`{Phase}-T`） | Developer + 人类确认场景 |
 
 #### 管理规则
@@ -213,7 +213,9 @@
 |------|------|----------|
 | **待办（To Do）** | 已创建但未开始的 Issue | Issue 已关联 Milestone，验收标准完整 |
 | **进行中（In Progress）** | 正在处理的 Issue | 已分配负责人，执行计划明确 |
-| **待验收（In Review）** | 已提交等待验收的 Issue | 代码已提交，自测通过 |
+| **待测试（Ready for Test）** | Developer 完成开发，已移交 Tester | 代码已提交，Developer 自测（单元/冒烟）通过 |
+| **测试中（Testing）** | Tester Agent 正在执行测试 | Tester 已认领，隔离上下文已创建 |
+| **待验收（In Review）** | 测试通过，等待 PM 验收 | 测试报告已出，无 P0/P1 阻塞问题 |
 | **已完成（Done）** | 验收通过的 Issue | 验收标准全部满足 |
 
 #### 管理规则
