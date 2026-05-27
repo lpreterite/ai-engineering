@@ -26,10 +26,6 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: Debug env vars
-        run: |
-          echo "GITHUB_TOKEN set: ${{ secrets.GITHUB_TOKEN != '' }}"
-          echo "DEEPSEEK_API_KEY set: ${{ secrets.DEEPSEEK_API_KEY != '' }}"
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
@@ -40,6 +36,7 @@ jobs:
         uses: anomalyco/opencode/github@latest
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
@@ -72,6 +69,7 @@ jobs:
         uses: anomalyco/opencode/github@latest
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
@@ -120,6 +118,7 @@ jobs:
       - uses: anomalyco/opencode/github@latest
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true

@@ -48,10 +48,6 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: Debug env vars
-        run: |
-          echo "GITHUB_TOKEN set: ${{ secrets.GITHUB_TOKEN != '' }}"
-          echo "LLM_API_KEY set: ${{ secrets.LLM_API_KEY != '' }}"
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
@@ -63,6 +59,7 @@ jobs:
         env:
           # 【必需】替换为你的 API Key Secret 名
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # 【必需】替换为你的模型，格式：provider/model
           model: deepseek/deepseek-v4-flash
