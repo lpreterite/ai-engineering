@@ -113,11 +113,12 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
           token: ${{ secrets.GITHUB_TOKEN }}
-          prompt: |
-            请用简体中文回复。Review this issue. If it is a bug report with a clear reproduction:
-            - Attempt to diagnose the root cause
-            - Provide a fix or workaround if feasible
-            Otherwise, ensure the issue has enough context and add labels if appropriate.
+           prompt: |
+             请用简体中文回复。仅执行以下操作：
+             - 分析 Issue 内容，回复分析结果
+             - 添加合适的标签（bug/enhancement/question）
+             - 如果信息不足，追问更多上下文
+             禁止：不得实施修复、不得创建分支、不得创建 PR。
 
   # ── PR 创建时自动 review ──
   review_pr:
