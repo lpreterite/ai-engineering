@@ -92,7 +92,7 @@ AI 软件研发流程分为两大阶段：
 │   └────────┬────────┘                                           │
 │            ▼                                                    │
 │   ┌─────────────────┐                                           │
-│   │  开发实施       │  ← 全栈开发工程师                           │
+│   │  开发实施       │  ← Full-stack Developer Agent                           │
 │   └────────┬────────┘                                           │
 │            ▼                                                    │
 │   ┌─────────────────┐                                           │
@@ -140,7 +140,7 @@ AI 软件研发流程分为两大阶段：
 | 需求分析 | - | PO Agent：动机提取、线路图设计 |
 | PRD 起草 | - | PO Agent：用户故事、验收标准、原型图 |
 | Roadmap | 验收 | PO Agent + Orchestrator Agent：产品路线图 |
-| 技术方案 | 验收 | Orchestrator Agent + 全栈开发工程师：起草 |
+| 技术方案 | 验收 | Orchestrator Agent + Full-stack Developer Agent：起草 |
 | 用户方案 | 验收 | UI/UX Agent：设计规范+设计稿 |
 | 里程碑规划 | 验收 | PO Agent + Orchestrator Agent：Milestone 划分 |
 
@@ -219,7 +219,7 @@ AI 软件研发流程分为两大阶段：
 
 ### 3.1 执行阶段特点
 
-- **Agent 自主协作**：全栈开发工程师 与 Tester Agent 在 Orchestrator Agent 编排下自主执行
+- **Agent 自主协作**：Full-stack Developer Agent 与 Tester Agent 在 Orchestrator Agent 编排下自主执行
 - **人类关键介入**：在 Gate 3（可使用软件验收）和 Gate 4（可维护软件验收）进行确认
 - **Orchestrator Agent 编排**：处理分歧、监控进度、触发升级
 
@@ -233,7 +233,7 @@ Orchestrator Agent 分配任务
     │
     ▼
 ┌─────────────────┐     ┌─────────────────┐
-│ 全栈开发工程师  │◄───►│  Tester Agent   │
+│ Full-stack Developer Agent  │◄───►│  Tester Agent   │
 │   执行开发       │     │   执行测试       │
 └────────┬────────┘     └────────┬────────┘
          │                      │
@@ -274,7 +274,7 @@ Orchestrator Agent 分配任务
 
 ### 3.3 分歧处理机制
 
-当 全栈开发工程师 与 Tester Agent 出现分歧时：
+当 Full-stack Developer Agent 与 Tester Agent 出现分歧时：
 - 由 Orchestrator Agent 根据风险优先级处理
 - 低风险：Agent 自行协调
 - 中风险：Orchestrator Agent 介入编排

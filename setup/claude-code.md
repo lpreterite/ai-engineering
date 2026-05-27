@@ -183,12 +183,12 @@ color: orange
 @vendor/ai-engineering/agents/uiux-agent.md
 ```
 
-**`.claude/agents/developer.md`** — 全栈开发工程师
+**`.claude/agents/developer.md`** — Full-stack Developer Agent
 
 ```markdown
 ---
 name: developer
-description: 全栈开发工程师 — 全栈技术实施，覆盖前端、后端、数据库与 DevOps。当需要编写代码、修复 Bug、技术重构时使用
+description: Full-stack Developer Agent — 全栈技术实施，覆盖前端、后端、数据库与 DevOps。当需要编写代码、修复 Bug、技术重构时使用
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 maxTurns: 40
@@ -225,7 +225,7 @@ color: red
 │       ├── orchestrator.md    # Orchestrator Agent
 │   ├── po.md              # PO Agent
 │   ├── uiux.md            # UI/UX Agent
-│   ├── developer.md       # 全栈开发工程师
+│   ├── developer.md       # Full-stack Developer Agent
 │   └── tester.md          # Tester Agent
 └── rules/                 # 规则文件（可选）
 ```

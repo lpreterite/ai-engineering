@@ -45,7 +45,7 @@
 | 需求收集 | ✅ 用户诉求原始语料收集 | - |
 | 需求分析 | - | PO Agent：动机提取、线路图设计 |
 | PRD 起草 | - | PO Agent：用户故事、验收标准 |
-| 技术方案 | 验收 | Orchestrator Agent + 全栈开发工程师：起草 |
+| 技术方案 | 验收 | Orchestrator Agent + Full-stack Developer Agent：起草 |
 | 用户方案 | 验收 | UI/UX Agent：起草 |
 | 里程碑规划 | 验收 | PO Agent + Orchestrator Agent：起草 |
 
@@ -138,7 +138,7 @@ Agent 提取关键信息
 
 | 特点 | 说明 |
 |------|------|
-| **Agent 自主协作** | 全栈开发工程师 与 Tester Agent 在 Orchestrator Agent 编排下自主执行 |
+| **Agent 自主协作** | Full-stack Developer Agent 与 Tester Agent 在 Orchestrator Agent 编排下自主执行 |
 | **人类关键介入** | Gate 3（可使用软件验收）和 Gate 4（可维护软件验收）进行最终确认 |
 | **Orchestrator Agent 编排** | 处理分歧、监控进度、触发升级 |
 
@@ -152,7 +152,7 @@ Orchestrator Agent 分配任务
      │
      ▼
 ┌─────────────────┐     ┌─────────────────┐
-│ 全栈开发工程师  │◄───►│  Tester Agent   │
+│ Full-stack Developer Agent  │◄───►│  Tester Agent   │
 │   执行开发       │     │   执行测试       │
 └────────┬────────┘     └────────┬────────┘
          │                      │
@@ -238,7 +238,7 @@ Orchestrator Agent 分配任务
 
 ### 5.4 Developer-Tester 特定处理
 
-当 全栈开发工程师 与 Tester Agent 出现分歧时：
+当 Full-stack Developer Agent 与 Tester Agent 出现分歧时：
 - 由 Orchestrator Agent 根据风险优先级处理
 - 优先基于已批准的文档
 - 其次基于最后更新
@@ -333,7 +333,7 @@ Agent 承担重做成本
 | **设计交付物标准** | UI/UX Agent 提交的设计稿需包含标注规范、尺寸要求、交互说明 |
 | **设计评审规则** | 设计初稿完成后必须经过相关干系人评审，评审通过方可进入开发 |
 | **设计变更管理** | 设计定稿后的变更需评估影响范围，重大变更需重新评审 |
-| **与 Developer 协作** | 设计稿需同步给 全栈开发工程师，提供设计标注和交接说明 |
+| **与 Developer 协作** | 设计稿需同步给 Full-stack Developer Agent，提供设计标注和交接说明 |
 
 ---
 

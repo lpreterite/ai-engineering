@@ -356,8 +356,8 @@ color: "<#hex>"
       "color": "#E67E22"
     },
     "developer": {
-      "name": "全栈开发工程师",
-      "description": "全栈开发工程师 — 全栈技术实施，覆盖前端、后端、数据库与 DevOps",
+      "name": "Full-stack Developer Agent",
+      "description": "Full-stack Developer Agent — 全栈技术实施，覆盖前端、后端、数据库与 DevOps",
       "mode": "subagent",
       "temperature": 0.2,
       "prompt": "{file:vendor/ai-engineering/agents/fullstack-developer.md}",
@@ -475,8 +475,8 @@ deploy_agent "$AGENTS_SRC/uiux-agent.md"     "$AGENTS_DST/uiux.md"     \
   "0.5" "ask" "allow" "15" "#E67E22"
 
 deploy_agent "$AGENTS_SRC/fullstack-developer.md" "$AGENTS_DST/developer.md" \
-  "全栈开发工程师" \
-  "全栈开发工程师 — 全栈技术实施，覆盖前端、后端、数据库与 DevOps" \
+  "Full-stack Developer Agent" \
+  "Full-stack Developer Agent — 全栈技术实施，覆盖前端、后端、数据库与 DevOps" \
   "0.2" "allow" "allow" "30" "#2ECC71"
 
 deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
@@ -486,10 +486,10 @@ deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
 
 echo ""
 echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
-echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX\\ 设计师 @全栈开发工程师 @Tester\\ 测试工程师 调用"
+echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX\\ 设计师 @Full-stack Developer Agent @Tester\\ 测试工程师 调用"
 ```
 
-> **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 全栈开发工程师 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
+> **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Full-stack Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
 
 ---
 
