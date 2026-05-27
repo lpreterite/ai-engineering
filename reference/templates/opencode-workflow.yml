@@ -54,6 +54,11 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Configure git identity
+        run: |
+          git config user.name "opencode-agent[bot]"
+          git config user.email "opencode-agent[bot]@users.noreply.github.com"
+
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
@@ -91,10 +96,16 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Configure git identity
+        run: |
+          git config user.name "opencode-agent[bot]"
+          git config user.email "opencode-agent[bot]@users.noreply.github.com"
+
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
@@ -116,6 +127,7 @@ jobs:
       - uses: anomalyco/opencode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
@@ -141,9 +153,15 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Configure git identity
+        run: |
+          git config user.name "opencode-agent[bot]"
+          git config user.email "opencode-agent[bot]@users.noreply.github.com"
+
       - uses: anomalyco/opencode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
