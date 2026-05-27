@@ -1,0 +1,103 @@
+name: opencode
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  # 通过 Issue/PR 评论触发
+  comment:
+    if: |
+      github.event_name == 'issue_comment' &&
+      (contains(github.event.comment.body, '/oc') ||
+       contains(github.event.comment.body, '/opencode'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
+
+  # PR review 评论触发（代码行级）
+  review_comment:
+    if: |
+      github.event_name == 'pull_request_review_comment' &&
+      (contains(github.event.comment.body, '/oc') ||
+       contains(github.event.comment.body, '/opencode'))
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
+
+  # Issue 创建时自动 triage
+  triage:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
+          prompt: |
+            Review this issue. If it is a bug report with a clear reproduction:
+            - Attempt to diagnose the root cause
+            - Provide a fix or workaround if feasible
+            Otherwise, ensure the issue has enough context and add labels if appropriate.
+
+  # PR 创建时自动 review
+  review_pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: read
+      issues: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
