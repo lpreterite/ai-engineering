@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/setup/`
 **文档状态**：草稿
-**当前版本**：v0.4
+**当前版本**：v0.5
 **发布日期**：2026-04-05
 
 ---
@@ -505,19 +505,74 @@ echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX
 
 ---
 
-## 6. 完整部署流程
+## 6. GitHub Actions 集成
+
+将 OpenCode 接入 GitHub Actions 工作流，实现在 Issue/PR 中通过 `/oc` 或 `/opencode` 自动触发 AI 处理。
+
+### 6.1 安装方式
+
+**方式一：复制模板（推荐）**
+
+从 `reference/templates/opencode-workflow.yml` 复制到目标项目的 `.github/workflows/opencode.yml`：
+
+```bash
+cp vendor/ai-engineering/reference/templates/opencode-workflow.yml .github/workflows/opencode.yml
+```
+
+**方式二：手动创建**
+
+```bash
+mkdir -p .github/workflows
+```
+
+将 [模板内容](file:../reference/templates/opencode-workflow.yml) 粘贴到 `.github/workflows/opencode.yml`。
+
+### 6.2 配置 Secrets
+
+在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中添加：
+
+| Secret 名 | 说明 | 示例值 |
+|-----------|------|--------|
+| `LLM_API_KEY` | AI 模型的 API Key | `sk-ant-xxxxxxxx` |
+
+### 6.3 自定义模型
+
+模板默认使用 `deepseek/deepseek-v4-flash`。修改 workflow 中 `model` 字段：
+
+```yaml
+with:
+  model: anthropic/claude-sonnet-4-20250514  # 替换为你使用的模型
+```
+
+支持的模型格式：`provider/model`（如 `openai/gpt-4o`、`deepseek/deepseek-v4-flash`）。
+
+### 6.4 使用方式
+
+| 场景 | 操作 |
+|------|------|
+| 分析 Issue | 在 Issue 中评论 `/oc 帮我分析这个 Issue` |
+| 修复 Bug | 在 Issue 中评论 `/oc 修复这个 Bug` |
+| 审查 PR | 在 PR 评论中提及 `/oc` 或自动触发 |
+| 自动 Triage | 新 Issue 创建后自动分析并添加标签 |
+
+> 评论触发的操作仅仓库 OWNER 和 COLLABORATOR 可执行。
+
+---
+
+## 7. 完整部署流程
 
 ```
 步骤 1：复制 guide/ 规则文件到 docs/ai-engineering/
 步骤 2：将 ai-engineering 引入项目（Git Submodule / 本地路径）
 步骤 3：创建 AGENTS.md 主指令文件
 步骤 4：创建 opencode.json 或 .opencode/agents/ 配置文件，引用 agents/ 角色
-步骤 5：验证 Agent 加载
+步骤 5：[可选] 部署 GitHub Actions 工作流（参考 §6）
+步骤 6：验证 Agent 加载
 ```
 
 ---
 
-## 7. 验证
+## 8. 验证
 
 安装完成后，在 OpenCode 中执行以下检查：
 
@@ -543,6 +598,7 @@ echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.5 | 2026-05-27 | 新增 §6 GitHub Actions 集成（安装方式、Secrets 配置、模型自定义） |
 | v0.4 | 2026-04-05 | 新增 4.3 直接复制嵌入方式、4.5 一键搬运脚本；补充 frontmatter 注意事项和角色配置摘要表 |
 | v0.3 | 2026-04-05 | 新增 Agent 文件生成指南，基于官方规范补充完整字段说明、权限配置和五个角色完整示例 |
 | v0.2 | 2026-04-04 | 修正 AGENTS.md 规范文件路径为 docs/ai-engineering/，修正交叉引用路径 |

@@ -10,6 +10,8 @@
     "guide/06-document-management.md": "v0.2",
     "guide/07-repo-directory-guide.md": "v0.1",
     "guide/08-tool-integration-guide.md": "v0.6",
-    "guide/issue-workflow.md": "v0.3"
+    "guide/issue-workflow.md": "v0.3",
+    "setup/opencode.md": "v0.5",
+    "reference/templates/opencode-workflow.yml": "v1.0"
   }
 }

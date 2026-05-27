@@ -1,0 +1,136 @@
+# =============================================================================
+# OpenCode GitHub Actions 工作流模板
+# 来源：ai-engineering/reference/templates/opencode-workflow.yml
+#
+# 使用方式：
+#   1. 将此文件复制到目标项目的 .github/workflows/opencode.yml
+#   2. 在 GitHub 仓库 Settings → Secrets and variables → Actions 中添加：
+#      - LLM_API_KEY：你的 AI 模型 API Key（如 Anthropic、DeepSeek 等）
+#   3. 修改下方 model 配置为你使用的模型（默认 deepseek/deepseek-v4-flash）
+#   4. 提交推送后即可在 Issue/PR 中使用 /oc 或 /opencode 触发
+#
+# 事件说明：
+#   - issue_comment：在 Issue/PR 评论中提及 /oc 触发
+#   - pull_request_review_comment：在 PR 代码行评论中提及 /oc 触发
+#   - issues：新 Issue 创建时自动 triage
+#   - pull_request：新 PR 创建时自动 review
+#
+# 权限说明：
+#   - comment / review_comment：仅仓库 OWNER 和 COLLABORATOR 可触发
+#   - triage / review_pr：事件自动触发，无需人工调用
+# =============================================================================
+
+name: opencode
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  # ── 通过 Issue/PR 评论触发 ──
+  comment:
+    if: |
+      github.event_name == 'issue_comment' &&
+      (contains(github.event.comment.body, '/oc') ||
+       contains(github.event.comment.body, '/opencode')) &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'COLLABORATOR')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          # 【必需】替换为你的 API Key Secret 名
+          ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+        with:
+          # 【必需】替换为你的模型，格式：provider/model
+          model: deepseek/deepseek-v4-flash
+          prompt: |
+            默认行为：先分析 Issue 内容并回复说明。如果用户明确要求修复、修改或变更，则直接实施并创建分支/PR。
+
+  # ── PR review 评论触发（代码行级） ──
+  review_comment:
+    if: |
+      github.event_name == 'pull_request_review_comment' &&
+      (contains(github.event.comment.body, '/oc') ||
+       contains(github.event.comment.body, '/opencode')) &&
+      (github.event.comment.author_association == 'OWNER' ||
+       github.event.comment.author_association == 'COLLABORATOR')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode
+        uses: anomalyco/opencode/github@latest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
+
+  # ── Issue 创建时自动 triage ──
+  triage:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            请用简体中文回复。Review this issue. If it is a bug report with a clear reproduction:
+            - Attempt to diagnose the root cause
+            - Provide a fix or workaround if feasible
+            Otherwise, ensure the issue has enough context and add labels if appropriate.
+
+  # ── PR 创建时自动 review ──
+  review_pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+        with:
+          model: deepseek/deepseek-v4-flash
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: 请用简体中文进行代码审查。
