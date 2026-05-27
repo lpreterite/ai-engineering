@@ -26,6 +26,10 @@ jobs:
       pull-requests: write
       issues: write
     steps:
+      - name: Debug env vars
+        run: |
+          echo "GITHUB_TOKEN set: ${{ secrets.GITHUB_TOKEN != '' }}"
+          echo "DEEPSEEK_API_KEY set: ${{ secrets.DEEPSEEK_API_KEY != '' }}"
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
