@@ -4,8 +4,8 @@
 
 **所属目录**：`ai-engineering/`
 **文档状态**：设计中
-**当前版本**：v0.6
-**最后更新**：2026-04-04
+**当前版本**：v0.7
+**最后更新**：2026-05-27
 
 ---
 
@@ -23,8 +23,9 @@
 
 ```
 ai-engineering/
-├── README.md
-├── STATUS.md
+├── README.md                     # 本文件
+├── STATUS.md                     # 项目状态
+├── RELEASE.json                  # 发布版本注册表（版本比对输入）
 ├── setup.md                      # ★ Agent 执行入口（部署规范+安装角色+工具配置）
 │
 ├── guide/                        # 研发规范（面向所有 AI，理解整体流程）
@@ -35,11 +36,11 @@ ai-engineering/
 │   ├── 05-deliverables.md        # 关键文档/产出物要求、模板、验收标准
 │   ├── 06-document-management.md # 文档生命周期、命名规范、同步规则
 │   ├── 07-repo-directory-guide.md # Repo 目录初始化指南（Agent 执行用）
-│   └── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色）
+│   └── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色+非破坏性更新）
 │
 ├── setup/                        # 工具安装指南
 │   ├── claude-code.md            # Claude Code 安装配置
-│   ├── opencode.md               # OpenCode 安装配置
+│   ├── opencode.md               # OpenCode 安装配置（含 deploy-agents.sh）
 │   └── codex.md                  # Codex CLI 安装配置
 │
 ├── agents/                       # Agent 角色定义（每个角色独立文件）
@@ -50,15 +51,22 @@ ai-engineering/
 │   ├── fullstack-developer.md    # Full-stack Developer Agent — 全栈技术实施
 │   └── tester-agent.md           # Tester Agent — 测试执行
 │
+├── scripts/                      # 自动化脚本
+│   ├── bump-version.sh           # 批量更新 guide/*.md 头部版本号
+│   └── validate-release.sh       # 发布前验证（版本一致性 + 来源元数据）
+│
 └── reference/                    # 参考资料
-    └── directory.md              # 项目文档目录结构规范
+    ├── directory.md              # 项目文档目录结构规范
+    └── templates/                # 模板文件
+        └── opencode-workflow.yml # GitHub Actions CI/CD 模板
 ```
 
 ---
 
 ## 文档索引
 
-| [setup.md](./setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置 | ✅ 完成 |
+| [setup.md](./setup.md) | **Agent 执行入口** — 部署规范、安装角色、工具配置、Subagent 版本跟踪 | ✅ 完成 |
+| [RELEASE.json](./RELEASE.json) | **发布版本注册表** — 所有文件版本快照，下游版本比对输入 | ✅ 完成 |
 
 ### 研发规范（guide/）
 
@@ -110,6 +118,7 @@ ai-engineering/
 | **打磨阶段** | 需求打磨，定义"做正确的事" |
 | **执行阶段** | 需求实施，Agent 自主协作执行 |
 | **逐步审查核对** | Agent 提取关键信息，人类多轮沟通验收 |
+| **非破坏性更新** | 通过 MANIFEST 注册表和四步协议实现规范+Agent 增量升级，不覆盖定制内容 |
 
 ### 角色映射
 
@@ -129,7 +138,7 @@ ai-engineering/
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
-| v0.6 | 2026-04-04 | 新增 setup.md 作为 Agent 执行入口 |
+| v0.7 | 2026-05-27 | 新增 RELEASE.json 发布注册表 + scripts/ 自动化脚本；扩展非破坏性更新协议覆盖 subagent；README 补充目录结构 |
 | v0.5 | 2026-04-04 | 新增 reference/ 可部署规则文件（6篇）、setup/ 工具安装指南（3篇），重写 08 为 Agent 使用指南 |
 | v0.4 | 2026-04-04 | 新增 07 Repo 目录初始化指南、08 Agent 工具集成指南 |
 | v0.3 | 2026-04-04 | 目录结构重构：拆分为 guide/agents/reference 三级目录，Agent 拆分为独立文件 |

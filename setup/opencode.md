@@ -4,8 +4,8 @@
 
 **所属目录**：`ai-engineering/setup/`
 **文档状态**：草稿
-**当前版本**：v0.5
-**发布日期**：2026-04-05
+**当前版本**：v0.6
+**发布日期**：2026-05-27
 
 ---
 
@@ -399,32 +399,44 @@ color: "<#hex>"
 
 ### 4.5 一键搬运脚本
 
-以下脚本将 `ai-engineering/agents/` 中的角色定义文件搬运到目标项目的 `.opencode/agents/` 目录，自动添加符合 OpenCode 官方规范的 YAML frontmatter：
+以下脚本提供两种模式：
+
+- **首次部署**：将 `agents/` 角色定义搬运到 `.opencode/agents/`，生成 YAML frontmatter
+- **增量更新**（`--update`）：保留自定义 frontmatter，仅替换角色定义正文
 
 ```bash
 #!/bin/bash
-# deploy-agents.sh — 将 AI 研发体系 Agent 角色部署到目标项目
-# 用法: ./deploy-agents.sh <目标项目路径> [ai-engineering路径]
+# deploy-agents.sh — 部署/更新 AI 研发体系 Agent 角色到目标项目
+# 用法:
+#   首次部署: ./deploy-agents.sh <目标项目路径> [ai-engineering路径]
+#   增量更新: ./deploy-agents.sh --update <目标项目路径> [ai-engineering路径]
 #
 # 示例:
 #   ./deploy-agents.sh /path/to/my-project
-#   ./deploy-agents.sh /path/to/my-project /path/to/ai-engineering
+#   ./deploy-agents.sh --update /path/to/my-project /path/to/ai-engineering
 
 set -euo pipefail
 
-TARGET="${1:?用法: $0 <目标项目路径> [ai-engineering路径]}"
-AI_ENG="${2:-$(cd "$(dirname "$0")/.." && pwd)}"
+MODE="${1:-}"
+if [ "$MODE" = "--update" ]; then
+  UPDATE=true
+  TARGET="${2:?用法: $0 --update <目标项目路径> [ai-engineering路径]}"
+  AI_ENG="${3:-$(cd "$(dirname "$0")/.." && pwd)}"
+else
+  UPDATE=false
+  TARGET="${1:?用法: $0 <目标项目路径> [ai-engineering路径]}"
+  AI_ENG="${2:-$(cd "$(dirname "$0")/.." && pwd)}"
+fi
+
 AGENTS_SRC="$AI_ENG/agents"
 AGENTS_DST="$TARGET/.opencode/agents"
+CHANGED=0
 
 # 检查源目录
 if [ ! -d "$AGENTS_SRC" ]; then
   echo "❌ 错误: agents 目录不存在: $AGENTS_SRC"
   exit 1
 fi
-
-# 创建目标目录
-mkdir -p "$AGENTS_DST"
 
 # 角色 → (源文件, 目标文件, description, temperature, edit, webfetch, steps, color)
 # bash 权限统一为: "*": ask（可按需修改）
@@ -437,7 +449,17 @@ deploy_agent() {
     return
   fi
 
-  cat > "$dst" << FRONTMATTER
+  if [ "$UPDATE" = true ] && [ -f "$dst" ]; then
+    # 更新模式：保留现有 frontmatter，仅替换正文
+    local tmpfile=$(mktemp)
+    # 提取现有 frontmatter（--- ... ---）
+    awk '/^---$/ { if (seen) exit; seen=1; next } seen && /^---$/ { exit } seen' "$dst" > "$tmpfile"
+    if [ -s "$tmpfile" ]; then
+      # 有现有 frontmatter，保留它
+      { cat "$tmpfile"; echo "---"; echo ""; cat "$src"; } > "${dst}.new"
+    else
+      # 无 frontmatter 或格式异常，回退到默认
+      cat > "${dst}.new" << FRONTMATTER
 ---
 name: $agent_name
 description: $desc
@@ -453,10 +475,42 @@ color: "$color"
 ---
 
 FRONTMATTER
+      cat "$src" >> "${dst}.new"
+    fi
+    rm -f "$tmpfile"
 
-  # 追加角色定义正文
-  cat "$src" >> "$dst"
-  echo "✅ 已生成: $dst"
+    # 检查是否有实际变化
+    if diff -q "$dst" "${dst}.new" > /dev/null 2>&1; then
+      rm -f "${dst}.new"
+      echo "⏭️  无变化: $dst"
+    else
+      mv "${dst}.new" "$dst"
+      CHANGED=$((CHANGED + 1))
+      echo "🔄 已更新: $dst"
+    fi
+  else
+    # 首次部署
+    mkdir -p "$(dirname "$dst")"
+    cat > "$dst" << FRONTMATTER
+---
+name: $agent_name
+description: $desc
+mode: subagent
+temperature: $temp
+permission:
+  edit: $perm_edit
+  bash:
+    "*": ask
+  webfetch: $perm_webfetch
+steps: $steps
+color: "$color"
+---
+
+FRONTMATTER
+    cat "$src" >> "$dst"
+    CHANGED=$((CHANGED + 1))
+    echo "✅ 已生成: $dst"
+  fi
 }
 
 deploy_agent "$AGENTS_SRC/orchestrator-agent.md" "$AGENTS_DST/orchestrator.md" \
@@ -485,11 +539,55 @@ deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
   "0.1" "ask" "deny" "20" "#E74C3C"
 
 echo ""
-echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
-echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX\\ 设计师 @Full-stack Developer Agent @Tester\\ 测试工程师 调用"
+if [ "$UPDATE" = true ]; then
+  echo "🎉 更新完成！$CHANGED 个 Agent 文件已更新到 $AGENTS_DST"
+  if [ "$CHANGED" -gt 0 ]; then
+    echo "⚠️  请退出当前 OpenCode 会话后重新调用 @agent 名称 以加载新定义"
+  fi
+else
+  echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
+  echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX\\ 设计师 @Full-stack Developer Agent @Tester\\ 测试工程师 调用"
+fi
 ```
 
-> **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Full-stack Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
+> **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Full-stack Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。`--update` 模式会保留你对 frontmatter 的自定义修改，仅替换 `---` 下方的角色定义正文。
+
+---
+
+### 4.6 更新 Subagent
+
+当源仓库 `agents/` 目录的角色文件发布新版本时，按以下步骤更新：
+
+#### 方式一：直接嵌入（使用 deploy-agents.sh）
+
+```bash
+# 更新所有 agent 文件（保留自定义 frontmatter）
+./deploy-agents.sh --update /path/to/my-project /path/to/ai-engineering
+```
+
+脚本会：
+1. 读取现有的 `.opencode/agents/*.md` frontmatter（保留你的权限、温度等自定义配置）
+2. 对比源文件判断是否有变化
+3. 仅替换角色定义正文（`---` 下方内容）
+4. 提示退出会话重新加载
+
+#### 方式二：{file:...} 引用（推荐）
+
+如果使用 Git Submodule 且 agent 配置为 `{file:vendor/ai-engineering/agents/xxx-agent.md}`：
+
+```bash
+# 更新子模块
+git submodule update --remote vendor/ai-engineering
+# 重新初始化 Agent：退出当前会话后重新调用 @agent 名称
+```
+
+agent 文件不复制到目标项目，更新子模块后**无需文件操作**。但 `{file:...}` 引用是懒加载的，需要**退出当前 OpenCode 会话**后重新进入才能看到新内容。
+
+#### 版本跟踪
+
+建议同时在 `MANIFEST.json` 中记录 agent 版本（参见 [setup.md](../setup.md) 的「步骤 3b」），以便未来版本比对。
+
+> **注意**：无论是哪种配置方式，更新 agent 角色定义后都需要重新初始化 Agent 会话才能生效。OpenCode 不支持热加载 subagent 定义。
 
 ---
 
@@ -502,6 +600,14 @@ echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX
 @PO 产品经理 起草 PRD 文档
 @Orchestrator 编排 检查项目状态
 ```
+
+### 5.1 更新 Agent 后重新加载
+
+| 配置方式 | 更新后操作 |
+|----------|-----------|
+| `.opencode/agents/*.md` 直接嵌入 | 退出当前会话，重新 @ 调用即可 |
+| `opencode.json` 中 `{file:...}` 引用 | 退出当前会话，重新 @ 调用即可 |
+| 两种方式通用 | 运行 `deploy-agents.sh --update` 后需退出会话重入 |
 
 ---
 
@@ -598,7 +704,7 @@ with:
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
-| v0.5 | 2026-05-27 | 新增 §6 GitHub Actions 集成（安装方式、Secrets 配置、模型自定义） |
+| v0.6 | 2026-05-27 | §4.5 deploy-agents.sh 增加 --update 模式（保留 frontmatter，仅替换正文）；新增 §4.6「更新 Subagent」引导章节；§5 增加更新后重新加载说明 |
 | v0.4 | 2026-04-05 | 新增 4.3 直接复制嵌入方式、4.5 一键搬运脚本；补充 frontmatter 注意事项和角色配置摘要表 |
 | v0.3 | 2026-04-05 | 新增 Agent 文件生成指南，基于官方规范补充完整字段说明、权限配置和五个角色完整示例 |
 | v0.2 | 2026-04-04 | 修正 AGENTS.md 规范文件路径为 docs/ai-engineering/，修正交叉引用路径 |

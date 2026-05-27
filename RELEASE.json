@@ -9,9 +9,16 @@
     "guide/05-deliverables.md": "v0.7",
     "guide/06-document-management.md": "v0.2",
     "guide/07-repo-directory-guide.md": "v0.1",
-    "guide/08-tool-integration-guide.md": "v0.6",
+    "guide/08-tool-integration-guide.md": "v0.7",
+    "setup.md": "v0.6",
     "guide/issue-workflow.md": "v0.3",
-    "setup/opencode.md": "v0.5",
-    "reference/templates/opencode-workflow.yml": "v1.0"
+    "setup/opencode.md": "v0.6",
+    "reference/templates/opencode-workflow.yml": "v1.0",
+    "agents/README.md": "v0.3",
+    "agents/orchestrator-agent.md": "v0.5",
+    "agents/po-agent.md": "v0.3",
+    "agents/uiux-agent.md": "v0.3",
+    "agents/fullstack-developer.md": "v0.4",
+    "agents/tester-agent.md": "v0.3"
   }
 }

@@ -3,8 +3,8 @@
 > Agent Setup Guide (Executable)
 
 **文档状态**：已发布
-**当前版本**：v0.3
-**发布日期**：2026-05-24
+**当前版本**：v0.6
+**发布日期**：2026-05-27
 
 ---
 
@@ -66,6 +66,8 @@ MANIFEST
 
 > 最小部署：至少复制前 3 个文件即可启用基本协作规范。
 
+> **Subagent 版本记录**：首次部署后，建议同时在 MANIFEST 中记录 `agents/` 目录角色文件的版本（参见下方"步骤 3b"），以便后续升级时 AI 能比对 agent 版本变化。
+
 ### 步骤 2：配置 AI 编程工具
 
 根据目标项目使用的 AI 编程工具，阅读对应的安装指南完成配置：
@@ -104,6 +106,32 @@ docs/
 └── project-tasks/                 # 任务跟踪（按需创建）
 ```
 
+### 步骤 3b：初始化 Subagent 版本跟踪
+
+在 `MANIFEST.json` 中同时记录 `agents/` 目录的角色文件版本，以便后续升级时 AI 能比对版本变化：
+
+```bash
+# 在现有的 MANIFEST.json 中追加 agent 文件版本记录
+python3 -c "
+import json
+with open('docs/ai-engineering/MANIFEST.json') as f:
+    m = json.load(f)
+agents = {
+    'orchestrator-agent.md': { 'source': 'agents/orchestrator-agent.md', 'version': 'v0.5', 'customized': false, 'previous_version': null, 'category': 'agent' },
+    'po-agent.md':           { 'source': 'agents/po-agent.md',           'version': 'v0.3', 'customized': false, 'previous_version': null, 'category': 'agent' },
+    'uiux-agent.md':         { 'source': 'agents/uiux-agent.md',         'version': 'v0.3', 'customized': false, 'previous_version': null, 'category': 'agent' },
+    'fullstack-developer.md':{ 'source': 'agents/fullstack-developer.md','version': 'v0.4', 'customized': false, 'previous_version': null, 'category': 'agent' },
+    'tester-agent.md':       { 'source': 'agents/tester-agent.md',       'version': 'v0.3', 'customized': false, 'previous_version': null, 'category': 'agent' }
+}
+m['files'].update(agents)
+with open('docs/ai-engineering/MANIFEST.json', 'w') as f:
+    json.dump(m, f, indent=2)
+    f.write('\n')
+"
+```
+
+> agent 文件不物理复制到目标项目，AI 工具通过 `{file:...}` 或 `@path` 路径引用源文件。MANIFEST 仅用于版本跟踪。
+
 ### 步骤 4：验证部署
 
 **必选检查**（全部通过才算部署完成）：
@@ -131,10 +159,43 @@ docs/
 
 ---
 
+## 4. 更新 Subagent
+
+当源仓库 `agents/` 目录的角色文件有更新时，需要同步更新目标项目的 agent 配置。
+
+### 版本比对
+
+AI 通过以下方式检测 agent 是否需要更新：
+
+1. 读取源仓库 `RELEASE.json` 中 `agents/*.md` 的版本号
+2. 与下游 `MANIFEST.json` 中 `category: "agent"` 的条目逐文件比对
+3. 标记过期 agent 清单
+
+### 更新方式（分工具）
+
+| 配置方式 | 更新操作 | 说明 |
+|----------|----------|------|
+| `{file:...}` 引用 | 无需复制文件，但需**重新初始化 Agent** 才能加载新内容 | 退出当前会话重新调用 agent |
+| `.opencode/agents/*.md` 直接嵌入 | 重新运行 `deploy-agents.sh --update`（参见 [setup/opencode.md](./setup/opencode.md)） | 保留自定义 frontmatter |
+| `.claude/agents/*.md` 直接嵌入 | 手动复制新角色定义到对应 `.claude/agents/*.md`，或重新运行安装脚本 | 旧内容被覆盖 |
+| `.codex/config.toml` | 无需更新配置文件，但需检查语义版本变化 | 重启 codex 会话 |
+
+### 更新后验证
+
+```
+□ MANIFEST.json 中 agent 版本已更新
+□ AI 工具能正确引用新版角色文件
+□ 通过 @agent 名称 能正常调用每个 subagent
+□ （直接嵌入模式）角色定义正文已替换为最新版本
+```
+
+---
+
 ## 修订记录
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.6 | 2026-05-27 | 新增步骤 3b「初始化 Subagent 版本跟踪」和第 4 章「更新 Subagent」，MANIFEST 扩展支持 agent 文件 |
 | v0.5 | 2026-05-24 | 验证清单中将 STATUS.md 标记为必选，增加初始内容要求 |
 | v0.3 | 2026-04-04 | Agent 角色不再复制到目标项目，改为通过 setup/ 指南由 AI 工具按需引用 |
 | v0.2 | 2026-04-04 | 部署目标改为 docs/ai-engineering/ 子目录 |
