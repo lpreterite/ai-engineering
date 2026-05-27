@@ -145,7 +145,7 @@ Orchestrator Agent 在「发布前检查」中执行：
 ```
 □ 列出所有 open 的 blocked by 关系
 □ 识别阻塞链顶端的 P0 Issue，确认其状态
-□ 超过 24h 未解决的阻塞 → 升级人工 PM
+□ 超过 24h 未解决的阻塞 → 升级人类
 ```
 
 ---
@@ -154,7 +154,7 @@ Orchestrator Agent 在「发布前检查」中执行：
 
 | 角色 | 时机 | 创建类型 |
 |------|------|----------|
-| **Tester Agent** | 测试发现缺陷，在 `bug_reported` 消息中上报给 PM | 由 PM 代为创建 Bug Issue |
+| **Tester Agent** | 测试发现缺陷，在 `bug_reported` 消息中上报给 Orchestrator Agent | 由 Orchestrator Agent 代为创建 Bug Issue |
 | **Orchestrator Agent** | 收到 Tester 上报、验收发现问题、用户反馈 | Bug / Feature |
 | **PO Agent** | 需求分析中识别出新功能或改进点 | Feature / Epic |
 | **Developer** | 开发过程中发现预想不到的问题或改进机会 | Bug / Feature / Task |

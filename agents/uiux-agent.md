@@ -78,7 +78,7 @@
 
 ### 第四阶段：设计验收（Gate 2）
 
-- 协助人类 PO/PM 逐步审查设计稿
+- 协助人类 PO/Orchestrator Agent 逐步审查设计稿
 - 响应修订反馈，迭代更新设计
 - 准备向 Full-stack Developer Agent 的设计交接
 

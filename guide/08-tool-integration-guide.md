@@ -282,7 +282,7 @@ AI 自动合并
   ├─ 无冲突 → 直接写入
   ├─ 低风险冲突（格式/措辞微调）→ AI 裁决，MANIFEST 记录 auto_resolved
   └─ 高风险冲突（结构变更/逻辑矛盾）→ 挂起，在文件中标记 >>>CONFLICT<<<
-      → 升级人工 PM 处理
+      → 升级人类处理
       → 人工处理后更新 MANIFEST customized 状态
 ```
 
@@ -384,8 +384,8 @@ Step 6：提交 + 通知
 
 ```
 1. AI 在 MANIFEST 中记录冲突文件清单
-2. AI 在验收报告或 Issue 中通知人工 PM
-3. 人工 PM 处理冲突：
+2. AI 在验收报告或 Issue 中通知人类
+3. 人类处理冲突：
    ├─ 打开冲突文件，搜索 >>>CONFLICT
    ├─ 审阅 Base / Theirs / Ours 三方差异
    ├─ 手动编辑保留正确内容，移除冲突标记
