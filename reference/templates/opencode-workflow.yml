@@ -54,10 +54,13 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Configure git identity
+      - name: Configure git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "opencode-agent[bot]"
           git config user.email "opencode-agent[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
 
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
@@ -71,11 +74,25 @@ jobs:
           use_github_token: true
           prompt: |
              当用户在 Issue/PR 中提及 /oc 时执行以下逻辑：
-             1. 如果用户提出了明确的需求、修复要求或修改指令，直接实施修改：
-                a. 使用 `gh pr list --search "<issue_number>" --json headRefName,number` 检查是否已有分支/PR
-                b. 如果已有关联分支，checkout 到该分支完成修改
-                c. 如果没有关联分支，创建新分支和 PR
-             2. 如果用户只是提问或讨论，先分析内容并回复说明
+
+             【上下文注入】
+             - 自动获取当前 Issue/PR 的标题、描述和所有评论
+             - 读取关联文件的内容以理解全貌
+
+             【意图判断】
+             - 如果用户包含"请更改""修改""修复""更新""改成"等指令词 → 视为变更请求，执行实施流程
+             - 如果用户只是提问、讨论或建议 → 分析内容并回复说明
+
+             【实施流程-分支复用/创建】
+             1. 使用 `gh pr list --search "<issue_number>" --json headRefName,number` 检查是否已有关联分支
+             2. 如果已有关联分支 → checkout 到该分支完成修改（已有 PR 自动更新）
+             3. 如果没有关联分支 → 创建新分支和 PR
+
+             【权限约束】
+             - 只能修改 Issue/PR 中涉及的文件，不得改动无关文件
+             - 不得删除文件，除非用户明确要求
+             - 不得修改 .github/workflows 下的 CI 配置文件
+             - 每次修改前先确认文件当前内容
 
   # ── PR review 评论触发（代码行级） ──
   review_comment:
@@ -96,10 +113,13 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Configure git identity
+      - name: Configure git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "opencode-agent[bot]"
           git config user.email "opencode-agent[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
 
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
@@ -109,6 +129,27 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
+          prompt: |
+             当用户在 PR 代码行评论中提及 /oc 时执行以下逻辑：
+
+             【上下文注入】
+             - 自动获取当前 PR 的标题、描述、diff 和所有评论
+             - 读取关联文件的内容以理解全貌
+
+             【意图判断】
+             - 如果用户包含"请更改""修改""修复""更新""改成"等指令词 → 视为变更请求，执行实施流程
+             - 如果用户只是提问、讨论或建议 → 分析内容并回复说明
+
+             【实施流程-分支复用/创建】
+             1. 使用 `gh pr list --search "<issue_number>" --json headRefName,number` 检查是否已有关联分支
+             2. 如果已有关联分支 → checkout 到该分支完成修改（已有 PR 自动更新）
+             3. 如果没有关联分支 → 创建新分支和 PR
+
+             【权限约束】
+             - 只能修改当前 PR 中涉及的文件，不得改动无关文件
+             - 不得删除文件，除非用户明确要求
+             - 不得修改 .github/workflows 下的 CI 配置文件
+             - 每次修改前先确认文件当前内容
 
   # ── Issue 创建时自动 triage ──
   triage:
@@ -153,10 +194,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Configure git identity
+      - name: Configure git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "opencode-agent[bot]"
           git config user.email "opencode-agent[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
 
       - uses: anomalyco/opencode/github@latest
         env:
@@ -165,4 +209,18 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
-          prompt: 请用简体中文进行代码审查。
+          prompt: |
+             当有新 PR 创建时自动进行代码审查：
+
+             【上下文注入】
+             - 获取 PR 的标题、描述和完整 diff
+             - 读取变更文件的内容
+
+             【审查要求】
+             - 检查代码质量、架构一致性、命名规范、文档完整性
+             - 如果发现 bug 或安全隐患，在 PR 评论中明确指出
+             - 提供具体的修改建议（文件路径 + 行号 + 建议代码）
+
+             【权限约束】
+             - 不得直接修改 PR 代码
+             - 仅通过 PR review 评论反馈
