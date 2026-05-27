@@ -47,7 +47,7 @@ ai-engineering/
 │   ├── orchestrator-agent.md     # Orchestrator Agent — 编排中枢
 │   ├── po-agent.md               # PO Agent — 需求分析、PRD 起草
 │   ├── uiux-agent.md             # UI/UX Agent — 用户方案设计
-│   ├── developer-agent.md        # Developer Agent — 技术实施
+│   ├── fullstack-developer.md    # 全栈开发工程师 — 全栈技术实施
 │   └── tester-agent.md           # Tester Agent — 测试执行
 │
 └── reference/                    # 参考资料
@@ -89,7 +89,7 @@ ai-engineering/
 | [orchestrator-agent.md](./agents/orchestrator-agent.md) | Orchestrator Agent — 编排中枢 | ✅ 完成 |
 | [po-agent.md](./agents/po-agent.md) | PO Agent — 需求分析、PRD 起草 | ✅ 完成 |
 | [uiux-agent.md](./agents/uiux-agent.md) | UI/UX Agent — 用户方案设计 | ✅ 完成 |
-| [developer-agent.md](./agents/developer-agent.md) | Developer Agent — 技术实施 | ✅ 完成 |
+| [fullstack-developer.md](./agents/fullstack-developer.md) | 全栈开发工程师 — 全栈技术实施（前端/后端/数据库/DevOps） | ✅ 完成 |
 | [tester-agent.md](./agents/tester-agent.md) | Tester Agent — 测试执行 | ✅ 完成 |
 
 ### 参考资料（reference/）
@@ -120,7 +120,7 @@ ai-engineering/
 | Orchestrator Agent | 编排中枢 | [orchestrator-agent.md](./agents/orchestrator-agent.md) |
 | PO Agent | 需求分析、PRD 起草 | [po-agent.md](./agents/po-agent.md) |
 | UI/UX Agent | 用户方案设计 | [uiux-agent.md](./agents/uiux-agent.md) |
-| Developer Agent | 技术实施 | [developer-agent.md](./agents/developer-agent.md) |
+| 全栈开发工程师 | 全栈技术实施（前端/后端/数据库/DevOps） | [fullstack-developer.md](./agents/fullstack-developer.md) |
 | Tester Agent | 测试执行 | [tester-agent.md](./agents/tester-agent.md) |
 
 ---
