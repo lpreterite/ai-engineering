@@ -44,6 +44,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -59,6 +62,7 @@ jobs:
         with:
           # 【必需】替换为你的模型，格式：provider/model
           model: deepseek/deepseek-v4-flash
+          token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             默认行为：先分析 Issue 内容并回复说明。如果用户明确要求修复、修改或变更，则直接实施并创建分支/PR。
 
@@ -73,6 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -86,6 +91,7 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
         with:
           model: deepseek/deepseek-v4-flash
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   # ── Issue 创建时自动 triage ──
   triage:
