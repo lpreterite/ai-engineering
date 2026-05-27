@@ -278,7 +278,7 @@ Orchestrator Agent 分配任务
 - 由 Orchestrator Agent 根据风险优先级处理
 - 低风险：Agent 自行协调
 - 中风险：Orchestrator Agent 介入编排
-- 高风险：升级人类 PM 决策
+- 高风险：升级人类决策
 
 ### 3.4 交付阶段 Gate 4：可维护软件验收
 

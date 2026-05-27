@@ -306,7 +306,7 @@ developer_instructions = """
 
 ```bash
 # 通过自然语言委派任务给指定 Agent
-# PM 检查项目状态
+# Orchestrator Agent 检查项目状态
 # 让 developer 实现用户登录功能
 # 让 po 起草 PRD 文档
 
