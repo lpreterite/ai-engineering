@@ -64,7 +64,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | Orchestrator Agent + 全栈开发工程师（起草）、Product Manager（验收） |
+| **责任人** | Orchestrator Agent + Full-stack Developer Agent（起草）、Product Manager（验收） |
 | **参与 Gate** | Gate 2 |
 | **存放位置** | `docs/engineering/` |
 
@@ -143,7 +143,7 @@
 
 | 属性 | 说明 |
 |------|------|
-| **责任人** | Orchestrator Agent（维护）、全栈开发工程师 / Tester Agent（执行） |
+| **责任人** | Orchestrator Agent（维护）、Full-stack Developer Agent / Tester Agent（执行） |
 | **创建时机** | Gate 2 验收通过后，Phase 执行启动前 |
 | **存放位置** | GitHub Issues（纳入对应的 Milestone） |
 

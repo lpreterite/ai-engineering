@@ -151,7 +151,7 @@
 | Gate | 评审内容 | 评审参与方 |
 |------|----------|-----------|
 | Gate 1 | PRD | Product Owner, PO Agent |
-| Gate 2 | 技术方案 | Product Manager, 全栈开发工程师 |
+| Gate 2 | 技术方案 | Product Manager, Full-stack Developer Agent |
 | Gate 2 | 用户方案 | Product Owner, UI/UX Agent |
 | Gate 3 | 可使用软件验收 | Product Owner, Orchestrator Agent |
 | Gate 4 | 可维护软件验收 | Product Owner, Orchestrator Agent |

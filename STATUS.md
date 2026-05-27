@@ -37,7 +37,7 @@
 | Orchestrator Agent | ✅ 完成 | [agents/orchestrator-agent.md](./agents/orchestrator-agent.md) |
 | PO Agent | ✅ 完成 | [agents/po-agent.md](./agents/po-agent.md) |
 | UI/UX Agent | ✅ 完成 | [agents/uiux-agent.md](./agents/uiux-agent.md) |
-| 全栈开发工程师 | ✅ 完成 | [agents/fullstack-developer.md](./agents/fullstack-developer.md) |
+| Full-stack Developer Agent | ✅ 完成 | [agents/fullstack-developer.md](./agents/fullstack-developer.md) |
 | Tester Agent | ✅ 完成 | [agents/tester-agent.md](./agents/tester-agent.md) |
 
 ### 参考资料（reference/）

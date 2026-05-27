@@ -106,9 +106,9 @@ target-project/
 
 | 文件 | 维护者 | 创建时机 |
 |------|--------|----------|
-| `technical-spec.md` | 全栈开发工程师 | Gate 1 通过后 |
+| `technical-spec.md` | Full-stack Developer Agent | Gate 1 通过后 |
 
-| `architecture.md` | 全栈开发工程师 | Gate 1 通过后 |
+| `architecture.md` | Full-stack Developer Agent | Gate 1 通过后 |
 ### 3.4 设计文档（docs/design/）
 
 定义设计规范和设计稿，包括设计系统、页面设计等。
@@ -161,7 +161,7 @@ Orchestrator Agent 通过读写这些文档与其他 Agent 和人工团队协作
 |-------|----------|----------|
 | PO Agent | PRD.md, user-stories.md | PRD.md |
 | UI/UX Agent | PRD.md | design-system.md, page-design.md |
-| 全栈开发工程师 | technical-spec.md, architecture.md | 代码（前端/后端/数据库/DevOps） |
+| Full-stack Developer Agent | technical-spec.md, architecture.md | 代码（前端/后端/数据库/DevOps） |
 | Tester Agent | technical-spec.md, PRD.md | review.md |
 
 ---
