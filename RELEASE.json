@@ -12,6 +12,11 @@
     "guide/08-tool-integration-guide.md": "v0.6",
     "guide/issue-workflow.md": "v0.3",
     "setup/opencode.md": "v0.5",
-    "reference/templates/opencode-workflow.yml": "v1.0"
+    "reference/templates/opencode-workflow.yml": "v1.0",
+    "agents/orchestrator-agent.md": "v0.3",
+    "agents/po-agent.md": "v0.2",
+    "agents/uiux-agent.md": "v0.2",
+    "agents/fullstack-developer.md": "v0.2",
+    "agents/tester-agent.md": "v0.2"
   }
 }

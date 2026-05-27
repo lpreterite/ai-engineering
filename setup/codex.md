@@ -316,6 +316,18 @@ developer_instructions = """
 
 ---
 
+### 4.5 更新 Subagent 角色
+
+Codex CLI **必须直接嵌入**角色内容，源 `agents/*.md` 更新后不会自动同步。可通过以下步骤手动更新：
+
+1. 查看源仓库 `RELEASE.json` 中 `agents/*.md` 的版本号
+2. 对比目标项目 `docs/ai-engineering/MANIFEST.json` 中 `agents` 字段的记录
+3. 如有版本差异，手动将新版内容粘贴到对应 `.codex/agents/*.toml` 的 `developer_instructions` 中
+
+详细更新机制参见 [guide/08-tool-integration-guide.md §6 非破坏性更新机制](../guide/08-tool-integration-guide.md#6-非破坏性更新机制)。
+
+---
+
 ## 5. 全局配置
 
 将通用工作协议写入 `~/.codex/AGENTS.md`，所有项目自动继承：
@@ -339,7 +351,8 @@ developer_instructions = """
 步骤 2：将 ai-engineering 引入项目（Git Submodule / 本地路径）
 步骤 3：创建 AGENTS.md 主指令文件
 步骤 4：创建 .codex/agents/ 独立文件或 .codex/config.toml，将 agents/ 角色内容粘贴到 developer_instructions
-步骤 5：验证 Agent 加载
+步骤 5：[可选] 在 MANIFEST.json 记录 agents 版本号
+步骤 6：验证 Agent 加载
 ```
 
 ---
@@ -371,6 +384,7 @@ developer_instructions = """
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.4 | 2026-05-27 | §4.5 新增 Subagent 角色更新说明，指导手动比对版本和重新嵌入 |
 | v0.3 | 2026-04-05 | 新增 Agent 文件生成指南，基于官方规范补充完整 TOML 字段说明、沙箱模式、全局配置和五个角色完整示例 |
 | v0.2 | 2026-04-04 | 重构：拆分独立 Agent 文件和集中式配置两种方式，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |

@@ -403,38 +403,119 @@ color: "<#hex>"
 
 ```bash
 #!/bin/bash
-# deploy-agents.sh — 将 AI 研发体系 Agent 角色部署到目标项目
-# 用法: ./deploy-agents.sh <目标项目路径> [ai-engineering路径]
+# deploy-agents.sh — 将 AI 研发体系 Agent 角色部署/更新到目标项目
+# 用法:
+#   首次部署: ./deploy-agents.sh <目标项目路径> [ai-engineering路径]
+#   增量更新: ./deploy-agents.sh --update <目标项目路径> [ai-engineering路径] [--manifest-path <MANIFEST.json路径>]
 #
 # 示例:
 #   ./deploy-agents.sh /path/to/my-project
-#   ./deploy-agents.sh /path/to/my-project /path/to/ai-engineering
+#   ./deploy-agents.sh --update /path/to/my-project
+#   ./deploy-agents.sh --update /path/to/my-project /path/to/ai-engineering \
+#     --manifest-path /path/to/my-project/docs/ai-engineering/MANIFEST.json
 
 set -euo pipefail
 
-TARGET="${1:?用法: $0 <目标项目路径> [ai-engineering路径]}"
-AI_ENG="${2:-$(cd "$(dirname "$0")/.." && pwd)}"
+# ---- 参数解析 ----
+UPDATE_MODE=false
+MANIFEST_PATH=""
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --update) UPDATE_MODE=true; shift ;;
+    --manifest-path) MANIFEST_PATH="$2"; shift 2 ;;
+    *) POSITIONAL+=("$1"); shift ;;
+  esac
+done
+
+TARGET="${POSITIONAL[0]:?用法: $0 [--update] <目标项目路径> [ai-engineering路径]}"
+AI_ENG="${POSITIONAL[1]:-$(cd "$(dirname "$0")/.." && pwd)}"
 AGENTS_SRC="$AI_ENG/agents"
 AGENTS_DST="$TARGET/.opencode/agents"
+AGENTS_MANIFEST="$AGENTS_DST/.agent-manifest.json"
 
 # 检查源目录
 if [ ! -d "$AGENTS_SRC" ]; then
-  echo "❌ 错误: agents 目录不存在: $AGENTS_SRC"
+  echo "❌ 错误: agents 源目录不存在: $AGENTS_SRC"
   exit 1
 fi
 
 # 创建目标目录
 mkdir -p "$AGENTS_DST"
 
-# 角色 → (源文件, 目标文件, description, temperature, edit, webfetch, steps, color)
-# bash 权限统一为: "*": ask（可按需修改）
+# 角色配置表： (源文件名, 目标文件名, agent_name, description, temperature, edit, webfetch, steps, color)
+declare -A AGENT_CONFIG=(
+  ["orchestrator-agent.md"]="orchestrator.md|Orchestrator 编排|Orchestrator 编排 — 多智能体编排中枢，驱动编排流程、路由任务、门控质量、引导用户|0.3|ask|deny|20|#4A90D9"
+  ["po-agent.md"]="po.md|PO 产品经理|PO 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求|0.4|ask|allow|15|#7B68EE"
+  ["uiux-agent.md"]="uiux.md|UI/UX 设计师|UI/UX 设计师 — 用户方案设计，设计规范制定、设计稿和交互说明|0.5|ask|allow|15|#E67E22"
+  ["fullstack-developer.md"]="developer.md|Full-stack Developer Agent|Full-stack Developer Agent — 全栈技术实施，覆盖前端、后端、数据库与 DevOps|0.2|allow|allow|30|#2ECC71"
+  ["tester-agent.md"]="tester.md|Tester 测试工程师|Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证|0.1|ask|deny|20|#E74C3C"
+)
 
+# ---- 函数定义 ----
+
+# 计算文件 MD5
+checksum() {
+  md5sum "$1" 2>/dev/null | cut -d' ' -f1 || echo ""
+}
+
+# 读取已部署的 manifest
+read_manifest() {
+  if [ -f "$AGENTS_MANIFEST" ]; then
+    cat "$AGENTS_MANIFEST"
+  else
+    echo "{}"
+  fi
+}
+
+# 写入 manifest
+write_manifest() {
+  echo "$1" > "$AGENTS_MANIFEST"
+}
+
+# 记录部署状态到外部 MANIFEST.json
+update_external_manifest() {
+  local src_name="$1" version="$2"
+  [ -z "$MANIFEST_PATH" ] && return
+  [ ! -f "$MANIFEST_PATH" ] && return
+  local agent_key="${src_name%.md}"
+  local tmp=$(mktemp)
+  python3 -c "
+import json, sys
+with open('$MANIFEST_PATH') as f:
+    m = json.load(f)
+m.setdefault('agents', {})
+agent_key = '$agent_key'
+if agent_key not in m['agents']:
+    m['agents'][agent_key] = {
+        'source': 'agents/$src_name',
+        'version': '$version',
+        'customized': False,
+        'previous_version': None
+    }
+else:
+    m['agents'][agent_key]['version'] = '$version'
+with open('$MANIFEST_PATH', 'w') as f:
+    json.dump(m, f, indent=2)
+    f.write('\n')
+" 2>/dev/null && rm "$tmp" || true
+}
+
+# 部署或更新单个 agent
 deploy_agent() {
   local src="$1" dst="$2" agent_name="$3" desc="$4" temp="$5" perm_edit="$6" perm_webfetch="$7" steps="$8" color="$9"
+  local src_name="${10}" customized="${11:-false}"
 
   if [ ! -f "$src" ]; then
-    echo "⚠️  跳过: $src (文件不存在)"
-    return
+    echo "⚠️   跳过: $src (文件不存在)"
+    return 1
+  fi
+
+  # 如果是更新模式且已定制，跳过
+  if [ "$UPDATE_MODE" = true ] && [ "$customized" = "true" ]; then
+    echo "⏭️   跳过 $dst (已定制，请手动审查)"
+    return 0
   fi
 
   cat > "$dst" << FRONTMATTER
@@ -454,42 +535,170 @@ color: "$color"
 
 FRONTMATTER
 
-  # 追加角色定义正文
   cat "$src" >> "$dst"
-  echo "✅ 已生成: $dst"
+
+  # 更新内部 manifest
+  local src_checksum=$(checksum "$src")
+  local manifest=$(read_manifest)
+  local current_checksum=$(echo "$manifest" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+print(d.get('$src_name',{}).get('deployed_checksum',''))
+" 2>/dev/null || echo "")
+  # 写入更新后的 manifest
+  local new_manifest=$(echo "$manifest" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+d.setdefault('$src_name',{})
+d['$src_name']['deployed_checksum']='$src_checksum'
+d['$src_name']['customized']=$customized
+d['$src_name']['deployed_at']='$(date -u +%Y-%m-%dT%H:%M:%SZ)'
+print(json.dumps(d,indent=2))
+" 2>/dev/null || echo "{}")
+  write_manifest "$new_manifest"
+
+  if [ "$UPDATE_MODE" = true ]; then
+    echo "🔄 已更新: $dst"
+  else
+    echo "✅ 已生成: $dst"
+  fi
+
+  # 同步版本到外部 MANIFEST.json（如有提供）
+  if [ -n "$MANIFEST_PATH" ] && [ -f "$MANIFEST_PATH" ]; then
+    update_external_manifest "$src_name" "$(basename "$src")"
+  fi
 }
 
-deploy_agent "$AGENTS_SRC/orchestrator-agent.md" "$AGENTS_DST/orchestrator.md" \
-  "Orchestrator 编排" \
-  "Orchestrator 编排 — 多智能体编排中枢，驱动编排流程、路由任务、门控质量、引导用户" \
-  "0.3" "ask" "deny" "20" "#4A90D9"
+# 从 version 字段提取版本号（取文件名前缀匹配 RELEASE）
+infer_version() {
+  local src_name="$1"
+  # 从 AI_ENG/RELEASE.json 读取版本
+  if [ -f "$AI_ENG/RELEASE.json" ]; then
+    python3 -c "
+import json
+with open('$AI_ENG/RELEASE.json') as f:
+    r = json.load(f)
+for key, ver in r.get('files', {}).items():
+    if key == 'agents/$src_name':
+        print(ver)
+        break
+" 2>/dev/null
+  fi
+}
 
-deploy_agent "$AGENTS_SRC/po-agent.md"       "$AGENTS_DST/po.md"       \
-  "PO 产品经理" \
-  "PO 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求" \
-  "0.4" "ask" "allow" "15" "#7B68EE"
+# ---- 主逻辑 ----
 
-deploy_agent "$AGENTS_SRC/uiux-agent.md"     "$AGENTS_DST/uiux.md"     \
-  "UI/UX 设计师" \
-  "UI/UX 设计师 — 用户方案设计，设计规范制定、设计稿和交互说明" \
-  "0.5" "ask" "allow" "15" "#E67E22"
+if [ "$UPDATE_MODE" = true ]; then
+  echo "🔍 增量更新模式 — 检查是否有变更的 Agent 角色..."
+  echo ""
 
-deploy_agent "$AGENTS_SRC/fullstack-developer.md" "$AGENTS_DST/developer.md" \
-  "Full-stack Developer Agent" \
-  "Full-stack Developer Agent — 全栈技术实施，覆盖前端、后端、数据库与 DevOps" \
-  "0.2" "allow" "allow" "30" "#2ECC71"
+  UPDATED_COUNT=0
+  SKIPPED_COUNT=0
 
-deploy_agent "$AGENTS_SRC/tester-agent.md"   "$AGENTS_DST/tester.md"   \
-  "Tester 测试工程师" \
-  "Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证" \
-  "0.1" "ask" "deny" "20" "#E74C3C"
+  # 读取内部 manifest
+  local_manifest=$(read_manifest)
 
-echo ""
-echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
-echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX\\ 设计师 @Full-stack Developer Agent @Tester\\ 测试工程师 调用"
+  for src_file in "${!AGENT_CONFIG[@]}";  do
+    IFS='|' read -r dst_file agent_name desc temp perm_edit perm_webfetch steps color <<< "${AGENT_CONFIG[$src_file]}"
+    src_path="$AGENTS_SRC/$src_file"
+    dst_path="$AGENTS_DST/$dst_file"
+
+    if [ ! -f "$src_path" ]; then
+      echo "⚠️   跳过: $src_file (源文件不存在)"
+      continue
+    fi
+
+    # 检查 manifest 中的定制状态
+    customized=$(echo "$local_manifest" | python3 -c "
+import json,sys
+try:
+    d=json.load(sys.stdin)
+    print(d.get('$src_file',{}).get('customized','false'))
+except:
+    print('false')
+" 2>/dev/null || echo "false")
+
+    # 获取源文件最新 checksum
+    src_checksum=$(checksum "$src_path")
+
+    # 获取已部署 checksum
+    deployed_checksum=$(echo "$local_manifest" | python3 -c "
+import json,sys
+try:
+    d=json.load(sys.stdin)
+    print(d.get('$src_file',{}).get('deployed_checksum',''))
+except:
+    print('')
+" 2>/dev/null || echo "")
+
+    if [ "$src_checksum" = "$deployed_checksum" ] && [ -f "$dst_path" ]; then
+      echo "✓   无变更: $src_file"
+      continue
+    fi
+
+    if [ "$customized" = "true" ]; then
+      echo "⏭️   跳过 $dst_file (源文件已变更但已标记为定制，请手动审查)"
+      SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
+      continue
+    fi
+
+    deploy_agent "$src_path" "$dst_path" "$agent_name" "$desc" "$temp" "$perm_edit" "$perm_webfetch" "$steps" "$color" "$src_file" "false"
+    UPDATED_COUNT=$((UPDATED_COUNT + 1))
+  done
+
+  echo ""
+  echo "🎉 增量更新完成！"
+  echo "   更新: $UPDATED_COUNT | 跳过(已定制): $SKIPPED_COUNT | 总计: $((${#AGENT_CONFIG[@]}))"
+  echo ""
+  echo "💡 提示: 对于已定制的 Agent，请手动审查变更后运行:"
+  echo "   python3 -c \"import json; m=json.load(open('$AGENTS_MANIFEST')); m['<agent_name>']['customized']=False; json.dump(m,open('$AGENTS_MANIFEST','w'),indent=2)\""
+  echo "   然后重新运行 --update"
+else
+  echo "🚀 首次部署 — 将 AI 研发体系 Agent 角色部署到 $AGENTS_DST"
+  echo ""
+
+  for src_file in "${!AGENT_CONFIG[@]}"; do
+    IFS='|' read -r dst_file agent_name desc temp perm_edit perm_webfetch steps color <<< "${AGENT_CONFIG[$src_file]}"
+    src_path="$AGENTS_SRC/$src_file"
+    dst_path="$AGENTS_DST/$dst_file"
+
+    deploy_agent "$src_path" "$dst_path" "$agent_name" "$desc" "$temp" "$perm_edit" "$perm_webfetch" "$steps" "$color" "$src_file" "false"
+
+    # 同步版本到外部 MANIFEST.json（如有提供）
+    if [ -n "$MANIFEST_PATH" ] && [ -f "$MANIFEST_PATH" ]; then
+      update_external_manifest "$src_file" "$(infer_version "$src_file")"
+    fi
+  done
+
+  echo ""
+  echo "🎉 部署完成！共生成 5 个 Agent 文件到 $AGENTS_DST"
+  echo "   在 OpenCode 中通过 @Orchestrator\\ 编排 @PO\\ 产品经理 @UI/UX\\ 设计师 @Full-stack Developer Agent @Tester\\ 测试工程师 调用"
+  echo ""
+  echo "💡 提示: 后续源仓库 agents/*.md 更新后，运行以下命令增量更新："
+  echo "   $0 --update $TARGET ${AI_ENG:+"$AI_ENG"}"
+fi
 ```
 
 > **提示**：脚本中 `bash` 权限默认统一为 `"*": ask`。实际使用时可按角色需要修改——例如 Full-stack Developer Agent 通常需要 `npm test*`、`npm run build*` 等命令的 `allow` 权限。
+
+#### deploy-agents.sh --update 模式
+
+运行 `--update` 模式时，脚本会：
+
+1. 读取 `.opencode/agents/.agent-manifest.json`，获取已部署文件的 checksum 和定制状态
+2. 逐文件比对 `agents/` 源文件的最新 checksum
+3. 仅更新 **源文件有变更且未定制**（`customized: false`）的 Agent 文件
+4. 跳过已标记为定制（`customized: true`）的文件，输出通知
+5. 可选通过 `--manifest-path` 同步版本号到 `docs/ai-engineering/MANIFEST.json`
+
+```bash
+# 首次部署后，后续增量更新：
+./deploy-agents.sh --update /path/to/my-project
+
+# 同步更新 MANIFEST.json 版本记录：
+./deploy-agents.sh --update /path/to/my-project \
+  --manifest-path /path/to/my-project/docs/ai-engineering/MANIFEST.json
+```
 
 ---
 
@@ -566,6 +775,8 @@ with:
 步骤 2：将 ai-engineering 引入项目（Git Submodule / 本地路径）
 步骤 3：创建 AGENTS.md 主指令文件
 步骤 4：创建 opencode.json 或 .opencode/agents/ 配置文件，引用 agents/ 角色
+       首次部署：运行 ./deploy-agents.sh <target>
+       增量更新：运行 ./deploy-agents.sh --update <target>
 步骤 5：[可选] 部署 GitHub Actions 工作流（参考 §6）
 步骤 6：验证 Agent 加载
 ```
@@ -598,6 +809,7 @@ with:
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.6 | 2026-05-27 | §4.5 deploy-agents.sh 新增 --update 增量更新模式，支持 checksum 比对和定制保护，同步 MANIFEST.json 版本；§7 更新部署流程 |
 | v0.5 | 2026-05-27 | 新增 §6 GitHub Actions 集成（安装方式、Secrets 配置、模型自定义） |
 | v0.4 | 2026-04-05 | 新增 4.3 直接复制嵌入方式、4.5 一键搬运脚本；补充 frontmatter 注意事项和角色配置摘要表 |
 | v0.3 | 2026-04-05 | 新增 Agent 文件生成指南，基于官方规范补充完整字段说明、权限配置和五个角色完整示例 |

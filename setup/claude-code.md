@@ -258,8 +258,19 @@ claude --agent developer
 步骤 2：将 ai-engineering 引入项目（Git Submodule / 本地路径）
 步骤 3：创建 CLAUDE.md 主指令文件
 步骤 4：创建 .claude/agents/ subagent 文件，通过 @path 引用 agents/ 角色
-步骤 5：验证 Agent 加载
+步骤 5：[可选] 在 MANIFEST.json 记录 agents 版本号
+步骤 6：验证 Agent 加载
 ```
+
+### 5.1 更新 Subagent 角色
+
+**`@path` 引用模式**：使用 `@path` 引用源文件时，Agent 内容在运行时实时读取，无需重新部署。只需保持源仓库代码最新：
+
+```bash
+git submodule update --remote vendor/ai-engineering
+```
+
+**直接嵌入模式**：如将角色内容直接粘贴到 `.claude/agents/*.md`，需手动检查源 `agents/*.md` 是否有更新。可通过 `docs/ai-engineering/MANIFEST.json` 的 `agents` 字段比对版本号（参见 [guide/08-tool-integration-guide.md §6 非破坏性更新机制](../guide/08-tool-integration-guide.md#6-非破坏性更新机制)）。
 
 ---
 
@@ -289,6 +300,7 @@ claude --agent developer
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.4 | 2026-05-27 | §5 新增 Subagent 角色更新说明，区分 @path 引用（自动更新）和直接嵌入（手动更新） |
 | v0.3 | 2026-04-05 | 新增 Subagent 文件生成指南，基于官方规范补充完整字段说明和五个角色配置示例；更新为原生 subagent 支持 |
 | v0.2 | 2026-04-04 | 修正规则 frontmatter 字段名，补充完整示例部署方式说明，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |

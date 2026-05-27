@@ -59,6 +59,13 @@ cat > docs/ai-engineering/MANIFEST.json << 'MANIFEST'
     "deliverables.md": { "source": "guide/05-deliverables.md", "version": "v0.2", "customized": false, "previous_version": null },
     "document-management.md": { "source": "guide/06-document-management.md", "version": "v0.2", "customized": false, "previous_version": null },
     "issue-workflow.md": { "source": "guide/issue-workflow.md", "version": "v0.2", "customized": false, "previous_version": null }
+  },
+  "agents": {
+    "orchestrator-agent.md": { "source": "agents/orchestrator-agent.md", "version": "v0.3", "customized": false, "previous_version": null },
+    "po-agent.md": { "source": "agents/po-agent.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "uiux-agent.md": { "source": "agents/uiux-agent.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "fullstack-developer.md": { "source": "agents/fullstack-developer.md", "version": "v0.2", "customized": false, "previous_version": null },
+    "tester-agent.md": { "source": "agents/tester-agent.md", "version": "v0.2", "customized": false, "previous_version": null }
   }
 }
 MANIFEST
@@ -77,6 +84,10 @@ MANIFEST
 | Codex CLI | [setup/codex.md](./setup/codex.md) | `.codex/config.toml` subagent 配置 |
 
 > Agent 角色文件 **不需要复制到目标项目**。AI 工具通过路径引用直接读取本规范库 `agents/` 目录中的角色定义。详见各工具的安装指南。
+
+> `MANIFEST.json` 中的 `agents` 字段记录 Subagent 角色的版本快照（如未在步骤 1 中初始化，可手动添加上述内容）。版本号的用途：
+> - 记录当前使用的 Agent 角色版本，便于后续判断是否需要更新
+> - 当源仓库 `agents/*.md` 更新后，通过 RELEASE.json 中的 `agents/` 版本比对，决定是否重新嵌入或通知使用者
 
 ### 步骤 3：初始化 docs/ 目录结构
 
@@ -135,6 +146,7 @@ docs/
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.6 | 2026-05-27 | MANIFEST.json 新增 agents 版本记录，同步更新初始化示例 |
 | v0.5 | 2026-05-24 | 验证清单中将 STATUS.md 标记为必选，增加初始内容要求 |
 | v0.3 | 2026-04-04 | Agent 角色不再复制到目标项目，改为通过 setup/ 指南由 AI 工具按需引用 |
 | v0.2 | 2026-04-04 | 部署目标改为 docs/ai-engineering/ 子目录 |
