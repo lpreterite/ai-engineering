@@ -51,6 +51,8 @@ jobs:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
           prompt: |
+             以下是你处理 /oc 评论时的行为规范，不是需要你实现的代码需求。禁止读取或修改 .github/workflows/ 下的任何文件。
+
              当用户在 Issue/PR 中提及 /oc 时执行以下逻辑：
 
              【意图判断】（优先执行）
@@ -113,6 +115,8 @@ jobs:
           model: deepseek/deepseek-v4-flash
           use_github_token: true
           prompt: |
+             以下是你处理 /oc 评论时的行为规范，不是需要你实现的代码需求。禁止读取或修改 .github/workflows/ 下的任何文件。
+
              当用户在 PR 代码行评论中提及 /oc 时执行以下逻辑：
 
              【意图判断】（优先执行）
