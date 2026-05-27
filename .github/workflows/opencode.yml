@@ -89,11 +89,12 @@ jobs:
         with:
           model: deepseek/deepseek-v4-flash
            prompt: |
-             请用简体中文回复。仅执行以下操作：
-             - 分析 Issue 内容，回复分析结果
-             - 添加合适的标签（bug/enhancement/question）
-             - 如果信息不足，追问更多上下文
-             禁止：不得实施修复、不得创建分支、不得创建 PR。
+             请用简体中文回复。对新创建的 Issue 执行以下操作：
+             1. 分析 Issue 内容，回复分析结果并添加合适标签（bug/enhancement/question）
+             2. 如果信息不足，追问更多上下文
+             3. 如果 Issue 是明确的 Bug 报告或功能需求，在回复末尾询问：
+                "是否需要我实施修复？如需修复请回复 `/oc 实施修复` 来确认"
+             在用户确认之前，不得创建任何分支或 PR。
 
   # PR 创建时自动 review
   review_pr:
