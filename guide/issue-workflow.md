@@ -48,8 +48,8 @@
 |------|------|
 | `status/triaged` | 已确认，待分配 |
 | `status/in-progress` | 正在处理 |
-| `status/resolved` | 已修复，Developer 自测通过 |
-| `status/ready-for-test` | 已移交待测试，Developer 不可再修改 |
+| `status/resolved` | 已修复，Full-stack Developer Agent 自测通过 |
+| `status/ready-for-test` | 已移交待测试，Full-stack Developer Agent 不可再修改 |
 | `status/testing` | Tester Agent 正在执行测试 |
 | `status/verified` | 已验证通过 |
 | `status/closed` | 已关闭（不修复或已下线） |
@@ -66,9 +66,9 @@ open → triaged → in_progress → resolved → ready-for-test → testing →
 |------|--------|------|
 | **open** | 创建者 | 提交 Issue，自动设置 Issue Type |
 | **triaged** | Orchestrator Agent | 确认问题有效，设置优先级和负责人。复杂 Issue 在此阶段拆分为 Sub-issues |
-| **in_progress** | Developer | 开始处理，关联分支或 commit |
-| **resolved** | Developer | 提交修复，PR 关联 Issue，Developer 自测通过 |
-| **ready-for-test** | Developer | 移交 Tester，Developer 不可再修改代码 |
+| **in_progress** | Full-stack Developer Agent | 开始处理，关联分支或 commit |
+| **resolved** | Full-stack Developer Agent | 提交修复，PR 关联 Issue，Full-stack Developer Agent 自测通过 |
+| **ready-for-test** | Full-stack Developer Agent | 移交 Tester，Full-stack Developer Agent 不可再修改代码 |
 | **testing** | Tester Agent | 在隔离上下文中独立执行集成/E2E/回归测试 |
 | **verified** | Tester Agent | 测试通过，回归无新问题 |
 | **closed** | Orchestrator Agent | 验证通过后关闭，在 STATUS.md 中同步 |
@@ -161,7 +161,7 @@ Orchestrator Agent 在「发布前检查」中执行：
 | **Tester Agent** | 测试发现缺陷，在 `bug_reported` 消息中上报给 Orchestrator Agent | 由 Orchestrator Agent 代为创建 Bug Issue |
 | **Orchestrator Agent** | 收到 Tester 上报、验收发现问题、用户反馈 | Bug / Feature |
 | **PO Agent** | 需求分析中识别出新功能或改进点 | Feature / Epic |
-| **Developer** | 开发过程中发现预想不到的问题或改进机会 | Bug / Feature / Task |
+| **Full-stack Developer Agent** | 开发过程中发现预想不到的问题或改进机会 | Bug / Feature / Task |
 | **用户** | 通过 GitHub Issues 提交 | Bug / Feature |
 | **用户（疑问类）** | 使用疑问或咨询 | 走 GitHub Discussions |
 
@@ -173,7 +173,7 @@ Tester 完成验收发现问题后，Orchestrator Agent 执行以下操作：
 2. Issue 标题使用 `BUG-NNN: 简短描述` 格式（BUG-001, BUG-002...）
 3. 验收报告中对应的 BUG-ID 在 Issue 正文中引用
 4. 设置正确的 Issue Type 和优先级标签
-5. 分配对应 Developer
+5. 分配对应 Full-stack Developer Agent
 6. 在验收报告中注明对应的 Issue 编号
 
 ---
@@ -371,7 +371,7 @@ commit 推送后 GitHub 自动关闭关联 Issue，无需手动执行 `gh issue 
 □ 每个问题创建独立 Issue（BUG-001, BUG-002...）
 □ 设置 Issue Type 和优先级
 □ 识别并标记依赖关系
-□ 分配对应 Developer
+□ 分配对应 Full-stack Developer Agent
 □ 在验收报告中记录 Issue 编号映射
 □ 跟踪修复进度
 □ 修复后安排 Tester 回归验证
