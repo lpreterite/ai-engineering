@@ -2,6 +2,12 @@
 # OpenCode GitHub Actions 工作流模板
 # 来源：ai-engineering/reference/templates/opencode-workflow.yml
 #
+# 通道隔离设计：
+#   对话通道（comment / review_comment）：
+#     只读权限，用于分析、讨论、回复，不修改代码
+#   代码通道（triage / review_pr）：
+#     读写权限，用于分类、审查、创建分支/PR
+#
 # 使用方式：
 #   1. 将此文件复制到目标项目的 .github/workflows/opencode.yml
 #   2. 在 GitHub 仓库 Settings → Secrets and variables → Actions 中添加：
@@ -10,10 +16,10 @@
 #   4. 提交推送后即可在 Issue/PR 中使用 /oc 或 /opencode 触发
 #
 # 事件说明：
-#   - issue_comment：在 Issue/PR 评论中提及 /oc 触发
-#   - pull_request_review_comment：在 PR 代码行评论中提及 /oc 触发
-#   - issues：新 Issue 创建时自动 triage
-#   - pull_request：新 PR 创建时自动 review
+#   - issue_comment：在 Issue/PR 评论中提及 /oc 触发（对话通道）
+#   - pull_request_review_comment：在 PR 代码行评论中提及 /oc 触发（对话通道）
+#   - issues：新 Issue 创建时自动 triage（代码通道）
+#   - pull_request：新 PR 创建时自动 review（代码通道）
 #
 # 权限说明：
 #   - comment / review_comment：仅仓库 OWNER 和 COLLABORATOR 可触发
@@ -33,7 +39,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  # ── 通过 Issue/PR 评论触发 ──
+  # ── 对话通道：通过 Issue/PR 评论触发，仅分析回复，不改代码 ──
   comment:
     if: |
       github.event_name == 'issue_comment' &&
@@ -44,9 +50,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: write
-      pull-requests: write
-      issues: write
+      contents: read
+      pull-requests: read
+      issues: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -54,48 +60,16 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Configure git
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "opencode-agent[bot]"
-          git config user.email "opencode-agent[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
           # 【必需】替换为你的 API Key Secret 名
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # 【必需】替换为你的模型，格式：provider/model
           model: deepseek/deepseek-v4-flash
-          prompt: |
-             你是项目的代码审查与修改助手。
 
-             当你收到用户指令时：
-             1. 判断用户意图：包含"请更改""修改""修复""更新""改成"等词 → 用户要求直接修改代码；否则 → 分析回复
-             2. 如需修改：
-                a. 用 `gh pr list --search "<issue_number>" --json headRefName,number` 查找已有分支
-                b. 如有 → checkout 该分支；无 → 创建新分支
-                c. 仅读取需要修改的文件，精确实施用户要求的改动
-                d. `git add <具体文件>`（逐个添加，禁止通配符）
-                e. 执行 `git diff --cached --stat` 打印变更文件列表和改动简述，回复中展示给用户
-                f. 确认无误后 `git commit`，`git push`
-                g. 回复用户说明已完成，附上修改的文件列表
-             3. 如只需分析：
-                a. 读取 Issue/PR 的标题、描述、评论和相关文件
-                b. 分析内容并回复
-
-             约束：
-             - 只修改用户指定的文件
-             - 不得删除文件（除非用户明确要求）
-             - 不得修改 .github/workflows/ 下的任何文件
-             - 不得使用 `git add .` 或 `git add -A`
-             - 执行 `git push` 前先 `git status` 确认只有预期文件
-
-  # ── PR review 评论触发（代码行级） ──
+  # ── 对话通道：PR 行级评论触发，仅分析回复，不改代码 ──
   review_comment:
     if: |
       github.event_name == 'pull_request_review_comment' &&
@@ -106,7 +80,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      pull-requests: write
+      contents: read
+      pull-requests: read
+      issues: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -114,47 +90,14 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
-      - name: Configure git
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "opencode-agent[bot]"
-          git config user.email "opencode-agent[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
-          use_github_token: true
-          prompt: |
-             你是项目的代码审查与修改助手。
 
-             当你收到用户指令时：
-             1. 判断用户意图：包含"请更改""修改""修复""更新""改成"等词 → 用户要求直接修改代码；否则 → 分析回复
-             2. 如需修改：
-                a. 用 `gh pr list --search "<issue_number>" --json headRefName,number` 查找已有分支
-                b. 如有 → checkout 该分支；无 → 创建新分支
-                c. 仅读取需要修改的文件，精确实施用户要求的改动
-                d. `git add <具体文件>`（逐个添加，禁止通配符）
-                e. 执行 `git diff --cached --stat` 打印变更文件列表和改动简述，回复中展示给用户
-                f. 确认无误后 `git commit`，`git push`
-                g. 回复用户说明已完成，附上修改的文件列表
-             3. 如只需分析：
-                a. 读取 PR 的标题、描述、diff 和相关文件
-                b. 分析内容并回复
-
-             约束：
-             - 只修改用户指定的文件
-             - 不得删除文件（除非用户明确要求）
-             - 不得修改 .github/workflows/ 下的任何文件
-             - 不得使用 `git add .` 或 `git add -A`
-             - 执行 `git push` 前先 `git status` 确认只有预期文件
-
-  # ── Issue 创建时自动 triage ──
+  # ── 代码通道：Issue 创建时自动 triage ──
   triage:
     if: github.event_name == 'issues'
     runs-on: ubuntu-latest

@@ -32,6 +32,24 @@
 | **Product Manager (PM)** | 人类，流程协调、进度管控 |
 | **Agent** | 增强型搭档，执行层负责 |
 
+### 1.3 通道隔离规则
+
+GitHub Actions 工作流中的事件按通道类型隔离：
+
+| 通道类型 | 事件 | 权限 | 职责 |
+|----------|------|------|------|
+| 对话通道 | `issue_comment` / `pull_request_review_comment` | `contents: read` / `pull-requests: read` / `issues: read` | 分析、回复、讨论 |
+| 代码通道 | `issues: [opened]` / `pull_request` | `contents: write` / `pull-requests: write` / `issues: write` | 分类、审查、修改、推送 |
+
+**对话通道约定：**
+- Agent 不得在对话通道中修改任何代码或 workflow 文件
+- Agent 仅通过评论与用户交流
+- 用户如需修改代码，应在 Issue 中通过 `/oc` 发起，或开启新 PR 触发自动审查
+
+**代码通道约定：**
+- `issues: [opened]`：Agent 自动分类 + 询问是否需修复
+- `pull_request`：Agent 自动审查代码质量
+
 ---
 
 ## 2. 打磨阶段人机协作
