@@ -37,8 +37,6 @@ set -euo pipefail
 # ============================================================
 # 配置
 # ============================================================
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
 # 颜色
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -340,7 +338,6 @@ echo ""
 log_step "Step 3: 按策略更新文件"
 
 HAS_CONFLICT=false
-UPDATE_SUMMARY=""
 
 # 用 Python 执行更新逻辑
 PYTHON_UPDATE=$(cat <<'PYEOF'
@@ -481,7 +478,7 @@ for f_info in json.loads(sys.argv[6]):
     dst_path = os.path.join(target_dir, name)
     shutil.copy2(src_path, dst_path)
     log_msg = f"  🆕 {name}: 新增 ({new_ver})"
-    result['updated'].append({'name': name, 'version': new_ver, 'method': 'new'})
+    result['updated'].append({'name': name, 'version': new_ver, 'method': 'new', 'category': f_info.get('category', 'guide'), 'source': source})
     print(log_msg)
 
 # 处理 agent 文件（仅记录版本）
@@ -550,12 +547,14 @@ for item in update_result.get('updated', []):
         entry['version'] = item['version']
     else:
         # 新增文件，添加条目
+        cat = item.get('category', 'guide')
+        src = item.get('source', f'{cat}/{name}')
         manifest['files'][name] = {
-            'source': f'guide/{name}',
+            'source': src,
             'version': item['version'],
             'customized': False,
             'previous_version': None,
-            'category': 'guide'
+            'category': cat
         }
 
 # 更新 agent 版本号
