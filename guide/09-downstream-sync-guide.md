@@ -347,8 +347,49 @@ target-project/
 
 ---
 
+---
+
+## 8. GitHub 配置同步
+
+除了规范文件（`guide/`）和 Agent 定义（`agents/`），下游项目还应同步 GitHub Issues 的模板文件（`.github/ISSUE_TEMPLATE/`）到自己的仓库中。
+
+### 8.1 同步内容
+
+| 源路径 | 目标路径 | 说明 | 定制策略 |
+|--------|----------|------|----------|
+| `.github/ISSUE_TEMPLATE/config.yml` | `.github/ISSUE_TEMPLATE/config.yml` | 模板选择器配置 | 可修改 `contact_links` 中的 url 和 about 为下游项目信息 |
+| `.github/ISSUE_TEMPLATE/1-bug.yml` | `.github/ISSUE_TEMPLATE/1-bug.yml` | Bug Report | 可新增 `labels` 或修改 `body` 中的字段 |
+| `.github/ISSUE_TEMPLATE/2-feature.yml` | `.github/ISSUE_TEMPLATE/2-feature.yml` | Feature Request | 同上 |
+| `.github/ISSUE_TEMPLATE/3-task.yml` | `.github/ISSUE_TEMPLATE/3-task.yml` | Task | 同上 |
+| `.github/ISSUE_TEMPLATE/4-decision.yml` | `.github/ISSUE_TEMPLATE/4-decision.yml` | Decision | 同上 |
+| `.github/ISSUE_TEMPLATE/5-question.yml` | `.github/ISSUE_TEMPLATE/5-question.yml` | Question | 同上 |
+| `.github/ISSUE_TEMPLATE/6-risk.yml` | `.github/ISSUE_TEMPLATE/6-risk.yml` | Risk | 同上 |
+| `.github/ISSUE_TEMPLATE/7-review.yml` | `.github/ISSUE_TEMPLATE/7-review.yml` | Review Finding | 同上 |
+
+### 8.2 定制策略
+
+下游项目可根据自身需要修改 YAML 模板中的以下内容：
+
+| 可定制项 | 示例 |
+|---------|------|
+| `contact_links` 中的 `url` | 指向下游项目自己的 Discussions 页面 |
+| `labels` 中的组织级标签 | 增加下游项目特有的标签 |
+| `body` 中的 `placeholder` 文本 | 适配下游项目语言环境 |
+| `validations` 设置 | 按需调整必填项 |
+
+### 8.3 同步方式
+
+下游项目适用于 `09-downstream-sync-guide.md` 中定义的同步流程（Step 1~Step 6）：
+
+| 场景 | 处理方式 |
+|------|----------|
+| 上游新增/修改模板 | 直接复制到目标 `.github/ISSUE_TEMPLATE/` 目录 |
+| 下游定制了模板 | 参照 §2 定制最佳实践，使用 `DOWNSTREAM-BEGIN/END` 标记标注定制区域 |
+| 上游删除模板 | 人工决策是否跟随删除 |
+
 ## 修订记录
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.2 | 2026-05-28 | 新增 §8 GitHub 配置同步章节，定义 `.github/ISSUE_TEMPLATE/` 的同步策略和定制规则 |
 | v0.1 | 2026-05-28 | 初始版本 |

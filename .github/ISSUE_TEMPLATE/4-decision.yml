@@ -1,0 +1,62 @@
+name: Decision
+description: Record a key design or technical decision
+title: "[Decision]: "
+labels: ["decision"]
+type: Decision
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Decision Record
+
+        This Issue records a key decision made during the polishing phase.
+        It captures the context, options considered, and final conclusion.
+        The decision outcome is documented in the project's key deliverables (PRD / Tech Spec / Design Spec).
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why is this decision needed? What problem are we solving?
+      placeholder: The user model needs to support multi-tenant isolation.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options Considered
+      description: List all options that were discussed, with pros and cons.
+      placeholder: |
+        - Option A: MySQL + application-level isolation
+        - Option B: PostgreSQL + schema isolation (chosen)
+        - Option C: CockroachDB (eliminated, high cost)
+    validations:
+      required: true
+  - type: textarea
+    id: conclusion
+    attributes:
+      label: Decision
+      description: What was decided?
+      placeholder: Adopt PostgreSQL with schema-level isolation for multi-tenant support.
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why was this option chosen?
+      placeholder: |
+        - PostgreSQL natively supports schema isolation
+        - Team has existing PostgreSQL experience
+        - Lower operational cost compared to CockroachDB
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact Scope
+      description: Which modules, documents, or milestones are affected?
+      placeholder: Affects data layer architecture, PRD Section 3.2, Milestone M1.
+  - type: input
+    id: related-docs
+    attributes:
+      label: Documented In
+      description: Which key deliverable records the final outcome?
+      placeholder: "docs/engineering/ARCHITECTURE-v1.0.md"

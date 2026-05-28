@@ -1,0 +1,65 @@
+name: Risk
+description: Track an identified risk during the polishing phase
+title: "[Risk]: "
+labels: ["risk"]
+type: Risk
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Risk Record
+
+        This Issue tracks a risk identified during analysis.
+        Risk assessment outcomes should be reflected in the project plan and deliverables.
+  - type: textarea
+    id: description
+    attributes:
+      label: Risk Description
+      description: What is the risk?
+      placeholder: Third-party payment SDK may not support the target region.
+    validations:
+      required: true
+  - type: dropdown
+    id: likelihood
+    attributes:
+      label: Likelihood
+      options:
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - Critical
+        - Major
+        - Minor
+    validations:
+      required: true
+  - type: textarea
+    id: mitigation
+    attributes:
+      label: Mitigation Plan
+      description: How can this risk be avoided or mitigated?
+      placeholder: |
+        - Research alternative SDKs in parallel
+        - Add feature flag to switch payment provider
+        - Allocate buffer time in milestone for integration issues
+  - type: dropdown
+    id: status
+    attributes:
+      label: Current Status
+      options:
+        - Identifying
+        - Assessing
+        - Mitigated
+        - Accepted
+        - Closed
+  - type: input
+    id: owner
+    attributes:
+      label: Owner
+      placeholder: "@team-member"
