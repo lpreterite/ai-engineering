@@ -292,7 +292,7 @@ for name in d['conflicts']:
     print(f\"  🔴 {name}\")
 "
   echo ""
-  echo "处理方式：手动编辑对应文件，移除 >>>CONFLICT<<< 标记后，将 MANIFEST 中 conflict 字段设为 false 后重试"
+  echo "处理方式：手动编辑对应文件，移除 >>>>>>> / <<<<<<< 冲突标记后，将 MANIFEST 中 conflict 字段设为 false 后重试"
   exit 1
 fi
 
@@ -339,7 +339,7 @@ UPDATE_SUMMARY=""
 
 # 用 Python 执行更新逻辑
 PYTHON_UPDATE=$(cat <<'PYEOF'
-import json, sys, os, shutil, subprocess
+import json, sys, os, shutil, subprocess, tempfile
 
 source_dir = sys.argv[1]
 manifest_file = sys.argv[2]
@@ -430,7 +430,6 @@ for f_info in json.loads(sys.argv[5]):
 
         # 将 Base 内容写入临时文件
         if base_content is not None:
-            import tempfile
             tmp_dir = tempfile.mkdtemp()
             base_file = os.path.join(tmp_dir, 'base')
             with open(base_file, 'w') as f:
@@ -516,7 +515,7 @@ for c in d.get('conflicts', []):
     print(f\"  🔴 {c['name']}: {c['old_ver']} → {c['new_ver']}\")
 "
   echo ""
-  echo "请在文件中搜索 >>>CONFLICT<<< 标记，手动解决冲突后再提交"
+  echo "请在文件中搜索 >>>>>>> / <<<<<<< 冲突标记，手动解决冲突后再提交"
 fi
 
 # ============================================================
