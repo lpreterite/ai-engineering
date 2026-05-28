@@ -112,6 +112,11 @@ TARGET_DIR="${TARGET_DIR%/}"
 # ============================================================
 log_step "前置检查"
 
+if ! command -v python3 &>/dev/null; then
+  log_error "需要 python3，请安装后重试"
+  exit 2
+fi
+
 if [ ! -d "$SOURCE_DIR" ]; then
   log_error "源仓库目录不存在: $SOURCE_DIR"
   exit 2
@@ -363,7 +368,7 @@ result = {
 }
 
 # Helper: 三路合并
-def three_way_merge(base_path, theirs_path, ours_path):
+def three_way_merge(base_path, theirs_path, ours_path, name='unknown'):
     """使用 diff3 进行三路合并，返回 (success, output_path)"""
     merged_path = ours_path + '.merged'
     try:
@@ -386,7 +391,11 @@ def three_way_merge(base_path, theirs_path, ours_path):
             return True, merged_path
         else:
             return False, None
-    except (FileNotFoundError, subprocess.TimeoutExpired) as e:
+    except FileNotFoundError:
+        print(f"  ⚠️  {name}: diff3 未安装，跳过合并", file=sys.stderr)
+        return False, None
+    except subprocess.TimeoutExpired:
+        print(f"  ⚠️  {name}: diff3 超时，跳过合并", file=sys.stderr)
         return False, None
 
 # 处理过期规范文件
@@ -435,7 +444,7 @@ for f_info in json.loads(sys.argv[5]):
             with open(base_file, 'w') as f:
                 f.write(base_content)
 
-            success, merged = three_way_merge(base_file, src_path, dst_path)
+            success, merged = three_way_merge(base_file, src_path, dst_path, name)
             shutil.rmtree(tmp_dir, ignore_errors=True)
 
             if success:
