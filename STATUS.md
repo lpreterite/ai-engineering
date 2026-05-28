@@ -27,6 +27,7 @@
 | 文档管理规范 | ✅ 完成 | [guide/06-document-management.md](./guide/06-document-management.md) |
 | Repo 目录初始化指南 | ✅ 完成 | [guide/07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) |
 | Agent 工具集成指南 | ✅ 完成 | [guide/08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) |
+| 下游同步指南 | ✅ 完成 | [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) |
 | Issue 工作流规范 | ✅ 完成 | [guide/issue-workflow.md](./guide/issue-workflow.md) |
 
 ### Agent 角色定义（agents/）
@@ -73,6 +74,8 @@
 - [x] 重写 08 为 Agent 使用指南
 - [x] 重写 reference/directory.md 更新目录结构
 - [x] 新增 setup.md 作为 Agent 执行入口
+- [x] 新增 09 下游同步指南
+- [x] 新增 scripts/downstream-sync.sh 自动化同步脚本
 - [ ] 人工评审
 
 ---
@@ -86,6 +89,7 @@
 ## 最近更新
 
 ```
+2026-05-28 新增 09 下游同步指南、scripts/downstream-sync.sh 自动化同步脚本
 2026-04-04 新增 reference/ 可部署规则文件（6篇）、setup/ 工具安装指南（3篇）
 2026-04-04 重写 08 为 Agent 使用指南，重写 reference/directory.md
 2026-04-04 目录结构重构：拆分为 guide/agents/reference 三级目录
