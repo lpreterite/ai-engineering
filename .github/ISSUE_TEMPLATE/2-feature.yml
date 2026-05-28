@@ -1,0 +1,44 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+title: "[Feature]: "
+labels: ["feature"]
+type: Feature
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this needed? What problem does it solve?
+      placeholder: Users currently have to manually refresh data every time...
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you suggest implementing this?
+      placeholder: Add an auto-refresh toggle that pulls latest data every 30s.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you have thought about.
+      placeholder: Could also use WebSocket push, but implementation cost is higher.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met for this feature to be considered done?
+      placeholder: |
+        - [ ] Criterion 1 (describe in detail)
+        - [ ] Criterion 2 (describe in detail)
+    validations:
+      required: true
+  - type: input
+    id: related-docs
+    attributes:
+      label: Related Documents
+      description: Link to PRD, design spec, or other reference docs.
+      placeholder: "docs/product/PRD-v1.1.md"

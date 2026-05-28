@@ -1,0 +1,44 @@
+name: Task
+description: Engineering task, documentation, or configuration work
+title: "[Task]: "
+labels: ["task"]
+type: Task
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: What needs to be done?
+      placeholder: Migrate database schema to support multi-tenant isolation.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met for this task to be complete?
+      placeholder: |
+        - [ ] Schema migration script written and tested
+        - [ ] Rollback plan documented
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Refactoring
+        - Documentation
+        - Configuration
+        - Infrastructure
+        - CI/CD
+        - Testing
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: related-docs
+    attributes:
+      label: Related Documents
+      description: Link to architecture docs, PRD, or design spec.
+      placeholder: "docs/engineering/ARCHITECTURE-v1.1.md"

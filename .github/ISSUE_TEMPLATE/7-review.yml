@@ -1,0 +1,53 @@
+name: Review Finding
+description: An improvement item identified during Gate review
+title: "[Review]: "
+labels: ["review"]
+type: Review
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Review Finding
+
+        This Issue tracks a finding from a Gate review (Gate 1 or Gate 2).
+        The finding resolution should be reflected in the deliverables before proceeding to execution.
+  - type: input
+    id: gate
+    attributes:
+      label: Review Stage
+      description: Which Gate review identified this?
+      placeholder: "Gate 1 (PRD Review) / Gate 2 (Milestone Review)"
+    validations:
+      required: true
+  - type: textarea
+    id: finding
+    attributes:
+      label: Finding Description
+      description: What is the issue or gap?
+      placeholder: User story #3 does not specify the empty state behavior.
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - P0: Blocker
+        - P1: Major
+        - P2: Minor
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Fix
+      description: How should this be addressed?
+      placeholder: Add an acceptance criterion covering the empty state, and update the prototype to show an empty state placeholder.
+    validations:
+      required: true
+  - type: input
+    id: related-docs
+    attributes:
+      label: Related Deliverable
+      description: Which document or artifact needs to be updated?
+      placeholder: "docs/product/PRD-v1.0.md, Section 2.3"

@@ -1,0 +1,64 @@
+name: Bug Report
+description: File a bug/issue
+title: "[Bug]: "
+labels: ["bug"]
+type: Bug
+body:
+  - type: checkboxes
+    id: existing
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem Description
+      description: A concise description of what happened.
+      placeholder: Clicking the login button does nothing.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps To Reproduce
+      placeholder: |
+        1. Open page
+        2. Click login button
+        3. Page freezes
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Should display the login modal.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Page unresponsive, console throws TypeError.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: "OS: macOS 14, Browser: Chrome 124"
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Logs, screenshots, screen recordings (drag and drop here).
+  - type: input
+    id: bug-id
+    attributes:
+      label: Related BUG-ID
+      description: If reported from an acceptance review, fill in the BUG-NNN.
+      placeholder: "BUG-001"

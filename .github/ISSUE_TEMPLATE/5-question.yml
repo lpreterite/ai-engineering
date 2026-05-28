@@ -1,0 +1,50 @@
+name: Question
+description: A pending question or discussion point to be clarified
+title: "[Question]: "
+labels: ["question"]
+type: Question
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Question Record
+
+        This Issue tracks a question or discussion point from the polishing phase.
+        Once clarified, the outcome should be reflected in the project's key deliverables.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What needs to be clarified?
+      placeholder: Should the onboarding flow require email verification or phone verification?
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - Requirement
+        - Technical Design
+        - UI/UX Design
+        - Project Management
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Decision Deadline
+      description: When does this need to be resolved by?
+      placeholder: "2026-06-07"
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Initial Thoughts
+      description: Any preliminary ideas or preferences.
+  - type: input
+    id: related-docs
+    attributes:
+      label: Related Documents
+      description: Link to the document this question belongs to.
+      placeholder: "docs/product/PRD-v1.1.md"
