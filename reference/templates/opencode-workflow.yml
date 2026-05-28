@@ -131,34 +131,36 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
       pull-requests: write
       issues: read
     steps:
       - uses: actions/checkout@v6
         with:
+          fetch-depth: 1
           persist-credentials: false
 
-      - uses: anomalyco/opencode/github@latest
+      - name: Install opencode
+        run: curl -fsSL https://opencode.ai/install | bash
+
+      - name: Add opencode to PATH
+        run: echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Run PR review
         env:
           ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          model: deepseek/deepseek-v4-flash
-          use_github_token: true
-          prompt: |
-             当有新 PR 创建时自动进行代码审查：
+        run: |
+          opencode run -m deepseek/deepseek-v4-flash "
+          请用简体中文审查此 PR 的代码：
 
-             【上下文注入】
-             - 获取 PR 的标题、描述和完整 diff
-             - 读取变更文件的内容
-
-             【审查要求】
-             - 检查代码质量、架构一致性、命名规范、文档完整性
-             - 如果发现 bug 或安全隐患，在 PR 评论中明确指出
-             - 提供具体的修改建议（文件路径 + 行号 + 建议代码）
-
-             【权限约束】
-             - 不得直接修改 PR 代码
-             - 仅通过 PR review 评论反馈
+          1. 检查代码质量、架构一致性、命名规范、文档完整性
+          2. 如果发现 bug 或安全隐患，用以下 gh api 命令在对应行上创建评论：
+             gh api --method POST -H 'Accept: application/vnd.github+json' \\
+               /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/comments \\
+               -f 'body=问题说明' -f 'commit_id=${{ github.event.pull_request.head.sha }}' \\
+               -f 'path=文件路径' -F 'line=行号' -f 'side=RIGHT'
+          3. 如果没有违规内容，用 gh pr review 命令批准：
+             gh pr review ${{ github.event.pull_request.number }} --approve
+          4. 不得直接修改代码，仅通过 PR review 评论反馈
+          "
