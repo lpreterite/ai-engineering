@@ -71,7 +71,7 @@ AI 软件研发流程分为两大阶段：
 │   │  · 系统设计     │              │  · 设计规范     │          │
 │   │  · 技术选型     │              │  · 设计稿       │          │
 │   │  (Orch. Agent +   │              │  (UI/UX Agent)  │          │
-│   │   Developer)   │              │                 │          │
+│   │   Full-stack Developer Agent)   │              │                 │          │
 │   └────────┬────────┘              └────────┬────────┘          │
 │            │                                │                    │
 │            │   ┌────────────────────────────┘                    │
@@ -242,7 +242,7 @@ Orchestrator Agent 分配任务
          │
          ▼
 ┌──────────────────────────┐
-│  移交测试线               │ ← Developer 不可再修改
+│  移交测试线               │ ← Full-stack Developer Agent 不可再修改
 │  Issue → status/         │    代码
 │  ready-for-test          │
 └────────┬─────────────────┘
@@ -251,7 +251,7 @@ Orchestrator Agent 分配任务
 ┌──────────────────────────┐
 │ Tester Agent（隔离上下文）│
 │ · 只读 Issue 验收标准    │
-│ · 不看 Developer 代码/   │
+│ · 不看 Full-stack Developer Agent 代码/   │
 │   测试                    │
 │ · 独立设计集成/E2E/回归   │
 │   测试用例                │
