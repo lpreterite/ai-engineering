@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/guide/`
 **文档状态**：草稿
-**当前版本**：v0.3
+**当前版本**：v0.4
 **发布日期**：2026-05-24
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/issue-workflow.md`

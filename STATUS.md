@@ -1,6 +1,7 @@
 # AI 软件研发工程体系｜状态卡
 
-> **Last Updated**：2026-04-04
+> **Last Updated**：2026-05-28
+> **Release**：v1.1.0
 > **Index**：[README](./README.md)
 
 ---
@@ -76,6 +77,14 @@
 - [x] 新增 setup.md 作为 Agent 执行入口
 - [x] 新增 09 下游同步指南
 - [x] 新增 scripts/downstream-sync.sh 自动化同步脚本
+- [x] OpenCode GitHub Actions 工作流模板
+- [x] 清理 PM 遗留引用（17处）
+- [x] Developer → Full-stack Developer Agent 统一命名
+- [x] Tester 隔离上下文 + 移交门控
+- [x] 对话通道隔离原则
+- [x] 文档编号/依赖链/跨文档对齐
+- [x] 04-checklists 所有子项添加序号
+- [x] 发布 v1.1.0
 - [ ] 人工评审
 
 ---
@@ -89,7 +98,15 @@
 ## 最近更新
 
 ```
+2026-05-28 发布 v1.1.0：8 文档升版，补齐 4 遗漏文件至 RELEASE.json
 2026-05-28 新增 09 下游同步指南、scripts/downstream-sync.sh 自动化同步脚本
+2026-05-28 04-checklists.md 所有子项添加序号
+2026-05-28 三文档（02/04/05）完成编号/依赖链/跨文档对齐
+2026-05-28 5 文件 Developer→Full-stack Developer Agent 命名
+2026-05-28 5 文件变更：Tester 隔离上下文 + 移交门控
+2026-05-28 新增对话通道隔离原则，重构 01-principles 和 03-collaboration
+2026-05-28 OpenCode GitHub Actions 工作流模板（reference/templates/）
+2026-05-27 清理 10 文件 17 处 PM 遗留引用
 2026-04-04 新增 reference/ 可部署规则文件（6篇）、setup/ 工具安装指南（3篇）
 2026-04-04 重写 08 为 Agent 使用指南，重写 reference/directory.md
 2026-04-04 目录结构重构：拆分为 guide/agents/reference 三级目录

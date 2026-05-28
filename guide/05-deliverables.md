@@ -4,7 +4,7 @@
 
 **所属目录**：`ai-engineering/guide/`
 **文档状态**：草稿
-**当前版本**：v0.7
+**当前版本**：v0.8
 **发布日期**：2026-04-04
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/05-deliverables.md`

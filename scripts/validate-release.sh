@@ -42,8 +42,11 @@ else
       continue
     fi
 
-    # 提取 HEADER 版本号（只取第一个匹配，排除正文模板示例）
+    # 提取版本号（支持 MD 文件的 `**当前版本**：v...` 和 YAML 文件的 `# 当前版本：v...`）
     header_version=$(grep -o '\*\*当前版本\*\*：v[0-9.]*' "$md_file" | head -1 | sed 's/\*\*当前版本\*\*：//' || true)
+    if [ -z "$header_version" ]; then
+      header_version=$(grep -o '# 当前版本：v[0-9.]*' "$md_file" | head -1 | sed 's/# 当前版本：//' || true)
+    fi
     if [ -z "$header_version" ]; then
       echo "❌ 未找到版本号: $file_path"
       errors=$((errors + 1))
