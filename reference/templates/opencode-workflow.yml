@@ -83,8 +83,10 @@ jobs:
                 a. 用 `gh pr list --search "<issue_number>" --json headRefName,number` 查找已有分支
                 b. 如有 → checkout 该分支；无 → 创建新分支
                 c. 仅读取需要修改的文件，精确实施用户要求的改动
-                d. `git add <具体文件>`（逐个添加，禁止通配符），`git commit`，`git push`
-                e. 回复用户说明已完成
+                d. `git add <具体文件>`（逐个添加，禁止通配符）
+                e. 执行 `git diff --cached --stat` 打印变更文件列表和改动简述，回复中展示给用户
+                f. 确认无误后 `git commit`，`git push`
+                g. 回复用户说明已完成，附上修改的文件列表
              3. 如只需分析：
                 a. 读取 Issue/PR 的标题、描述、评论和相关文件
                 b. 分析内容并回复
@@ -141,8 +143,10 @@ jobs:
                 a. 用 `gh pr list --search "<issue_number>" --json headRefName,number` 查找已有分支
                 b. 如有 → checkout 该分支；无 → 创建新分支
                 c. 仅读取需要修改的文件，精确实施用户要求的改动
-                d. `git add <具体文件>`（逐个添加，禁止通配符），`git commit`，`git push`
-                e. 回复用户说明已完成
+                d. `git add <具体文件>`（逐个添加，禁止通配符）
+                e. 执行 `git diff --cached --stat` 打印变更文件列表和改动简述，回复中展示给用户
+                f. 确认无误后 `git commit`，`git push`
+                g. 回复用户说明已完成，附上修改的文件列表
              3. 如只需分析：
                 a. 读取 PR 的标题、描述、diff 和相关文件
                 b. 分析内容并回复
