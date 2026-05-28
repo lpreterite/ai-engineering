@@ -53,8 +53,6 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-          # Issue 评论 → main；PR 评论 → PR 源分支
-          ref: ${{ github.event.issue.pull_request && format('refs/pull/{0}/head', github.event.issue.number) || '' }}
 
       - name: Configure git
         env:
@@ -116,7 +114,6 @@ jobs:
         with:
           fetch-depth: 1
           persist-credentials: false
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Configure git
         env:
