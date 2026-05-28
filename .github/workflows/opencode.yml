@@ -47,7 +47,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: deepseek/deepseek-v4-flash
-          use_github_token: true
           prompt: |
              你是项目的代码审查与修改助手。
 

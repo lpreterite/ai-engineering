@@ -71,7 +71,6 @@ jobs:
         with:
           # 【必需】替换为你的模型，格式：provider/model
           model: deepseek/deepseek-v4-flash
-          use_github_token: true
           prompt: |
              你是项目的代码审查与修改助手。
 
