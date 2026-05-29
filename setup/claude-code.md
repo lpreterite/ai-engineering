@@ -251,7 +251,53 @@ claude --agent developer
 
 ---
 
-## 5. 完整部署流程
+## 5. Skill 部署与集成
+
+### 5.1 技能来源
+
+`skills/` 目录包含 10 个独立 Skill，每个 Skill 封装了一个领域工具或流程运作。Skill 被 Agent 角色中的工具箱路由表引用，按场景自动加载。
+
+### 5.2 部署命令
+
+```bash
+# 复制所有 Skill 到下游项目的 .claude/skills/
+cp -r vendor/ai-engineering/skills/* .claude/skills/
+```
+
+### 5.3 Agent 角色中的 Skill 引用
+
+Claude Code 原生支持在 subagent frontmatter 中使用 `skills` 字段预加载 Skill：
+
+```yaml
+---
+name: orchestrator
+description: Orchestrator Agent — 编排中枢
+skills:
+  - stage-gate
+  - issue-lifecycle
+  - doc-lifecycle
+  - downstream-sync
+  - decision-record
+---
+```
+
+每个 Agent 角色定义文件（`agents/*.md`）的 **§工具箱（Skills）** 章节给出了该角色的完整 Skill 路由表。部署时，将这些 Skill 名填入 `skills` 字段即可。
+
+### 5.4 一键全量部署
+
+使用 `scripts/deploy-all.sh` 可一次性完成规范、技能、Agent 角色和 Issue 模板的部署：
+
+```bash
+# 首次部署到下游项目（指定 Claude Code）
+./vendor/ai-engineering/scripts/deploy-all.sh . --tool claude-code
+
+# 更新模式（保留定制）
+./vendor/ai-engineering/scripts/deploy-all.sh . --tool claude-code --update
+```
+
+---
+
+## 6. 完整部署流程
 
 ```
 步骤 1：复制 guide/ 规则文件到 docs/ai-engineering/
@@ -263,7 +309,7 @@ claude --agent developer
 
 ---
 
-## 6. 验证
+## 7. 验证
 
 安装完成后，在 Claude Code 中执行以下检查：
 
@@ -289,6 +335,6 @@ claude --agent developer
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
-| v0.3 | 2026-04-05 | 新增 Subagent 文件生成指南，基于官方规范补充完整字段说明和五个角色配置示例；更新为原生 subagent 支持 |
+| v0.4 | 2026-05-29 | 新增 §5「Skill 部署与集成」章节，含技能复制命令、frontmatter skills 字段示例、deploy-all.sh 引用；§5→§6→§7 重编号 |
 | v0.2 | 2026-04-04 | 修正规则 frontmatter 字段名，补充完整示例部署方式说明，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |
