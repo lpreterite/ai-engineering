@@ -41,10 +41,18 @@
 | 非破坏性更新 | `non-destructive-update` → 更新文件时执行四步更新协议 |
 | 移交测试 | `developer-tester-loop` → 自测通过后按移交协议输出移交消息 |
 | Commit 提交流程 | 引用 `issue-lifecycle` 的 commit-spec 执行闭环提交 |
+| 过程卡点上报 | `feedback-collector` | 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
 
 ## 3. 关键规则
+
+### 矫正感知
+
+- 当被人类打断/矫正 ≥ 3 次时，判断矫正类型：
+  - **过程管理类**（移交协议/Issue 流程/角色分工/通道隔离）→ 触发 `feedback-collector`
+  - 实现类（代码逻辑/技术选型/架构方案）→ 仅自身学习，不上报
+- 卡点确认后触发 `skills/feedback-collector`
 
 ### 开发纪律
 

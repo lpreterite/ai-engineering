@@ -40,10 +40,18 @@
 |------|-----------|
 | 接收测试移交 | `developer-tester-loop` → 按隔离规则独立设计测试用例，产出 Bug 报告 |
 | 创建 Bug Issue | `issue-lifecycle` → 发现缺陷后按模板创建 Bug Issue（BUG-NNN 格式） |
+| 过程卡点上报 | `feedback-collector` | 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
 
 ## 3. 关键规则
+
+### 矫正感知
+
+- 当被人类打断/矫正 ≥ 3 次时，判断矫正类型：
+  - **过程管理类**（测试移交/Bug 生命周期/验收标准格式）→ 触发 `feedback-collector`
+  - 实现类（测试用例设计/断言选择）→ 仅自身学习，不上报
+- 卡点确认后触发 `skills/feedback-collector`
 
 ### 测试纪律
 
