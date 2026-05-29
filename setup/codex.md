@@ -316,7 +316,34 @@ developer_instructions = """
 
 ---
 
-## 5. 全局配置
+## 5. Skill 部署与集成
+
+### 5.1 技能来源
+
+`skills/` 目录包含 10 个独立 Skill，每个 Skill 封装了一个领域工具或流程运作。Codex CLI 不原生支持 Skill 目录，技能通过 `developer_instructions` 中注明按需调用。
+
+### 5.2 部署说明
+
+Codex CLI 无内建 Skill 加载机制，Skill 作为 Agent 提示词的一部分工作：
+
+1. 每个 Agent 角色文件（`agents/*.md`）的 **§工具箱（Skills）** 章节定义了该角色的 Skill 路由表
+2. 该路由表随 `developer_instructions` 完整内联到 Agent 配置中
+3. Agent 在对应场景下按路由表描述自动加载 Skill
+
+### 5.3 一键全量部署
+
+使用 `scripts/deploy-all.sh` 完成规范、Agent 角色和 Issue 模板的部署：
+
+```bash
+# 仅 Codex 不支持技能文件复制，其余组件正常部署
+./vendor/ai-engineering/scripts/deploy-all.sh . --tool opencode
+```
+
+> 注意：Codex CLI 无 `.claude/skills/` 或 `.opencode/skills/` 等效目录。如需手动查阅 Skill 内容，直接读取 `vendor/ai-engineering/skills/*/SKILL.md`。
+
+---
+
+## 6. 全局配置
 
 将通用工作协议写入 `~/.codex/AGENTS.md`，所有项目自动继承：
 
@@ -332,7 +359,7 @@ developer_instructions = """
 
 ---
 
-## 6. 完整部署流程
+## 7. 完整部署流程
 
 ```
 步骤 1：复制 guide/ 规则文件到 docs/ai-engineering/
@@ -344,7 +371,7 @@ developer_instructions = """
 
 ---
 
-## 7. 验证
+## 8. 验证
 
 安装完成后，在 Codex CLI 中执行以下检查：
 
@@ -371,6 +398,6 @@ developer_instructions = """
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
-| v0.3 | 2026-04-05 | 新增 Agent 文件生成指南，基于官方规范补充完整 TOML 字段说明、沙箱模式、全局配置和五个角色完整示例 |
+| v0.4 | 2026-05-29 | 新增 §5「Skill 部署与集成」章节（含 Codex 无 Skill 目录的特殊说明）；§5→§6→§7→§8 重编号 |
 | v0.2 | 2026-04-04 | 重构：拆分独立 Agent 文件和集中式配置两种方式，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |
