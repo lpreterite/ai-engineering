@@ -8,6 +8,23 @@
 ## 项目简介
 AI 原生软件研发工程体系，定义 AI 开发模式下的人机协作规范、阶段门控、多 Agent 角色与关键文档产出标准。
 
+## 仓库目录结构
+
+| 目录 | 用途 | 是否部署到下游 |
+|------|------|---------------|
+| `guide/` | 研发规范文件（原则、流程、协作、检查清单、模板） | ✅ → `docs/ai-engineering/` |
+| `skills/` | Agent 技能定义（10 个 Skill，每个封装领域工具或流程） | ✅ → `.opencode/skills/` 或 `.claude/skills/` |
+| `agents/` | 子 Agent 角色定义（Orchestrator / PO / UIUX / Developer / Tester） | ✅ → 生成 `.opencode/agents/*.md` |
+| `setup/` | 各 AI 编程工具（OpenCode / Claude Code / Codex）的配置指南 | ✅ → 参考 |
+| `scripts/` | 自动化脚本（deploy-all / bump-version / validate-release 等） | ❌ 仅本仓库 |
+| `internal/` | 本仓库自管理规范（发版流程、治理规则、开发约束） | ❌ 仅本仓库 |
+| `reference/` | 模板文件和目录结构参考 | ✅ → 参考 |
+| `.github/ISSUE_TEMPLATE/` | Issue 表单模板（8 个 YAML 模板） | ✅ → `.github/ISSUE_TEMPLATE/` |
+
+## 版本管理
+
+版本发布与 skill 版本管理规则详见 `internal/release-workflow.md`。
+
 ## 打磨阶段 Issue 创建指令
 
 在打磨阶段（Gate 1 和 Gate 2 之间）的讨论中，请保持以下行为：

@@ -29,7 +29,18 @@
 | minor | 新增规范文件、新增协议能力、Agent 角色变更 | v1.1.0 |
 | patch | 文档修正、措辞优化、引用修复 | v1.0.1 |
 
-### 2.2 guide/ 文件版本号
+### 2.2 Skill 版本号
+
+每个 `skills/*/SKILL.md` 的 YAML frontmatter 中维护独立版本号 `v<major>.<minor>`：
+
+| 级别 | 触发条件 |
+|------|----------|
+| minor | Skill 逻辑变更、流程修改、引用文件更新 |
+| patch | 措辞修正、触发词优化、引用链接修复 |
+
+版本号写入 YAML `version:` 字段，`bump-version.sh --sync` 自动扫描同步到 RELEASE.json。
+
+### 2.3 guide/ 文件版本号
 
 每个 `guide/*.md` 的 HEADER 中维护独立版本号 `v<major>.<minor>`：
 
@@ -58,13 +69,21 @@
 ## 4. 发版步骤
 
 ```
-Step 1: 更新 HEADER
-  ├─ 确认所有修改过的 guide/*.md HEADER 版本号已递增
-  └─ 运行 scripts/validate-release.sh 校验一致性
+Step 1: 更新文件版本号
+  ├─ guide/*.md → 修改 HEADER 的 `**当前版本**`
+  ├─ skills/*/SKILL.md → 修改 YAML frontmatter 的 `version:`
+  └─ 运行 scripts/bump-version.sh --sync 自动扫描文件→同步 RELEASE.json
+
+Step 1.5: 运行 validate-release.sh
+  ├─ 检查 1: RELEASE.json vs Markdown HEADER 版本一致
+  ├─ 检查 2: guide/*.md 来源元信息完整
+  ├─ 检查 3: RELEASE.json vs SKILL.md frontmatter 版本一致
+  ├─ 检查 4: 所有 SKILL.md 含 name + version + description
+  └─ 检查 5: RELEASE.json 所有 files 物理存在
 
 Step 2: 更新 RELEASE.json
-  ├─ 运行 scripts/bump-version.sh 批量更新
-  └─ 手动确认每个文件版本号正确
+  ├─ 运行 scripts/bump-version.sh --sync（确保最新版本号已写入）
+  └─ 确认 RELEASE.json 中 skills 条目版本与 SKILL.md 一致
 
 Step 3: 合并到 main
   ├─ 创建 PR，关联发布 Issue
@@ -89,8 +108,10 @@ Step 6: 通知下游
 
 ```
 □ 所有修改过的 guide/ 文件 HEADER 版本号已递增
-□ scripts/validate-release.sh 通过
-□ RELEASE.json 已更新
+□ 所有修改过的 skills/*/SKILL.md frontmatter version 已递增
+□ scripts/bump-version.sh --sync 已执行（RELEASE.json 已同步）
+□ scripts/validate-release.sh 5 项检查全部通过
+□ RELEASE.json 中 skills 条目版本与 SKILL.md 一致
 □ 交叉引用未断裂
 □ reference/directory.md 已同步
 □ internal/README.md 索引已同步
