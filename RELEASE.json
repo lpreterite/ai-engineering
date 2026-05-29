@@ -1,6 +1,6 @@
 {
-  "release": "v1.1.0",
-  "released_at": "2026-05-28T00:00:00Z",
+  "release": "v1.2.0",
+  "released_at": "2026-05-29T11:17:01Z",
   "files": {
     "guide/01-principles.md": "v0.8",
     "guide/02-process.md": "v0.9",
@@ -12,7 +12,7 @@
     "guide/08-tool-integration-guide.md": "v0.7",
     "guide/09-downstream-sync-guide.md": "v0.1",
     "setup.md": "v0.6",
-    "guide/issue-workflow.md": "v0.4",
+    "guide/issue-workflow.md": "v1.0",
     "setup/opencode.md": "v0.6",
     "setup/claude-code.md": "v0.3",
     "setup/codex.md": "v0.3",
@@ -23,6 +23,20 @@
     "agents/po-agent.md": "v0.3",
     "agents/uiux-agent.md": "v0.3",
     "agents/fullstack-developer.md": "v0.4",
-    "agents/tester-agent.md": "v0.4"
+    "agents/tester-agent.md": "v0.4",
+    "skills/issue-lifecycle/SKILL.md": "v1.0",
+    "skills/developer-tester-loop/SKILL.md": "v1.0",
+    "skills/doc-lifecycle/SKILL.md": "v1.0",
+    "skills/stage-gate/SKILL.md": "v1.0",
+    "skills/decision-record/SKILL.md": "v1.0",
+    "skills/downstream-sync/SKILL.md": "v1.0",
+    "skills/non-destructive-update/SKILL.md": "v1.0",
+    "skills/tech-spec-templates/SKILL.md": "v1.0",
+    "skills/prd-templates/SKILL.md": "v1.0",
+    "skills/design-spec-templates/SKILL.md": "v1.0",
+    "reference/templates/AGENTS.md.example": "v1.0",
+    "reference/templates/CLAUDE.md.example": "v1.0",
+    "reference/templates/codex-AGENTS.md.example": "v1.0",
+    "scripts/deploy-all.sh": "v1.0"
   }
 }

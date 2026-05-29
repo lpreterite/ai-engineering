@@ -1,5 +1,6 @@
 ---
 name: issue-lifecycle
+version: v1.0
 description: "Issue 全生命周期管理——创建、状态转换、依赖管理、关闭归档。触发：创建 Issue、变更 Issue 状态、处理 Bug/Feature/Task/Decision、验收后发现缺陷、打磨阶段决策记录、Commit 提交时。"
 ---
 

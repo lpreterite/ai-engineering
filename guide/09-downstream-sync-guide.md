@@ -8,6 +8,7 @@
 **发布日期**：2026-05-28
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/09-downstream-sync-guide.md`
+> **Skill 引用**：下游同步 → `skills/downstream-sync`
 
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: non-destructive-update
+version: v1.0
 description: "非破坏性更新——MANIFEST 版本比对、四步更新协议、三路合并、回滚。触发：MANIFEST.json 存在、下游仓库同步、文件版本不一致、需要增量更新已有文件、AI 拉取上游规范后需本地应用时。"
 ---
 

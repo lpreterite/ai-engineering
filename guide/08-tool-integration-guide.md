@@ -8,6 +8,7 @@
 **发布日期**：2026-05-27
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/08-tool-integration-guide.md`
+> **Skill 引用**：非破坏性更新 → `skills/non-destructive-update`
 
 ---
 

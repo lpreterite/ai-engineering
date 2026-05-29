@@ -8,6 +8,7 @@
 **发布日期**：2026-04-04
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/05-deliverables.md`
+> **Skill 引用**：PRD 模板 → `skills/prd-templates`；技术方案 → `skills/tech-spec-templates`；设计规范 → `skills/design-spec-templates`
 
 ---
 

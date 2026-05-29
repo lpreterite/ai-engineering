@@ -1,5 +1,6 @@
 ---
 name: stage-gate
+version: v1.0
 description: "阶段门控验收——按 Gate 推进流程、执行检查清单、验证前置依赖。触发：进入 Gate 1/2/3/4 验收、PRD 完成需确认、里程碑验收、软件交付验收、可维护性验收时。"
 ---
 

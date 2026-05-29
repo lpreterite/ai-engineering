@@ -1,5 +1,6 @@
 ---
 name: decision-record
+version: v1.0
 description: "打磨阶段决策记录——识别决策信号、触发门槛判断、创建 Decision Issue、关联关键文档。触发：讨论中出现技术选型/方案取舍、超过 3 轮有效讨论、人类明确表达倾向、排除某个方案时。"
 ---
 

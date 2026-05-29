@@ -8,6 +8,7 @@
 **发布日期**：2026-04-04
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/06-document-management.md`
+> **Skill 引用**：文档生命周期 → `skills/doc-lifecycle`
 
 ---
 

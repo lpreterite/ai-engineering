@@ -3,15 +3,17 @@
 # 用法: ./deploy-all.sh <目标项目路径> [--tool opencode|claude-code] [--update]
 #
 # 部署内容:
-#   1. guide/*.md          → docs/ai-engineering/
-#   2. skills/*             → .opencode/skills/ 或 .claude/skills/
-#   3. agents/*.md          → 生成 Agent 角色配置（带 YAML frontmatter）
-#   4. .github/ISSUE_TEMPLATE/*.yml → .github/ISSUE_TEMPLATE/
+#   1. guide/*.md          -> docs/ai-engineering/
+#   2. skills/*             -> .opencode/skills/ 或 .claude/skills/
+#   3. AGENTS.md.example    -> 项目根
+#   4. agents/*.md          -> 生成 Agent 角色配置
+#   5. .github/ISSUE_TEMPLATE/*.yml -> .github/ISSUE_TEMPLATE/
 
 set -euo pipefail
 
 SRC_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 TARGET="${1:?用法: $0 <目标项目路径> [--tool opencode|claude-code] [--update]}"
+TARGET="$(cd "$TARGET" 2>/dev/null && pwd || echo "$TARGET")"
 TOOL="opencode"
 UPDATE=false
 
@@ -25,28 +27,28 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ "$TOOL" != "opencode" ] && [ "$TOOL" != "claude-code" ]; then
-  echo "❌ 不支持的 tool: $TOOL（仅支持 opencode / claude-code）"
+  echo "不支持 tool: $TOOL（仅 opencode / claude-code）"
   exit 1
 fi
 
-echo "🚀 部署 AI 研发工程体系到: $TARGET (tool: $TOOL)"
+echo "部署 AI 研发工程体系到: $TARGET (tool: $TOOL)"
 echo ""
 
 # ─── 步骤 1: 规范文件 ─────────────────────────────────────────
-echo "📄 [1/4] 部署规范文件 → docs/ai-engineering/"
+echo "[1/5] 规范文件 -> docs/ai-engineering/"
 mkdir -p "$TARGET/docs/ai-engineering"
 for f in "$SRC_DIR/guide/"*.md; do
   name=$(basename "$f")
   dst="$TARGET/docs/ai-engineering/$name"
   if [ "$UPDATE" = true ] && [ -f "$dst" ]; then
-    echo "   ⏭️  已存在: docs/ai-engineering/$name"
+    echo "   已存在: docs/ai-engineering/$name"
   else
     cp "$f" "$dst"
-    echo "   ✅ docs/ai-engineering/$name"
+    echo "   + docs/ai-engineering/$name"
   fi
 done
 
-# ─── 步骤 2: 技能文件 ─────────────────────────────────────────
+# ─── 步骤 2: 技能文件（版本感知）─────────────────────────────
 SKILL_DST="$TARGET/.opencode/skills"
 SKILL_SRC="$SRC_DIR/skills"
 if [ "$TOOL" = "claude-code" ]; then
@@ -54,52 +56,159 @@ if [ "$TOOL" = "claude-code" ]; then
 fi
 
 echo ""
-echo "🧠 [2/4] 部署技能文件 → $SKILL_DST"
+echo "[2/5] 技能文件 -> $SKILL_DST"
 mkdir -p "$SKILL_DST"
+
+MANIFEST_FILE="$TARGET/MANIFEST.json"
+UPSTREAM_COMMIT=$(cd "$SRC_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+
+UPSTREAM_RELEASE=$(python3 -c "
+import json
+try:
+    print(json.load(open('$SRC_DIR/RELEASE.json')).get('release',''))
+except: pass
+" 2>/dev/null)
+
+# 读取上游 release 中的 skill 版本
+UP_SKILLS=$(python3 -c "
+import json
+try:
+    data = json.load(open('$SRC_DIR/RELEASE.json'))
+    for path, ver in data.get('files', {}).items():
+        if '/SKILL.md' in path:
+            print(path.split('/')[-2] + ':' + ver)
+except: pass
+" 2>/dev/null)
+
+# 读取下游 MANIFEST（如果有）
+DN_SKILLS=$(python3 -c "
+import json
+try:
+    data = json.load(open('$MANIFEST_FILE'))
+    for name, info in data.get('skills', {}).items():
+        print(name + ':' + info.get('version','') + ':' + str(info.get('customized',False)).lower())
+except: pass
+" 2>/dev/null)
+
+# 查找版本号：从 UP_SKILLS 找
+find_up_ver() {
+  echo "$UP_SKILLS" | while IFS=: read -r n v; do
+    [ "$n" = "$1" ] && echo "$v" && break
+  done
+}
+
+# 查找下游版本和定制状态
+find_dn_info() {
+  echo "$DN_SKILLS" | while IFS=: read -r n v c; do
+    if [ "$n" = "$1" ]; then
+      echo "$v|$c"
+      break
+    fi
+  done
+}
+
 for skill_dir in "$SKILL_SRC"/*/; do
   skill_name=$(basename "$skill_dir")
   dst_dir="$SKILL_DST/$skill_name"
-  if [ "$UPDATE" = true ] && [ -d "$dst_dir" ]; then
-    echo "   ⏭️  已存在: $SKILL_DST/$skill_name"
-  else
+  up_ver=$(find_up_ver "$skill_name")
+  [ -z "$up_ver" ] && up_ver="?"
+  dn_info=$(find_dn_info "$skill_name")
+  dn_ver=$(echo "$dn_info" | cut -d'|' -f1)
+  customized=$(echo "$dn_info" | cut -d'|' -f2)
+  [ -z "$customized" ] && customized="false"
+
+  if [ ! -d "$dst_dir" ] || [ "$UPDATE" != true ]; then
     cp -r "$skill_dir" "$dst_dir"
-    echo "   ✅ $SKILL_DST/$skill_name"
+    echo "   + $skill_name ($up_ver)"
+    continue
   fi
+
+  if [ "$customized" = "true" ]; then
+    echo "   定制跳过 $skill_name（上游 v$up_ver，不覆盖）"
+    continue
+  fi
+  if [ "$dn_ver" = "$up_ver" ]; then
+    echo "   一致 $skill_name (v$dn_ver)"
+    continue
+  fi
+  cp -r "$skill_dir" "$dst_dir"
+  echo "   ~ $skill_name (v$dn_ver -> v$up_ver)"
 done
+
+export TARGET SKILL_DST UPSTREAM_RELEASE UPSTREAM_COMMIT TOOL
+# 写入下游 MANIFEST.json
+python3 << 'PYEOF'
+import json, os
+src = os.environ.get('SRC_DIR','')
+target = os.environ.get('TARGET','')
+tool = os.environ.get('TOOL','opencode')
+urel = os.environ.get('UPSTREAM_RELEASE','')
+ucom = os.environ.get('UPSTREAM_COMMIT','')
+
+skill_dst = os.path.join(target, '.claude', 'skills') if tool == 'claude-code' else os.path.join(target, '.opencode', 'skills')
+manifest_file = os.path.join(target, 'MANIFEST.json')
+
+mf = {}
+try:
+    with open(manifest_file) as f:
+        mf = json.load(f)
+except:
+    pass
+
+from datetime import date
+mf['deployed'] = date.today().isoformat()
+mf['upstream_release'] = urel
+mf['upstream_commit'] = ucom
+if 'skills' not in mf:
+    mf['skills'] = {}
+
+for entry in os.listdir(skill_dst):
+    sp = os.path.join(skill_dst, entry)
+    if not os.path.isdir(sp):
+        continue
+    sk = os.path.join(sp, 'SKILL.md')
+    version = ''
+    if os.path.isfile(sk):
+        with open(sk) as f:
+            content = f.read()
+        parts = content.split('---', 2)
+        if len(parts) >= 3:
+            for line in parts[1].split('\n'):
+                line = line.strip()
+                if line.startswith('version:'):
+                    version = line.split(':', 1)[1].strip().strip("'\"").strip("'\"")
+                    break
+    customized = mf['skills'].get(entry, {}).get('customized', False)
+    mf['skills'][entry] = {'version': version, 'customized': customized}
+
+with open(manifest_file, 'w') as f:
+    json.dump(mf, f, indent=2, ensure_ascii=False)
+print('   下游 MANIFEST.json 已更新')
+PYEOF
 
 # ─── 步骤 3: 主指令文件 ─────────────────────────────────────
 echo ""
-echo "📋 [3/5] 部署主指令文件 → ./"
+echo "[3/5] 主指令文件 -> ./"
 
 MAIN_FILE=""
 EXAMPLE_SRC=""
 case "$TOOL" in
-  opencode)
-    MAIN_FILE="AGENTS.md"
-    EXAMPLE_SRC="$SRC_DIR/reference/templates/AGENTS.md.example"
-    ;;
-  claude-code)
-    MAIN_FILE="CLAUDE.md"
-    EXAMPLE_SRC="$SRC_DIR/reference/templates/CLAUDE.md.example"
-    ;;
-  codex)
-    MAIN_FILE="AGENTS.md"
-    EXAMPLE_SRC="$SRC_DIR/reference/templates/codex-AGENTS.md.example"
-    ;;
+  opencode) MAIN_FILE="AGENTS.md"; EXAMPLE_SRC="$SRC_DIR/reference/templates/AGENTS.md.example" ;;
+  claude-code) MAIN_FILE="CLAUDE.md"; EXAMPLE_SRC="$SRC_DIR/reference/templates/CLAUDE.md.example" ;;
 esac
 
 if [ -n "$MAIN_FILE" ] && [ -f "$EXAMPLE_SRC" ]; then
   if [ "$UPDATE" = true ] && [ -f "$TARGET/$MAIN_FILE" ]; then
-    echo "   ⏭️  已存在: $MAIN_FILE"
+    echo "   已存在: $MAIN_FILE"
   else
     cp "$EXAMPLE_SRC" "$TARGET/$MAIN_FILE"
-    echo "   ✅ $MAIN_FILE"
+    echo "   + $MAIN_FILE"
   fi
 fi
 
 # ─── 步骤 4: Agent 角色配置 ──────────────────────────────────
 echo ""
-echo "🤖 [4/5] 生成 Agent 角色配置"
+echo "[4/5] Agent 角色配置"
 
 AGENTS_SRC="$SRC_DIR/agents"
 AGENTS_DST="$TARGET/.opencode/agents"
@@ -107,113 +216,43 @@ if [ "$TOOL" = "claude-code" ]; then
   AGENTS_DST="$TARGET/.claude/agents"
 fi
 
-# macOS bash 不支持关联数组，使用约定顺序文件列表
-AGENT_KEYS="orchestrator po uiux developer tester"
-agent_data() {
-  case "$1" in
-    orchestrator) echo "Orchestrator 编排|Orchestrator 编排 — 多智能体编排中枢，驱动编排流程、路由任务、门控质量、引导用户|0.3|ask|deny|20|#4A90D9" ;;
-    po)           echo "PO 产品经理|PO 产品经理 — 需求分析、PRD 起草，从模糊诉求中提炼清晰可交付的需求|0.4|ask|allow|15|#7B68EE" ;;
-    uiux)         echo "UI/UX 设计师|UI/UX 设计师 — 用户方案设计，设计规范制定、设计稿和交互说明|0.5|ask|allow|15|#E67E22" ;;
-    developer)    echo "Full-stack Developer Agent|Full-stack Developer Agent — 全栈技术实施，覆盖前端、后端、数据库与 DevOps|0.2|allow|allow|30|#2ECC71" ;;
-    tester)       echo "Tester 测试工程师|Tester 测试工程师 — 测试执行，功能测试、回归测试和验收测试，证据驱动的质量验证|0.1|ask|deny|20|#E74C3C" ;;
-  esac
-}
-
-deploy_agent() {
-  local key="$1"
-  local src="$AGENTS_SRC/${key}-agent.md"
-  if [ "$key" = "developer" ]; then
-    src="$AGENTS_SRC/fullstack-developer.md"
-  fi
-  local dst="$AGENTS_DST/${key}.md"
-
-  IFS='|' read -r agent_name desc temp perm_edit perm_webfetch steps color <<< "$(agent_data "$key")"
-
-  if [ ! -f "$src" ]; then
-    echo "   ⚠️  跳过: $src (文件不存在)"
-    return
-  fi
+for key in orchestrator po uiux developer tester; do
+  src="$AGENTS_SRC/${key}-agent.md"
+  [ "$key" = "developer" ] && src="$AGENTS_SRC/fullstack-developer.md"
+  dst="$AGENTS_DST/${key}.md"
+  [ ! -f "$src" ] && echo "   跳过 $key" && continue
 
   if [ "$UPDATE" = true ] && [ -f "$dst" ]; then
-    local tmpfile=$(mktemp)
-    awk '/^---$/ { if (seen) exit; seen=1; next } seen && /^---$/ { exit } seen' "$dst" > "$tmpfile"
-    if [ -s "$tmpfile" ]; then
-      { cat "$tmpfile"; echo "---"; echo ""; cat "$src"; } > "${dst}.new"
-    else
-      cat > "${dst}.new" << FRONTMATTER
----
-name: $agent_name
-description: $desc
-mode: subagent
-temperature: $temp
-permission:
-  edit: $perm_edit
-  bash:
-    "*": ask
-  webfetch: $perm_webfetch
-steps: $steps
-color: "$color"
----
-
-FRONTMATTER
-      cat "$src" >> "${dst}.new"
-    fi
-    rm -f "$tmpfile"
-    if diff -q "$dst" "${dst}.new" > /dev/null 2>&1; then
-      rm -f "${dst}.new"
-      echo "   ⏭️  无变化: $key"
-    else
-      mv "${dst}.new" "$dst"
-      echo "   🔄 已更新: $key"
-    fi
+    echo "   已存在: $key"
   else
     mkdir -p "$(dirname "$dst")"
-    cat > "$dst" << FRONTMATTER
+    cat > "$dst" << EOF
 ---
-name: $agent_name
-description: $desc
+name: $key
 mode: subagent
-temperature: $temp
-permission:
-  edit: $perm_edit
-  bash:
-    "*": ask
-  webfetch: $perm_webfetch
-steps: $steps
-color: "$color"
 ---
 
-FRONTMATTER
+EOF
     cat "$src" >> "$dst"
-    echo "   ✅ $key"
+    echo "   + $key"
   fi
-}
-
-for key in $AGENT_KEYS; do
-  deploy_agent "$key"
 done
 
 # ─── 步骤 5: Issue 模板 ──────────────────────────────────────
 echo ""
-echo "📋 [5/5] 部署 Issue 模板 → .github/ISSUE_TEMPLATE/"
+echo "[5/5] Issue 模板 -> .github/ISSUE_TEMPLATE/"
 mkdir -p "$TARGET/.github/ISSUE_TEMPLATE"
 for f in "$SRC_DIR/.github/ISSUE_TEMPLATE/"*.yml; do
   name=$(basename "$f")
   dst="$TARGET/.github/ISSUE_TEMPLATE/$name"
   if [ "$UPDATE" = true ] && [ -f "$dst" ]; then
-    echo "   ⏭️  已存在: .github/ISSUE_TEMPLATE/$name"
+    echo "   已存在: .github/ISSUE_TEMPLATE/$name"
   else
     cp "$f" "$dst"
-    echo "   ✅ .github/ISSUE_TEMPLATE/$name"
+    echo "   + .github/ISSUE_TEMPLATE/$name"
   fi
 done
 
 echo ""
-echo "🎉 部署完成！目标项目: $TARGET"
-echo "   主指令文件 → $MAIN_FILE"
-echo "   规范文件 → docs/ai-engineering/"
-echo "   技能文件 → $SKILL_DST"
-echo "   Agent 角色 → $AGENTS_DST"
-echo "   Issue 模板 → .github/ISSUE_TEMPLATE/"
-echo ""
-echo "   退出当前 Agent 会话后重新进入以加载新配置。"
+echo "完成: $TARGET"
+echo "   MANIFEST.json / docs/ / $SKILL_DST / $AGENTS_DST / .github/ISSUE_TEMPLATE/"
