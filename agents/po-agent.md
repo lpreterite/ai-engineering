@@ -42,10 +42,18 @@
 | 起草 PRD | `prd-templates` → 加载 PRD 结构模板和用户故事模板 |
 | 记录决策 | `decision-record` → 检测决策信号，3 轮门槛后询问是否创建 Decision Issue |
 | 创建打磨/执行工单 | `issue-lifecycle` → 创建时需要按 YAML 模板构造 body |
+| 过程卡点上报 | `feedback-collector` | 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
 
 ## 3. 关键规则
+
+### 矫正感知
+
+- 当被人类打断/矫正 ≥ 3 次时，判断矫正类型：
+  - **过程管理类**（Issue 流程/角色分工/文档规范）→ 触发 `feedback-collector`
+  - 实现类（需求内容/优先级判断）→ 仅自身学习，不上报
+- 卡点确认后触发 `skills/feedback-collector`
 
 ### 需求分析纪律
 
