@@ -1,5 +1,6 @@
 ---
 name: downstream-sync
+version: v1.0
 description: "下游仓库同步上游规范——版本比对、三路合并、冲突检测、定制保护。触发：上游仓库发布新版本、MANIFEST.json 版本不一致、执行 downstream-sync.sh、CI 检测到规范文件过时时、手动触发同步命令时。"
 ---
 

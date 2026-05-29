@@ -1,5 +1,6 @@
 ---
 name: prd-templates
+version: v1.0
 description: "PRD 文档模板——用户故事、验收标准、线路图、原型图说明。触发：需要写 PRD、需求分析、Gate 1 验收准备、打磨阶段创建需求文档时。"
 ---
 

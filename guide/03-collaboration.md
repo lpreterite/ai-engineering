@@ -8,6 +8,7 @@
 **发布日期**：2026-04-04
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/03-collaboration.md`
+> **Skill 引用**：Developer-Tester 移交 → `skills/developer-tester-loop`；分歧处理 → 嵌入 Orchestrator 角色
 
 ---
 

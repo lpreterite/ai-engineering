@@ -1,5 +1,6 @@
 ---
 name: design-spec-templates
+version: v1.0
 description: "设计规范文档模板——设计稿标注、交互说明、响应式断点、设计系统规范。触发：需要写设计规范、UI/UX 方案验收、Gate 2 设计评审、开发交接设计稿、设计稿走查时。"
 ---
 

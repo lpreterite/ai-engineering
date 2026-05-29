@@ -8,6 +8,7 @@
 **发布日期**：2026-05-28
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/issue-workflow.md`
+> **Skill 引用**：Issue 全生命周期 → `skills/issue-lifecycle`；决策记录 → `skills/decision-record`
 
 ---
 

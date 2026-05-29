@@ -1,5 +1,6 @@
 ---
 name: developer-tester-loop
+version: v1.0
 description: "Developer→Tester 移交循环——代码完成后移交测试、隔离测试执行、Bug 报告与回归验证。触发：Developer 任务完成设 resolved、Tester 接收 testing、测试发现 Bug、修复后回归验证、代码审查通过需移交测试时。"
 ---
 

@@ -1,5 +1,6 @@
 ---
 name: doc-lifecycle
+version: v1.0
 description: "文档全生命周期管理——创建、评审、发布、维护、归档。触发：创建新文档、更新已有文档、Gate 验收需要文档评审、里程碑完成需更新 STATUS.md、项目结束需归档时。"
 ---
 

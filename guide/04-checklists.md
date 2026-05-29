@@ -8,6 +8,7 @@
 **发布日期**：2026-04-04
 **来源仓库**：`lpreterite/ai-engineering`
 **源文件路径**：`guide/04-checklists.md`
+> **Skill 引用**：检查清单数据由 `skills/stage-gate` 在 Gate 验收时运行时读取执行
 
 ---
 
