@@ -34,6 +34,15 @@
 
 ---
 
+## 2.5 工具箱（Skills）
+
+| 场景 | 调用 Skill |
+|------|-----------|
+| 接收测试移交 | `developer-tester-loop` → 按隔离规则独立设计测试用例，产出 Bug 报告 |
+| 创建 Bug Issue | `issue-lifecycle` → 发现缺陷后按模板创建 Bug Issue（BUG-NNN 格式） |
+
+---
+
 ## 3. 关键规则
 
 ### 测试纪律
