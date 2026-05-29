@@ -35,6 +35,16 @@
 
 ---
 
+## 2.5 工具箱（Skills）
+
+| 场景 | 调用 Skill |
+|------|-----------|
+| 起草 PRD | `prd-templates` → 加载 PRD 结构模板和用户故事模板 |
+| 记录决策 | `decision-record` → 检测决策信号，3 轮门槛后询问是否创建 Decision Issue |
+| 创建打磨/执行工单 | `issue-lifecycle` → 创建时需要按 YAML 模板构造 body |
+
+---
+
 ## 3. 关键规则
 
 ### 需求分析纪律

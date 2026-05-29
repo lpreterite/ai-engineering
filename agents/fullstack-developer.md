@@ -33,6 +33,17 @@
 
 ---
 
+## 2.5 工具箱（Skills）
+
+| 场景 | 调用 Skill |
+|------|-----------|
+| 编写技术方案 | `tech-spec-templates` → 加载技术方案模板和 4 层纪律 |
+| 非破坏性更新 | `non-destructive-update` → 更新文件时执行四步更新协议 |
+| 移交测试 | `developer-tester-loop` → 自测通过后按移交协议输出移交消息 |
+| Commit 提交流程 | 引用 `issue-lifecycle` 的 commit-spec 执行闭环提交 |
+
+---
+
 ## 3. 关键规则
 
 ### 开发纪律
