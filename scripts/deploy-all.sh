@@ -67,9 +67,39 @@ for skill_dir in "$SKILL_SRC"/*/; do
   fi
 done
 
-# ─── 步骤 3: Agent 角色配置 ──────────────────────────────────
+# ─── 步骤 3: 主指令文件 ─────────────────────────────────────
 echo ""
-echo "🤖 [3/4] 生成 Agent 角色配置"
+echo "📋 [3/5] 部署主指令文件 → ./"
+
+MAIN_FILE=""
+EXAMPLE_SRC=""
+case "$TOOL" in
+  opencode)
+    MAIN_FILE="AGENTS.md"
+    EXAMPLE_SRC="$SRC_DIR/reference/templates/AGENTS.md.example"
+    ;;
+  claude-code)
+    MAIN_FILE="CLAUDE.md"
+    EXAMPLE_SRC="$SRC_DIR/reference/templates/CLAUDE.md.example"
+    ;;
+  codex)
+    MAIN_FILE="AGENTS.md"
+    EXAMPLE_SRC="$SRC_DIR/reference/templates/codex-AGENTS.md.example"
+    ;;
+esac
+
+if [ -n "$MAIN_FILE" ] && [ -f "$EXAMPLE_SRC" ]; then
+  if [ "$UPDATE" = true ] && [ -f "$TARGET/$MAIN_FILE" ]; then
+    echo "   ⏭️  已存在: $MAIN_FILE"
+  else
+    cp "$EXAMPLE_SRC" "$TARGET/$MAIN_FILE"
+    echo "   ✅ $MAIN_FILE"
+  fi
+fi
+
+# ─── 步骤 4: Agent 角色配置 ──────────────────────────────────
+echo ""
+echo "🤖 [4/5] 生成 Agent 角色配置"
 
 AGENTS_SRC="$SRC_DIR/agents"
 AGENTS_DST="$TARGET/.opencode/agents"
@@ -163,9 +193,9 @@ for key in $AGENT_KEYS; do
   deploy_agent "$key"
 done
 
-# ─── 步骤 4: Issue 模板 ──────────────────────────────────────
+# ─── 步骤 5: Issue 模板 ──────────────────────────────────────
 echo ""
-echo "📋 [4/4] 部署 Issue 模板 → .github/ISSUE_TEMPLATE/"
+echo "📋 [5/5] 部署 Issue 模板 → .github/ISSUE_TEMPLATE/"
 mkdir -p "$TARGET/.github/ISSUE_TEMPLATE"
 for f in "$SRC_DIR/.github/ISSUE_TEMPLATE/"*.yml; do
   name=$(basename "$f")
@@ -180,6 +210,7 @@ done
 
 echo ""
 echo "🎉 部署完成！目标项目: $TARGET"
+echo "   主指令文件 → $MAIN_FILE"
 echo "   规范文件 → docs/ai-engineering/"
 echo "   技能文件 → $SKILL_DST"
 echo "   Agent 角色 → $AGENTS_DST"

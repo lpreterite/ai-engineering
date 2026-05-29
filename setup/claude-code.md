@@ -31,25 +31,15 @@
 
 ## 3. 项目指令文件
 
-在目标项目根目录创建 `CLAUDE.md`，导入研发规范：
+在目标项目根目录创建 `CLAUDE.md`，可直接使用模板文件：
 
-```markdown
-# 项目：{项目名称}
-
-## AI 研发规范
-
-遵循 AI 软件研发工程体系，加载以下规范：
-
-@docs/ai-engineering/principles.md
-@docs/ai-engineering/process.md
-@docs/ai-engineering/collaboration.md
-
-## 项目特定规则
-
-- 技术栈：{填写}
-- 测试命令：{填写}
-- 构建命令：{填写}
+```bash
+cp vendor/ai-engineering/reference/templates/CLAUDE.md.example ./CLAUDE.md
 ```
+
+CLAUDE.md 定义编排中枢的身份、Gate 流程框架、核心规则、Sub-agent 调度表和使用 `@` 语法加载规范文档。详见 `reference/templates/CLAUDE.md.example`。
+
+如需定制，修改 `{项目名称}` 占位符并补充项目特定规则即可。
 
 ### 3.1 规范文件引用路径
 

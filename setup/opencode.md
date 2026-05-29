@@ -32,23 +32,15 @@
 
 ## 3. 项目指令文件
 
-在目标项目根目录创建 `AGENTS.md`：
+在目标项目根目录创建 `AGENTS.md`，可直接使用模板文件：
 
-```markdown
-# 项目：{项目名称}
-
-## AI 研发规范
-
-遵循 AI 软件研发工程体系。
-
-当需要时，读取以下规范文件作为强制指令：
-- docs/ai-engineering/principles.md — 核心原则
-- docs/ai-engineering/process.md — 研发流程
-- docs/ai-engineering/collaboration.md — 协作协议
-- docs/ai-engineering/checklists.md — 检查清单
-- docs/ai-engineering/deliverables.md — 产出物要求
-- docs/ai-engineering/document-management.md — 文档管理
+```bash
+cp vendor/ai-engineering/reference/templates/AGENTS.md.example ./AGENTS.md
 ```
+
+AGENTS.md 定义编排中枢的身份、Gate 流程框架、核心规则、Sub-agent 调度表和规范文档索引。详见 `reference/templates/AGENTS.md.example`。
+
+如需定制，修改 `{项目名称}` 占位符即可。
 
 ---
 
