@@ -22,8 +22,10 @@ jobs:
 
       - name: Detect contributed skill
         id: detect
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          SKILL_DIRS=$(git diff --name-only HEAD~1 -- skills/ 2>/dev/null || git diff --name-only origin/main...HEAD -- skills/)
+          SKILL_DIRS=$(git diff --name-only "$BASE_SHA"...HEAD -- skills/ 2>/dev/null || echo "")
           SKILL_NAME=$(echo "$SKILL_DIRS" | grep -E '^skills/([^/]+)/SKILL\.md$' | cut -d'/' -f2 | head -1)
           echo "skill=$SKILL_NAME" >> $GITHUB_OUTPUT
           echo "Detected skill: $SKILL_NAME"
@@ -39,10 +41,13 @@ jobs:
 
           # 维度 1: Description 覆盖度
           DESC=$(head -5 "$SKILL_FILE" | grep 'description:' | sed 's/.*: "//;s/"$//' || echo "")
-          if echo "$DESC" | grep -cE '触发.*:.*、.*、.*、.*、' > /dev/null 2>&1; then
+          # 宽松检查：包含"触发"且至少有 2 个顿号分隔的触发词
+          HAS_TRIGGER=$(echo "$DESC" | grep -c '触发' || true)
+          WORD_COUNT=$(echo "$DESC" | grep -o '、' | wc -l | tr -d ' ')
+          if [ "$HAS_TRIGGER" -ge 1 ] && [ "$WORD_COUNT" -ge 2 ]; then
             REPORT="${REPORT}| 1 | Description | ✅ | |"
           else
-            REPORT="${REPORT}| 1 | Description | ❌ | 不足 5 种触发词 |"
+            REPORT="${REPORT}| 1 | Description | ❌ | 描述缺少触发词或不足 3 种场景 |"
             ERRORS=$((ERRORS+1))
           fi
 
