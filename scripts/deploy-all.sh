@@ -139,14 +139,11 @@ export TARGET SKILL_DST UPSTREAM_RELEASE UPSTREAM_COMMIT TOOL
 # 写入下游 MANIFEST.json
 python3 << 'PYEOF'
 import json, os
-src = os.environ.get('SRC_DIR','')
-target = os.environ.get('TARGET','')
-tool = os.environ.get('TOOL','opencode')
 urel = os.environ.get('UPSTREAM_RELEASE','')
 ucom = os.environ.get('UPSTREAM_COMMIT','')
 
-skill_dst = os.path.join(target, '.claude', 'skills') if tool == 'claude-code' else os.path.join(target, '.opencode', 'skills')
-manifest_file = os.path.join(target, 'MANIFEST.json')
+skill_dst = os.environ.get('SKILL_DST','')
+manifest_file = os.path.join(os.environ.get('TARGET',''), 'MANIFEST.json')
 
 mf = {}
 try:
