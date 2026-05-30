@@ -106,11 +106,11 @@ else
       skills/*/SKILL.md) ;;
       *) continue ;;
     esac
-    release_ver=$(python3 -c "
-import json
-with open('$release_file') as f:
+    release_ver=$(RELEASE_FILE="$release_file" FILE_PATH="$file_path" python3 -c "
+import json, os
+with open(os.environ['RELEASE_FILE']) as f:
     data = json.load(f)
-print(data['files'].get('$file_path', ''))
+print(data['files'].get(os.environ['FILE_PATH'], ''))
 ")
     md_file="$repo_root/$file_path"
     if [ ! -f "$md_file" ]; then
@@ -213,9 +213,9 @@ else
       errors=$((errors + 1))
       not_found=$((not_found + 1))
     fi
-  done < <(python3 -c "
-import json
-with open('$release_file') as f:
+  done < <(RELEASE_FILE="$release_file" python3 -c "
+import json, os
+with open(os.environ['RELEASE_FILE']) as f:
     data = json.load(f)
 for path in data.get('files', {}).keys():
     print(path)
