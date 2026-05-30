@@ -638,7 +638,7 @@ cp -r vendor/ai-engineering/skills/* .opencode/skills/
 
 将 OpenCode 接入 GitHub Actions 工作流，实现在 Issue/PR 中通过 `/oc` 或 `/opencode` 自动触发 AI 处理。
 
-### 6.1 安装方式
+### 7.1 安装方式
 
 **方式一：复制模板（推荐）**
 
@@ -656,7 +656,7 @@ mkdir -p .github/workflows
 
 将 [模板内容](file:../reference/templates/opencode-workflow.yml) 粘贴到 `.github/workflows/opencode.yml`。
 
-### 6.2 配置 Secrets
+### 7.2 配置 Secrets
 
 在 GitHub 仓库 **Settings → Secrets and variables → Actions** 中添加：
 
@@ -664,7 +664,7 @@ mkdir -p .github/workflows
 |-----------|------|--------|
 | `LLM_API_KEY` | AI 模型的 API Key | `sk-ant-xxxxxxxx` |
 
-### 6.3 自定义模型
+### 7.3 自定义模型
 
 模板默认使用 `deepseek/deepseek-v4-flash`。修改 workflow 中 `model` 字段：
 
@@ -675,7 +675,7 @@ with:
 
 支持的模型格式：`provider/model`（如 `openai/gpt-4o`、`deepseek/deepseek-v4-flash`）。
 
-### 6.4 使用方式
+### 7.4 使用方式
 
 | 场景 | 操作 |
 |------|------|
