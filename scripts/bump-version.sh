@@ -64,9 +64,9 @@ if [ ! -f "$RELEASE_FILE" ]; then
 fi
 
 # 读取 files 列表
-files=$(python3 -c "
-import json
-with open('$RELEASE_FILE') as f:
+files=$(RELEASE_JSON="$RELEASE_FILE" python3 -c "
+import json, os
+with open(os.environ['RELEASE_JSON']) as f:
     data = json.load(f)
 for path in data.get('files', {}).keys():
     print(path)
