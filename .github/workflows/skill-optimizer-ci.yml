@@ -41,13 +41,13 @@ jobs:
 
           # 维度 1: Description 覆盖度
           DESC=$(head -5 "$SKILL_FILE" | grep 'description:' | sed 's/.*: "//;s/"$//' || echo "")
-          # 宽松检查：包含"触发"且至少有 2 个顿号分隔的触发词
+          # 检查至少 5 种触发场景（计数分隔符数量）
+          SCNT=$(echo "$DESC" | grep -o '、' | wc -l | tr -d ' ')
           HAS_TRIGGER=$(echo "$DESC" | grep -c '触发' || true)
-          WORD_COUNT=$(echo "$DESC" | grep -o '、' | wc -l | tr -d ' ')
-          if [ "$HAS_TRIGGER" -ge 1 ] && [ "$WORD_COUNT" -ge 2 ]; then
+          if [ "$HAS_TRIGGER" -ge 1 ] && [ "$SCNT" -ge 5 ]; then
             REPORT="${REPORT}| 1 | Description | ✅ | |"
           else
-            REPORT="${REPORT}| 1 | Description | ❌ | 描述缺少触发词或不足 3 种场景 |"
+            REPORT="${REPORT}| 1 | Description | ❌ | 触发场景不足 5 种 |"
             ERRORS=$((ERRORS+1))
           fi
 
