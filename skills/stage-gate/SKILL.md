@@ -13,7 +13,7 @@ Type: 3 (Automation & Orchestration)
 ### 步骤 0：前置确认 [自由度：低]
 - 确认当前 Gate 编号（1-4）
 - 确认上一 Gate 已验收通过
-- 读取 `docs/04-checklists.md` 获取当前 Gate 的检查项列表
+- 读取 `docs/ai-engineering/04-checklists.md` 获取当前 Gate 的检查项列表
 
 ### 步骤 1：检查前置依赖 [自由度：低]
 - 每个检查项有前置依赖ID（如 G1-02 依赖 G1-01）
@@ -45,7 +45,7 @@ Type: 3 (Automation & Orchestration)
 | Gate 4 | 可维护软件验收 | 已部署软件、使用说明文档 | 人类最终确认 |
 
 ## 前置条件
-- `docs/04-checklists.md` 存在且包含当前 Gate 的检查项
+- `docs/ai-engineering/04-checklists.md` 存在且包含当前 Gate 的检查项
 - 上一 Gate 已验收通过
 - 检查项具有 `G{gate}-{seq}` 编号格式
 
@@ -57,4 +57,4 @@ Type: 3 (Automation & Orchestration)
 ## 回退路径
 - 检查项无前置依赖匹配 → 标记为"独立项"直接验证
 - Gate 推进失败 → 创建 Review Issue → 修复后重新验收（最多 3 次）
-- 数据源 `docs/04-checklists.md` 不存在 → 以 Gate 总览中的关键审查点作为最小验收集
+- 数据源 `docs/ai-engineering/04-checklists.md` 不存在 → 以 Gate 总览中的关键审查点作为最小验收集

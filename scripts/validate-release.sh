@@ -60,9 +60,9 @@ else
     else
       echo "✅ $file_path  RELEASE.json=$release_version  HEADER=$header_version"
     fi
-  done < <(python3 -c "
-import json, sys
-with open('$release_file') as f:
+  done < <(RELEASE_FILE="$release_file" python3 -c "
+import json, os
+with open(os.environ['RELEASE_FILE']) as f:
     data = json.load(f)
 for path, ver in data.get('files', {}).items():
     print(f'{path}:{ver}')
@@ -118,8 +118,9 @@ print(data['files'].get('$file_path', ''))
       errors=$((errors + 1))
       continue
     fi
-    actual_ver=$(python3 -c "
-with open('$md_file') as f:
+    actual_ver=$(MD_FILE="$md_file" python3 -c "
+import os
+with open(os.environ['MD_FILE']) as f:
     content = f.read()
 parts = content.split('---', 2)
 if len(parts) >= 3:
@@ -141,9 +142,9 @@ if len(parts) >= 3:
     else
       echo "✅ $file_path  $release_ver"
     fi
-  done < <(python3 -c "
-import json
-with open('$release_file') as f:
+  done < <(RELEASE_FILE="$release_file" python3 -c "
+import json, os
+with open(os.environ['RELEASE_FILE']) as f:
     data = json.load(f)
 for path in data.get('files', {}).keys():
     print(path)

@@ -39,10 +39,11 @@ if [ "$1" != "--sync" ]; then
       echo "❌ 未找到版本号字段: $file"
       exit 1
     fi
+    escaped_current=$(printf '%s\n' "$current" | sed 's/[.[\*^$()+?{|]/\\&/g')
     if [[ "$OSTYPE" == "darwin"* ]]; then
-      sed -i '' "s/\*\*当前版本\*\*：$current/**当前版本**：$new_version/" "$file"
+      sed -i '' "s/\*\*当前版本\*\*：$escaped_current/**当前版本**：$new_version/" "$file"
     else
-      sed -i "s/\*\*当前版本\*\*：$current/**当前版本**：$new_version/" "$file"
+      sed -i "s/\*\*当前版本\*\*：$escaped_current/**当前版本**：$new_version/" "$file"
     fi
     echo "✅ $(basename "$file"): $current → $new_version"
   done
@@ -118,23 +119,23 @@ has_md_header() {
 }
 
 # 暂存新的 files 数据
-tmpfile=$(mktemp)
-python3 -c "
-import json
-with open('$RELEASE_FILE') as f:
+tmpfile=$(mktemp /tmp/bump-version.XXXXXX)
+RELEASE_JSON="$RELEASE_FILE" TMPFILE="$tmpfile" python3 -c "
+import json, os
+with open(os.environ['RELEASE_JSON']) as f:
     data = json.load(f)
-# 写入临时文件供后续逐条更新
-json.dump(data, open('$tmpfile', 'w'))
+with open(os.environ['TMPFILE'], 'w') as f:
+    json.dump(data, f)
 "
 
 while IFS= read -r file_path; do
   [ -z "$file_path" ] && continue
   abs_path="$REPO_ROOT/$file_path"
-  recorded_version=$(python3 -c "
-import json
-with open('$tmpfile') as f:
+  recorded_version=$(FILE_PATH="$file_path" TMPFILE="$tmpfile" python3 -c "
+import json, os
+with open(os.environ['TMPFILE']) as f:
     data = json.load(f)
-print(data['files'].get('$file_path', 'unknown'))
+print(data['files'].get(os.environ['FILE_PATH'], 'unknown'))
 ")
 
   # 文件不存在
@@ -165,12 +166,13 @@ print(data['files'].get('$file_path', 'unknown'))
 
   # 比对
   if [ "$actual_version" != "$recorded_version" ]; then
-    python3 -c "
-import json
-with open('$tmpfile') as f:
+    FILE_PATH="$file_path" ACTUAL_VER="$actual_version" TMPFILE="$tmpfile" python3 -c "
+import json, os
+with open(os.environ['TMPFILE']) as f:
     data = json.load(f)
-data['files']['$file_path'] = '$actual_version'
-json.dump(data, open('$tmpfile', 'w'))
+data['files'][os.environ['FILE_PATH']] = os.environ['ACTUAL_VER']
+with open(os.environ['TMPFILE'], 'w') as f:
+    json.dump(data, f)
 "
     echo "   🔄 $file_path: $recorded_version → $actual_version"
     updated=$((updated + 1))
@@ -181,13 +183,14 @@ json.dump(data, open('$tmpfile', 'w'))
 done <<< "$files"
 
 # 更新时间戳
-python3 -c "
-import json
+TMPFILE="$tmpfile" python3 -c "
+import json, os
 from datetime import datetime, timezone
-with open('$tmpfile') as f:
+with open(os.environ['TMPFILE']) as f:
     data = json.load(f)
 data['released_at'] = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-json.dump(data, open('$tmpfile', 'w'), indent=2, ensure_ascii=False)
+with open(os.environ['TMPFILE'], 'w') as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)
 print('✅ 时间戳已更新')
 "
 
