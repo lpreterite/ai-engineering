@@ -41,7 +41,7 @@
 | 非破坏性更新 | `non-destructive-update` → 更新文件时执行四步更新协议 |
 | 移交测试 | `developer-tester-loop` → 自测通过后按移交协议输出移交消息 |
 | Commit 提交流程 | 引用 `issue-lifecycle` 的 commit-spec 执行闭环提交 |
-| 过程卡点上报 | `feedback-collector` | 过程管理类矫正 ≥ 3 次时触发 |
+| 过程卡点上报 | `feedback-collector` → 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
 
