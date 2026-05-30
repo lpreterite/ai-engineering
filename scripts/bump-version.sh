@@ -18,7 +18,12 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 RELEASE_FILE="$REPO_ROOT/RELEASE.json"
 
 # ─── 模式 1：逐文件手动 bump（原有行为）────────────────────
-if [ "$1" != "--sync" ]; then
+if [ $# -eq 0 ] || [ "$1" != "--sync" ]; then
+  if [ $# -eq 0 ]; then
+    echo "用法: $0 <file> <version> [<file> <version> ...]"
+    echo "      $0 --sync"
+    exit 1
+  fi
   if [ $# -eq 0 ] || [ $(( $# % 2 )) -ne 0 ]; then
     echo "用法: $0 <file> <version> [<file> <version> ...]"
     echo "      $0 --sync"

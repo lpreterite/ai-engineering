@@ -62,18 +62,18 @@ mkdir -p "$SKILL_DST"
 MANIFEST_FILE="$TARGET/MANIFEST.json"
 UPSTREAM_COMMIT=$(cd "$SRC_DIR" && git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 
-UPSTREAM_RELEASE=$(python3 -c "
-import json
+UPSTREAM_RELEASE=$(SRC_DIR="$SRC_DIR" python3 -c "
+import json, os
 try:
-    print(json.load(open('$SRC_DIR/RELEASE.json')).get('release',''))
+    print(json.load(open(os.environ['SRC_DIR'] + '/RELEASE.json')).get('release',''))
 except: pass
 " 2>/dev/null)
 
 # 读取上游 release 中的 skill 版本
-UP_SKILLS=$(python3 -c "
-import json
+UP_SKILLS=$(SRC_DIR="$SRC_DIR" python3 -c "
+import json, os
 try:
-    data = json.load(open('$SRC_DIR/RELEASE.json'))
+    data = json.load(open(os.environ['SRC_DIR'] + '/RELEASE.json'))
     for path, ver in data.get('files', {}).items():
         if '/SKILL.md' in path:
             print(path.split('/')[-2] + ':' + ver)
@@ -81,10 +81,10 @@ except: pass
 " 2>/dev/null)
 
 # 读取下游 MANIFEST（如果有）
-DN_SKILLS=$(python3 -c "
-import json
+DN_SKILLS=$(MANIFEST_FILE="$MANIFEST_FILE" python3 -c "
+import json, os
 try:
-    data = json.load(open('$MANIFEST_FILE'))
+    data = json.load(open(os.environ['MANIFEST_FILE']))
     for name, info in data.get('skills', {}).items():
         print(name + ':' + info.get('version','') + ':' + str(info.get('customized',False)).lower())
 except: pass
