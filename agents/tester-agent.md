@@ -40,7 +40,7 @@
 |------|-----------|
 | 接收测试移交 | `developer-tester-loop` → 按隔离规则独立设计测试用例，产出 Bug 报告 |
 | 创建 Bug Issue | `issue-lifecycle` → 发现缺陷后按模板创建 Bug Issue（BUG-NNN 格式） |
-| 过程卡点上报 | `feedback-collector` | 过程管理类矫正 ≥ 3 次时触发 |
+| 过程卡点上报 | `feedback-collector` → 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
 
