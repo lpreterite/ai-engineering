@@ -36,7 +36,8 @@ ai-engineering/
 │   ├── 05-deliverables.md        # 关键文档/产出物要求、模板、验收标准
 │   ├── 06-document-management.md # 文档生命周期、命名规范、同步规则
 │   ├── 07-repo-directory-guide.md # Repo 目录初始化指南（Agent 执行用）
-│   └── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色+非破坏性更新）
+│   ├── 08-tool-integration-guide.md # Agent 使用指南（部署规范+安装角色+非破坏性更新）
+│   └── 09-downstream-sync-guide.md # 下游同步指南（面向下游仓库维护者）
 │
 ├── setup/                        # 工具安装指南
 │   ├── claude-code.md            # Claude Code 安装配置
@@ -53,7 +54,8 @@ ai-engineering/
 │
 ├── scripts/                      # 自动化脚本
 │   ├── bump-version.sh           # 批量更新 guide/*.md 头部版本号
-│   └── validate-release.sh       # 发布前验证（版本一致性 + 来源元数据）
+│   ├── validate-release.sh       # 发布前验证（版本一致性 + 来源元数据）
+│   └── downstream-sync.sh       # 下游仓库规范文件自动同步脚本
 │
 └── reference/                    # 参考资料
     ├── directory.md              # 项目文档目录结构规范
@@ -80,6 +82,7 @@ ai-engineering/
 | [06-document-management.md](./guide/06-document-management.md) | 文档管理规范：更新时机、频率、负责人 | ✅ 完成 |
 | [07-repo-directory-guide.md](./guide/07-repo-directory-guide.md) | Repo 目录初始化指南：Agent 执行用的目录结构规范 | ✅ 完成 |
 | [08-tool-integration-guide.md](./guide/08-tool-integration-guide.md) | Agent 使用指南：部署规范、安装角色、工具配置 | ✅ 完成 |
+| [09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) | 下游同步指南：版本比对、三路合并、冲突处理、MANIFEST 更新 | ✅ 完成 |
 
 ### 工具安装指南（setup/）
 
@@ -131,6 +134,24 @@ ai-engineering/
 | UI/UX Agent | 用户方案设计 | [uiux-agent.md](./agents/uiux-agent.md) |
 | Full-stack Developer Agent | 全栈技术实施（前端/后端/数据库/DevOps） | [fullstack-developer.md](./agents/fullstack-developer.md) |
 | Tester Agent | 测试执行 | [tester-agent.md](./agents/tester-agent.md) |
+
+---
+
+## 下游仓库更新指引
+
+当用户要求 AI **更新上游规范规则**时，AI 应按以下流程操作：
+
+1. **阅读指南** — 打开 [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) 了解完整同步流程
+2. **版本比对** — 对比上游 `RELEASE.json` 与下游 `MANIFEST.json`，识别过期文件
+3. **按策略更新** — 新增文件直接复制，未定制文件直接覆盖，已定制文件三路合并
+4. **更新 MANIFEST.json** — 记录新版本号、定制状态、时间戳
+5. **一键脚本** — 推荐使用 `scripts/downstream-sync.sh` 自动执行上述流程
+
+相关文件：
+| 文件 | 用途 |
+|------|------|
+| [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) | 完整操作指南（前提条件、操作步骤、冲突场景） |
+| [scripts/downstream-sync.sh](./scripts/downstream-sync.sh) | 一键同步脚本（版本比对 + 备份 + 三路合并 + MANIFEST 更新） |
 
 ---
 
