@@ -1,6 +1,6 @@
 {
   "release": "v1.2.0",
-  "released_at": "2026-05-30T02:42:51Z",
+  "released_at": "2026-06-05T07:54:17Z",
   "files": {
     "guide/01-principles.md": "v0.8",
     "guide/02-process.md": "v0.9",
@@ -10,7 +10,7 @@
     "guide/06-document-management.md": "v0.2",
     "guide/07-repo-directory-guide.md": "v0.1",
     "guide/08-tool-integration-guide.md": "v0.7",
-    "guide/09-downstream-sync-guide.md": "v0.1",
+    "guide/09-downstream-sync-guide.md": "v0.3",
     "setup.md": "v0.6",
     "guide/issue-workflow.md": "v1.0",
     "setup/opencode.md": "v0.6",
