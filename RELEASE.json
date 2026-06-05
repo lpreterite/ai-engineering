@@ -39,6 +39,7 @@
     "reference/templates/AGENTS.md.example": "v1.0",
     "reference/templates/CLAUDE.md.example": "v1.0",
     "reference/templates/codex-AGENTS.md.example": "v1.0",
-    "scripts/deploy-all.sh": "v1.0"
+    "scripts/deploy-all.sh": "v1.0",
+    "scripts/downstream-sync.sh": "v1.0"
   }
 }

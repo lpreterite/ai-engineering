@@ -247,6 +247,8 @@ claude --agent developer
 
 `skills/` 目录包含 10 个独立 Skill，每个 Skill 封装了一个领域工具或流程运作。Skill 被 Agent 角色中的工具箱路由表引用，按场景自动加载。
 
+Claude Code 的 Skill 是**项目级**安装，复制到 `.claude/skills/` 目录后即可被 subagent 使用。
+
 ### 5.2 部署命令
 
 ```bash
@@ -312,6 +314,59 @@ skills:
 
 ---
 
+## 8. 同步更新
+
+### 8.1 同步范围一览
+
+| # | 组件 | 源路径 | 目标路径 | 更新方式 |
+|---|------|--------|---------|---------|
+| 1 | 规范文件 | `guide/*.md` | `docs/ai-engineering/` | `deploy-all.sh` / 手动复制 |
+| 2 | 技能文件 | `skills/*/` | `.claude/skills/` | `deploy-all.sh` / 手动复制 |
+| 3 | Agent 角色 | `agents/*.md` | `.claude/agents/*.md` | 手动替换正文或更新 submodule |
+| 4 | 主指令文件 | `reference/templates/CLAUDE.md.example` | `CLAUDE.md` | 手动更新占位符 |
+| 5 | Issue 模板 | `.github/ISSUE_TEMPLATE/*.yml` | `.github/ISSUE_TEMPLATE/` | `deploy-all.sh` / 手动复制 |
+| 6 | GitHub Actions | `reference/templates/opencode-workflow.yml` | `.github/workflows/opencode.yml` | 手动复制 |
+
+### 8.2 全量同步（推荐）
+
+```bash
+./vendor/ai-engineering/scripts/deploy-all.sh . --tool claude-code --update
+```
+
+`deploy-all.sh` 会同步组件 1-5（保留定制内容）。组件 6 需手动复制。
+
+### 8.3 版本比对同步
+
+仅更新规范文件时，使用 `downstream-sync.sh`：
+
+```bash
+./scripts/downstream-sync.sh \
+  --source vendor/ai-engineering \
+  --manifest docs/ai-engineering/MANIFEST.json \
+  --target docs/ai-engineering/
+```
+
+### 8.4 组件级同步
+
+| 组件 | 命令 |
+|------|------|
+| 规范文件 | `cp vendor/ai-engineering/guide/*.md docs/ai-engineering/` |
+| 技能文件 | `cp -r vendor/ai-engineering/skills/* .claude/skills/` |
+| Issue 模板 | `cp vendor/ai-engineering/.github/ISSUE_TEMPLATE/*.yml .github/ISSUE_TEMPLATE/` |
+
+Agent 角色更新后需同步修改 subagent frontmatter 中的 `skills` 字段，确保新技能名已填入。
+
+### 8.5 更新后验证
+
+```
+□ 运行 /agents 确认 subagent 列表完整
+□ 所有组件版本已更新（MANIFEST.json 比对）
+□ Agent 会话已重新初始化
+□ 新技能可通过 frontmatter skills 字段正常加载
+```
+
+---
+
 ## 附录：相关文档
 
 | 文档 | 路径 |
@@ -325,6 +380,7 @@ skills:
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.5 | 2026-05-30 | 新增 §8「同步更新」章节；§5.1 补充项目级 Skill 说明 |
 | v0.4 | 2026-05-29 | 新增 §5「Skill 部署与集成」章节，含技能复制命令、frontmatter skills 字段示例、deploy-all.sh 引用；§5→§6→§7 重编号 |
 | v0.2 | 2026-04-04 | 修正规则 frontmatter 字段名，补充完整示例部署方式说明，修正交叉引用路径 |
 | v0.1 | 2026-04-04 | 从 08 工具集成指南拆分，独立成文 |

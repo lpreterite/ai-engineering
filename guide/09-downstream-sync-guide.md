@@ -25,6 +25,11 @@
 | 多个下游项目各自有定制 | 同步操作易出错 | 自动化脚本 + MANIFEST 版本追踪 |
 | Agent 文件变更 | 下游不知情导致版本滞后 | 版本比对 + 自动通知 |
 
+> **不同工具的完整同步流程**：参见对应工具的安装指南中「同步更新」章节
+> - OpenCode → `setup/opencode.md §10`
+> - Claude Code → `setup/claude-code.md §8`
+> - Codex CLI → `setup/codex.md §9`
+
 ---
 
 ## 2. 定制最佳实践（冲突预防）
@@ -178,7 +183,9 @@
 ### 更新步骤
 
 ```
-Step 0：确认当前状态
+Step 0：确定同步范围
+  ├─ 识别目标工具（OpenCode / Claude Code / Codex CLI）
+  ├─ 读取对应工具的 setup 文档「同步更新」章节获取全量范围
   ├─ 检查 MANIFEST.json 是否存在且格式正确
   ├─ 确保 git 工作区干净（无未提交修改）
   └─ 确认源仓库代码最新
@@ -392,5 +399,6 @@ target-project/
 
 | 版本 | 日期 | 修订内容 |
 |------|------|----------|
+| v0.3 | 2026-05-30 | §1/§5 Step 0 增加工具级同步入口引用（OpenCode §10 / Claude Code §8 / Codex CLI §9） |
 | v0.2 | 2026-05-28 | 新增 §8 GitHub 配置同步章节，定义 `.github/ISSUE_TEMPLATE/` 的同步策略和定制规则 |
 | v0.1 | 2026-05-28 | 初始版本 |
