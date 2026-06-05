@@ -141,17 +141,21 @@ ai-engineering/
 
 当用户要求 AI **更新上游规范规则**时，AI 应按以下流程操作：
 
-1. **阅读指南** — 打开 [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) 了解完整同步流程
-2. **版本比对** — 对比上游 `RELEASE.json` 与下游 `MANIFEST.json`，识别过期文件
+1. **识别工具** — 确定下游项目使用的 AI 编程工具，阅读对应「同步更新」章节获取全量同步范围
+   - [OpenCode → `setup/opencode.md §10`](./setup/opencode.md#10-同步更新)
+   - [Claude Code → `setup/claude-code.md §8`](./setup/claude-code.md#8-同步更新)
+   - [Codex CLI → `setup/codex.md §9`](./setup/codex.md#9-同步更新)
+2. **版本比对** — 对比上游 `RELEASE.json` 与下游 `MANIFEST.json`，识别过期文件（详见 [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md)）
 3. **按策略更新** — 新增文件直接复制，未定制文件直接覆盖，已定制文件三路合并
 4. **更新 MANIFEST.json** — 记录新版本号、定制状态、时间戳
-5. **一键脚本** — 推荐使用 `scripts/downstream-sync.sh` 自动执行上述流程
+5. **一键脚本** — 推荐使用 `scripts/downstream-sync.sh` 自动执行版本比对与规范文件同步
 
 相关文件：
 | 文件 | 用途 |
 |------|------|
-| [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) | 完整操作指南（前提条件、操作步骤、冲突场景） |
+| [guide/09-downstream-sync-guide.md](./guide/09-downstream-sync-guide.md) | 版本比对与三路合并机制参考 |
 | [scripts/downstream-sync.sh](./scripts/downstream-sync.sh) | 一键同步脚本（版本比对 + 备份 + 三路合并 + MANIFEST 更新） |
+| `setup/<tool>.md §同步更新` | 工具级全量同步范围（按工具选择对应文档） |
 
 ---
 
