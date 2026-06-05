@@ -608,10 +608,10 @@ Agent 角色定义中的 **§工具箱（Skills）** 章节作为路由表，告
 
 ```bash
 # 部署到下游项目
-./deploy-all.sh /path/to/my-project
+./scripts/deploy-all.sh /path/to/my-project
 
 # 更新模式（保留定制）
-./deploy-all.sh /path/to/my-project --update
+./scripts/deploy-all.sh /path/to/my-project --update
 ```
 
 ### 5.5 Agent 角色中的 Skill 路由
@@ -729,7 +729,7 @@ with:
 |---|------|--------|---------|---------|
 | 1 | 规范文件 | `guide/*.md` | `docs/ai-engineering/` | `deploy-all.sh` / 手动复制 |
 | 2 | 技能文件 | `skills/*/` | `.opencode/skills/` | `deploy-all.sh` / 手动复制 |
-| 3 | Agent 角色 | `agents/*.md` | `.opencode/agents/*.md` | `deploy-agents.sh --update` |
+| 3 | Agent 角色 | `agents/*.md` | `.opencode/agents/*.md` | `deploy-all.sh` / §4.5 内联脚本 |
 | 4 | 主指令文件 | `reference/templates/AGENTS.md.example` | `AGENTS.md` | 手动更新占位符 |
 | 5 | Issue 模板 | `.github/ISSUE_TEMPLATE/*.yml` | `.github/ISSUE_TEMPLATE/` | `deploy-all.sh` / 手动复制 |
 | 6 | GitHub Actions | `reference/templates/opencode-workflow.yml` | `.github/workflows/opencode.yml` | 手动复制 |
@@ -761,7 +761,7 @@ with:
 |------|------|
 | 规范文件 | `cp vendor/ai-engineering/guide/*.md docs/ai-engineering/` |
 | 技能文件 | `cp -r vendor/ai-engineering/skills/* .opencode/skills/` |
-| Agent 角色 | `./deploy-agents.sh --update /path/to/project vendor/ai-engineering` |
+| Agent 角色 | 首次：`deploy-all.sh` / 更新：复制 §4.5 内联脚本到 `scripts/deploy-agents.sh` 后执行 `--update` |
 | Issue 模板 | `cp vendor/ai-engineering/.github/ISSUE_TEMPLATE/*.yml .github/ISSUE_TEMPLATE/` |
 
 ### 10.5 更新后验证
