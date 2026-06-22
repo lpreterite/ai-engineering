@@ -2,19 +2,15 @@
 name: user-story-crafting
 version: v1.0
 description: "通过询问式对话引导用户，逐步产出场景化用户故事和业务验收标准。触发：写用户故事、用户故事、user story、需求梳理、验收标准、AC。支持从带工具假设的自然语言输入反向拆解。"
-license: MIT
-compatibility: opencode
-metadata:
-  openclaw:
-    emoji: "📝"
-  workflow: requirement-analysis
 ---
 
 # user-story-crafting — 场景化用户故事生成
 
+Type: 5 (Reasoning & Strategic) + 2 (Data & Information Management)
+
 通过询问式对话，从用户自然语言（可能含工具假设）中反向拆解，逐步产出 **1 个场景化用户故事 + 业务验收标准**。不写交互验收标准（原型之后的事）。
 
-## 流程
+## 工作流
 
 ### 步骤 A：需求反向拆解 [自由度：低]
 **适用场景**：用户说出带功能假设的描述（"我要做工单系统"、"要能拖拽看板"）。
@@ -58,6 +54,10 @@ metadata:
 按模板组装（模板见 [references/guide-step-34.md](references/guide-step-34.md) 末尾）。
 展示完整内容，确认后交付。
 
+## 前置条件
+- 用户有明确的需求讨论场景（功能需求、流程优化、问题解决）
+- 用户能提供原始业务描述（不要求结构化）
+
 ## 约束规则 [自由度：无]
 
 | 维度 | 规则 |
@@ -89,7 +89,7 @@ metadata:
 - [ ] 验收标准中不出现交互检测词表中的词汇
 - [ ] 验收标准描述的是业务规则和结果，不是用户怎么操作界面
 
-## 失败回退
+## 回退路径
 - 不认可 → 调整重试（最多 3 轮），超限汇报阻塞
 
 ## 完成标准
