@@ -72,9 +72,7 @@ Type: 3 (Automation & Orchestration) + 2 (Data & Information Management)
 - 生成总结评论：交付摘要 + 关联 Task Issue 列表
 
 ## 完成标准
-- Goal Issue 完整走完 draft → ... → done
-- 打磨阶段无独立打磨族 Issue 产生（决策/审计/改进全在评论）
-- 正文阻塞项清零时刻即 Goal Issue done 时刻
+- Goal Issue 完整走完 draft→...→done，打磨阶段无独立打磨族 Issue（决策/审计/改进全在评论），正文阻塞项清零即 done
 - 交付物：Goal Issue（含完整评论链）+ 已勾选的阻塞项
 
 ## 回退路径
