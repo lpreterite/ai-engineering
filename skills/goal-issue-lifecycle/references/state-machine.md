@@ -47,6 +47,16 @@ draft ──提交门禁──► reviewing ──通过──► approved ─�
 | 标签 | 说明 |
 |------|------|
 | `goal` | Goal Issue 类型 |
+| `gate` | Gate Issue 类型 |
 | `polishing` | 打磨阶段 |
 | `execution` | 执行阶段 |
 | `task` | Task Issue 类型 |
+
+### Gate Issue 状态标签
+
+| 状态 | 标签 | 说明 |
+|------|------|------|
+| open | `gate, status:open` | 已创建，待审核 |
+| reviewing | `gate, status:reviewing` | 审核中 |
+| approved | `gate, status:approved` | 通过（同步 Goal → approved） |
+| rejected | `gate, status:rejected` | 打回（同步 Goal → rejected，返工后重审） |
