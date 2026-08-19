@@ -40,7 +40,7 @@
 | 编写技术方案 | `tech-spec-templates` → 加载技术方案模板和 4 层纪律 |
 | 非破坏性更新 | `non-destructive-update` → 更新文件时执行四步更新协议 |
 | 移交测试 | `developer-tester-loop` → 自测通过后按移交协议输出移交消息 |
-| Commit 提交流程 | 引用 `issue-lifecycle` 的 commit-spec 执行闭环提交 |
+| Commit 提交流程 | 引用 `goal-issue-lifecycle` 的执行闭环提交（Task Issue 完成 + 阻塞项回勾） |
 | 过程卡点上报 | `feedback-collector` → 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
@@ -173,7 +173,7 @@
 
 - 所有任务通过单独测试后参与集成
 - 协助解决集成阶段的问题（前后端联调、数据库兼容、部署问题）
-- 配合 Gate 3 验收
+- 配合交付门禁验收（PO 驱动，Gate Issue 独立跟进）
 - 每个任务完成后更新 `docs/STATUS.md` 中的里程碑进度
 
 ---

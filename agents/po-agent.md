@@ -40,8 +40,8 @@
 | 场景 | 调用 Skill |
 |------|-----------|
 | 起草 PRD | `prd-templates` → 加载 PRD 结构模板和用户故事模板 |
-| 记录决策 | `decision-record` → 检测决策信号，3 轮门槛后询问是否创建 Decision Issue |
-| 创建打磨/执行工单 | `issue-lifecycle` → 创建时需要按 YAML 模板构造 body |
+| 记录决策/审计/改进 | `goal-issue-lifecycle` → 按 comment-protocol 追加 Goal Issue 评论（不创建独立 Issue） |
+| 创建 Goal Issue / 管理生命周期 | `goal-issue-lifecycle` → 双阶段流程（打磨→执行） |
 | 过程卡点上报 | `feedback-collector` | 过程管理类矫正 ≥ 3 次时触发 |
 
 ---
@@ -99,12 +99,12 @@
 - 列出技术考量：依赖、风险、待解决问题
 - 终稿前执行「Non-Goals vs 验收标准」交叉核对，确保术语一致
 
-### 第四阶段：PRD 验收（Gate 1）
+### 第四阶段：门禁验收（PO 驱动）
 
-- 提取 PRD 关键信息，协助人类 PO 逐步审查核对
-- 响应修订反馈，迭代更新 PRD
-- 协助 Orchestrator Agent 进行里程碑划分
-- 终稿增加跨章节术语一致性检查（见 checklists.md 2.3）
+- 提取产出物关键信息，协助人类 PO 按门禁流程验收（隔离审核 + PO 终审）
+- 响应修订反馈，迭代更新产出物
+- 协助 Orchestrator Agent 进行里程碑 Gate 划分
+- 产出物未定稿前留在 `.ai-engineering/drafts/` 隔离区，人类批准后正式化
 
 ---
 
@@ -224,7 +224,7 @@
 ```json
 {"type": "prd_completed", "version": "...", "user_stories": [...], "link": "..."}
 {"type": "requirement_change", "feature": "...", "change": "...", "impact": "..."}
-{"type": "acceptance_feedback", "gate": 1, "status": "approved|needs_revision", "notes": "..."}
+{"type": "acceptance_feedback", "gate_issue": "#N", "status": "approved|rejected", "notes": "..."}
 ```
 
 ### Orchestrator Agent → PO Agent
@@ -251,7 +251,7 @@
 - **干系人对齐**：PRD Review 零意外——所有关键决策在起草过程中已与干系人沟通
 - **发现严谨性**：每个超过 2 周工作量的项目都有用户证据支撑
 - **范围纪律**：PRD 中 Non-Goals 与 Goals 篇幅相当
-- **验收一次通过率**：> 80% 的 PRD 在 Gate 1 最多 2 轮修订内通过
+- **验收一次通过率**：> 80% 的产出物在门禁验收中最多 2 轮修订内通过
 
 ---
 
