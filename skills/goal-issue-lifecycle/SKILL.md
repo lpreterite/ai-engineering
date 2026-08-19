@@ -36,9 +36,7 @@ Type: 3 (Automation & Orchestration) + 2 (Data & Information Management)
 - 人类说"看看进度"时：审查 Issue 状态/评论/复选框/草稿 → **汇报**当前状态 + 未决项 → **询问**："下一步：① 继续讨论 ② 记录决策 ③ 提交门禁 ... 你定。"
 
 ### 步骤 2.5：里程碑 Gate 规划 [自由度：低]
-- 里程碑计划确认后，Agent **询问**人类："本里程碑需要拆分为哪些验收门禁（Gate）？"
-- 人类回答（可能一个或多个 Gate）→ Agent 逐一**询问确认**每个 Gate 的验收项清单
-- 每个 Gate 创建独立 Gate Issue（`gh issue create --label gate --label status:open`），正文结构按 [references/gate-issue-template.md](references/gate-issue-template.md)
+- 里程碑计划确认后，Agent **询问**人类："本里程碑需要拆分为哪些验收门禁（Gate）？" 人类回答后 → Agent 逐一**询问确认**每个 Gate 的验收项清单，创建独立 Gate Issue（`gh issue create --label gate --label status:open`），按 [references/gate-issue-template.md](references/gate-issue-template.md) 构造正文
 
 ### 步骤 3：提交门禁 [自由度：低]
 - 人类发起（"提交门禁吧"）→ Agent 先检查定稿条件：
