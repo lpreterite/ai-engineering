@@ -10,13 +10,14 @@ Type: 3 (Automation & Orchestration) + 2 (Data & Information Management)
 
 ## 核心原则：人类主导对话模式
 
-> 人类是流程掌控者，Agent 遵循「识别→询问→确认→执行→汇报」循环，**绝不主动推进或替人类决定**。加载 [references/dialogue-pattern.md](references/dialogue-pattern.md)（标准循环图 + 四条硬约束 + 审查-汇报-询问模式 + 常见违规纠正）
+> 人类是流程掌控者，Agent 遵循「识别→询问→确认→执行→汇报」循环，**绝不主动推进或替人类决定**。→ **此时加载** [references/dialogue-pattern.md](references/dialogue-pattern.md)（标准循环图 + 四条硬约束 + 审查-汇报-询问模式 + 常见违规纠正）
 
 ## 前置确认 [自由度：低]
 
 - 执行 `gh auth status` 确认认证可用；不可用则请人类先认证
 - 确认当前阶段：打磨（draft/reviewing/rejected）或执行；无 Goal Issue 则从步骤 1
 - **人类主导原则**：全程遵循「识别 → 询问 → 确认 → 执行 → 汇报」循环
+- → **此时加载** [references/state-machine.md](references/state-machine.md)（状态机与标签映射）
 
 ## 工作流
 
