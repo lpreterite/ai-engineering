@@ -1,0 +1,47 @@
+name: Goal
+description: Root container for the polishing and execution dual-phase process — holds the objective, acceptance criteria, and the full decision/audit trail in comments.
+title: "[Goal]: "
+labels: ["goal"]
+type: Goal
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Goal Issue — Dual-Phase Root Container
+
+        This Issue is the root container for a dual-phase development goal.
+        Decisions, audits, and improvements are recorded as **comments** on this Issue.
+        Blocking items (= subtasks) are tracked as checklists in the body.
+        The goal is delivered when **all blocking items are checked off**.
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What is the goal? Why is this needed?
+      placeholder: |
+        Automate the team's weekly report collection to eliminate manual effort and format inconsistencies.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met for the gate review? (Two mandatory items: ① business process roles and behaviors, ② solution plan)
+      placeholder: |
+        - [ ] ① Business process: roles and behaviors are clearly defined
+        - [ ] ② Solution plan: the technical approach is confirmed
+    validations:
+      required: true
+  - type: markdown
+    id: blockers
+    attributes:
+      value: |
+        ## Blocking Items (= Subtask Checklist)
+
+        - [ ] _(populated by Agent during the grooming phase)_
+  - type: input
+    id: related-docs
+    attributes:
+      label: Related Documents
+      description: Links to business process docs, technical spec, or design docs.
+      placeholder: "docs/product/PRD-v1.1.md"
