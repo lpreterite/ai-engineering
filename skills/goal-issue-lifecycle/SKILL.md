@@ -56,14 +56,10 @@ Type: 3 (Automation & Orchestration) + 2 (Data & Information Management)
   - 不通过 → 追加审计评论（含改进项），标签 → rejected，阻塞项更新
 - **汇报**审核结论与下一步选项，等人类决定
 
-### 步骤 5：计划登记 [自由度：低]
-- 人类发起（"开始执行吧"）→ 标签 → planned
-- Agent **询问**任务拆分粒度，人类确认后执行
-
-### 步骤 6：任务拆分执行 [自由度：中]
-- → **此时加载** [references/task-expansion.md](references/task-expansion.md)，将阻塞项展开为独立 Task Issue（人类确认后）
-- Task Issue 独立流转状态（in-progress / blocked / done）
-- 每个 Task done 后 → 回 Goal Issue 正文勾选对应阻塞项
+### 步骤 5-6：计划登记与任务拆分 [自由度：低→中]
+- 人类发起（"开始执行吧"）→ 标签 → planned → Agent **询问**拆分粒度
+- 人类确认后 → **此时加载** [references/task-expansion.md](references/task-expansion.md)，将阻塞项展开为独立 Task Issue
+- Task Issue 独立流转（in-progress / blocked / done），每个 done 后回 Goal 正文勾选对应阻塞项
 
 ### 步骤 7：阻塞管理 [自由度：低]
 - Task 遇阻塞 → 打 blocked 标签，阻塞原因记录在 Task 评论
