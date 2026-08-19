@@ -44,16 +44,15 @@ Type: 3 (Automation & Orchestration) + 2 (Data & Information Management)
 
 ### 步骤 3：提交门禁 [自由度：低]
 - 人类发起（"提交门禁吧"）→ Agent 先检查定稿条件：
-  - 无未决事项（打磨期阻塞项 = 未决问题）
-  - 产出物已定稿（`draft-isolation.md`：草稿区 → 正式目录，需人类批准）
-- 人类批准定稿 → 状态标签 draft → reviewing → **此时加载** [references/state-machine.md](references/state-machine.md) 确认标签
+  无未决事项（打磨期阻塞项 = 未决问题）；产出物已定稿（`draft-isolation.md`：草稿区 → 正式目录，需人类批准）
+- 人类批准定稿 → 状态 draft → reviewing → **此时加载** [references/state-machine.md](references/state-machine.md) 确认标签
 - 按工具方式发起隔离审核（DSH 另建会话 / OpenCode 开子会话）
 
 ### 步骤 4：门禁结论 [自由度：低]
 - 隔离审核对照验收标准核对产出物，产出审核结论
 - 人类（PO）终审：
-  - 通过 → 追加审计评论，标签 → approved
-  - 不通过 → 追加审计评论（含改进项），标签 → rejected，阻塞项更新
+  通过 → 追加审计评论，标签 → approved
+  不通过 → 追加审计评论（含改进项），标签 → rejected，阻塞项更新
 - **汇报**审核结论与下一步选项，等人类决定
 
 ### 步骤 5-6：计划登记与任务拆分 [自由度：低→中]
