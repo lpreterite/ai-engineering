@@ -80,6 +80,5 @@ Type: 3 (Automation & Orchestration) + 2 (Data & Information Management)
 ## 回退路径
 - 评论格式不满意 → 按 comment-protocol 重写（最多 1 次）
 - 门禁不通过 → rejected 分支，改进项评论 + 阻塞项更新后重审（最多 3 轮）
-- Task 拆分过度 → 合并回正文阻塞项，保留必要粒度
-- 状态标签混乱 → `gh issue edit` 重置为真实状态
+- Task 拆分过度 → 合并回正文阻塞项；标签混乱 → `gh issue edit` 重置
 - gh 操作失败（create/edit/comment）→ 检查 `gh auth status` → 重试（最多 2 次）→ 上报人类
