@@ -366,13 +366,12 @@ target-project/
 | 源路径 | 目标路径 | 说明 | 定制策略 |
 |--------|----------|------|----------|
 | `.github/ISSUE_TEMPLATE/config.yml` | `.github/ISSUE_TEMPLATE/config.yml` | 模板选择器配置 | 可修改 `contact_links` 中的 url 和 about 为下游项目信息 |
+| `.github/ISSUE_TEMPLATE/0-goal.yml` | `.github/ISSUE_TEMPLATE/0-goal.yml` | Goal Issue（双阶段根容器） | 可新增字段 |
 | `.github/ISSUE_TEMPLATE/1-bug.yml` | `.github/ISSUE_TEMPLATE/1-bug.yml` | Bug Report | 可新增 `labels` 或修改 `body` 中的字段 |
 | `.github/ISSUE_TEMPLATE/2-feature.yml` | `.github/ISSUE_TEMPLATE/2-feature.yml` | Feature Request | 同上 |
 | `.github/ISSUE_TEMPLATE/3-task.yml` | `.github/ISSUE_TEMPLATE/3-task.yml` | Task | 同上 |
-| `.github/ISSUE_TEMPLATE/4-decision.yml` | `.github/ISSUE_TEMPLATE/4-decision.yml` | Decision | 同上 |
-| `.github/ISSUE_TEMPLATE/5-question.yml` | `.github/ISSUE_TEMPLATE/5-question.yml` | Question | 同上 |
-| `.github/ISSUE_TEMPLATE/6-risk.yml` | `.github/ISSUE_TEMPLATE/6-risk.yml` | Risk | 同上 |
-| `.github/ISSUE_TEMPLATE/7-review.yml` | `.github/ISSUE_TEMPLATE/7-review.yml` | Review Finding | 同上 |
+
+> 注：旧模板 `4-decision.yml`、`5-question.yml`、`6-risk.yml`、`7-review.yml` 已删除，打磨阶段决策/审计/改进改为 Goal Issue 评论。
 
 ### 8.2 定制策略
 
