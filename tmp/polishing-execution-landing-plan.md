@@ -13,7 +13,7 @@
 |--------|------|
 | 落地载体 | **专属 Skill 封装全流程**（新建一个 skill，Agent 加载后按流程执行） |
 | 打磨族模板 | **四模板（Decision/Question/Risk/Review）废弃**，决策/审计/改进变为 Goal Issue 评论 |
-| 门禁方案 | **PO（人类角色）驱动的产出物验收**，隔离审核（DSH 另建会话 / OpenCode 开子会话）给出审核结论，PO 终审放行/打回 |
+| 门禁方案 | **PO（人类角色）驱动的产出物验收**，**里程碑包含一个或多个 Gate**，每个 Gate 一个 Gate Issue 跟进；里程碑计划确认后通过询问逐步完善各 Gate 细化确认；隔离审核（DSH 另建会话 / OpenCode 开子会话）给出审核结论，PO 终审放行/打回；同一 Gate Issue 承载重审 |
 | 过程审计 | **独立于门禁**：监督过程、产出优化建议（见 `tmp/process-audit-design.md` + `tmp/process-audit-dual-session.md`） |
 | 产出物草稿隔离 | **`.ai-engineering/drafts/` 隔离区 + draft 标签**，产出物未定稿前不写入正式项目文档目录，定稿后复制 |
 | 本轮范围 | **方案定稿与拆解**——仅产出本方案文档，实际改造留到执行步骤（Step 1-7） |
@@ -92,6 +92,7 @@ skills/goal-issue-lifecycle/
 ├── SKILL.md                    # 主流程指令（含对话模式约束）
 └── references/
     ├── goal-issue-template.md  # Goal Issue 正文标准结构
+    ├── gate-issue-template.md  # Gate Issue 模板（一个里程碑一个，见 6.5）
     ├── comment-protocol.md     # 评论协议（决策/审计/改进三类评论格式）
     ├── state-machine.md        # 单一状态机 + 标签映射
     ├── task-expansion.md       # 阻塞项 → Task Issue 拆分规则（含自包含规范）
@@ -343,22 +344,71 @@ body:
 
 ### 6.5 门禁与状态机的衔接（skill 步骤 3/4）
 
+> 2026-08-19 增补：门禁验收以**独立 Gate Issue** 跟进；**里程碑包含一个或多个 Gate**，里程碑计划确认后通过询问方式逐步完善每个 Gate 的细化确认。
+
 `goal-issue-lifecycle` skill 的门禁流程：
 
 ```
+### 步骤 0.5：里程碑 Gate 规划（人类主导） [自由度：低]
+- 里程碑计划确认后，Agent **询问**人类：
+  "阶段 A 需要拆分为哪些验收门禁（Gate）?"
+- 人类回答（可能多个 Gate），Agent 逐一**询问确认**每个 Gate 的验收项清单
+- 每个 Gate 创建独立 Gate Issue（gh issue create --label gate --label status:open）
+
 ### 步骤 3：提交门禁（PO 发起） [自由度：低]
 - 环节产出物完成，PO 确认提交门禁
-- 状态标签 → reviewing
+- 打开对应的 Gate Issue（一个 Gate 一个，同一 Issue 承载重审）：
+  - 首次：gh issue create --label gate --label polishing --label status:open
+  - 重审：同一 Issue 追加评论（承载多轮）
+  - 正文：Gate 名称 + 验收项清单 + 关联 Goal Issue + 里程碑
+- 状态同步 → reviewed（Goal Issue 状态 → reviewing）
 - 按工具方式发起隔离审核（DSH 另建会话 / OpenCode 开子会话）
 - 写入 checkpoint 文件（如适用）
 
 ### 步骤 4：门禁结论 [自由度：低]
-- 隔离审核对照 Goal Issue 验收标准核对产出物
+- 隔离审核对照 Gate Issue 验收项清单核对产出物
 - 产出审核结论（通过/不通过）
 - PO 终审：
-  通过 ──► 审计评论 + 状态 → approved
-  打回 ──► 审计评论（含改进项）+ 状态 → rejected，返工
+  通过 ──► Gate Issue 追加审计评论 + 状态 → approved，Goal 状态 → approved（该 Gate 通过）
+  打回 ──► Gate Issue 追加审计评论（含改进项）+ 状态 → rejected，Goal 状态 → rejected，返工
+- 里程碑下所有 Gate 通过 → 里程碑完成
 ```
+
+**Gate Issue 模板（`references/gate-issue-template.md`）**：
+
+```
+## Gate 名称
+<里程碑名称> - <Gate 名称>
+
+## 验收项清单
+- [ ] ① <验收项 1>
+- [ ] ② <验收项 2>
+
+## 本轮审核结论
+- 结果：待审核 / 通过 / 打回
+- 证据：<隔离审核结论、验收标准核对、会话日志摘录>
+- 打回原因（若否）：<具体原因>
+
+## 重审记录（同一 Issue 承载）
+- 轮 1（日期）：rejected，原因...
+- 轮 2（日期）：approved，结论...
+
+## 关联
+- 目标: #N
+- 里程碑: <里程碑名称>
+```
+
+**标签**：`gate` + `polishing`/`execution` + `status:open`/`status:reviewing`/`status:approved`/`status:rejected`
+
+**状态同步规则**：
+
+| Gate Issue 状态 | Goal Issue 状态 |
+|----------------|----------------|
+| open（PO 发起） | reviewing |
+| approved（PO 终审） | approved |
+| rejected（PO 打回） | rejected（返工后重审） |
+
+> 里程碑下所有 Gate Issue approved → 里程碑完成，进入下一里程碑。
 
 ### 6.6 与过程审计的分工
 

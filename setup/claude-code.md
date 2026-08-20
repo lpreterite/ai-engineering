@@ -265,11 +265,9 @@ Claude Code 原生支持在 subagent frontmatter 中使用 `skills` 字段预加
 name: orchestrator
 description: Orchestrator Agent — 编排中枢
 skills:
-  - stage-gate
-  - issue-lifecycle
+  - goal-issue-lifecycle
   - doc-lifecycle
   - downstream-sync
-  - decision-record
 ---
 ```
 
